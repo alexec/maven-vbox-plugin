@@ -1,0 +1,6 @@
+<project>
+    <target name="process-test-resources">
+        <get src="http://www.ubuntu.com/start-download?distro=server&amp;bits=32&amp;release=lts"
+             dest="target/UbuntuServer.iso" skipexisting="true"/>
+    </target>
+</project>

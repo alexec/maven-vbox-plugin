@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<VirtualBox>
+    <Machine>
+        <MediaRegistry>
+            <HardDisks>
+                <HardDisk uuid="hd0" size="10000"/>
+            </HardDisks>
+            <DVDImages>
+                <DVDImage uuid="dvd0" location="target/UbuntuServer.iso"/>
+            </DVDImages>
+            <FloppyImages/>
+        </MediaRegistry>
+        <Hardware>
+            <Network>
+                <Adapter>
+                    <NAT/>
+                </Adapter>
+            </Network>
+        </Hardware>
+        <StorageControllers>
+            <StorageController Bootable="true" type="ide">
+                <AttachedDevice type="DVD">
+                    <Image uuid="dvd0"/>
+                </AttachedDevice>
+            </StorageController>
+            <StorageController Bootable="true" type="sata">
+                <AttachedDevice type="HardDisk">
+                    <Image uuid="hd0"/>
+                </AttachedDevice>
+            </StorageController>
+        </StorageControllers>
+    </Machine>
+    <Provisions>
+        <Provision>
+            <PortForward hostport="3022" guestport="22"/>
+            <HammerReturn/>
+        </Provision>
+    </Provisions>
+</VirtualBox>

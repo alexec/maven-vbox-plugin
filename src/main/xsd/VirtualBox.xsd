@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0">
+    <xs:element name="VirtualBox">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Machine">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MediaRegistry">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="HardDisks">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="HardDisk">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="uuid" type="xs:ID"/>
+                                                            <xs:attribute name="size" type="xs:int"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="DVDImages">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="DVDImage">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="uuid" type="xs:string"/>
+                                                            <xs:attribute name="location" type="xs:string"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Hardware">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Network">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Adapter">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="NAT"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="StorageControllers">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="StorageController" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="AttachedDevice">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="Image">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="uuid" type="xs:string"/>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="type" type="AttachedDeviceType"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="name" type="xs:string"/>
+                                                <xs:attribute name="Bootable" type="xs:boolean" default="false"/>
+                                                <xs:attribute name="type" type="StorageControllerType"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Provisions">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Provision">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="PortForward" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="hostport" type="xs:int"/>
+                                                <xs:attribute name="guestport" type="xs:int"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="HammerReturn"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="AttachedDeviceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HardDisk"/>
+            <xs:enumeration value="DVD"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="StorageControllerType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ide"/>
+            <xs:enumeration value="sata"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
