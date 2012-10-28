@@ -108,12 +108,12 @@ public class ProvisionMojo extends AbstractVBoxMojo {
 			for (int scancode : scancodes) {
 				command.add((scancode > 0xf ? "" : "0") + Integer.toHexString(scancode));
 				i++;
-				if (i >= 10) {
+				if (i > 16) {
 					break;
 				}
 			}
 			exec(command.toArray(new String[command.size()]));
-			scancodes = ArrayUtils.subarray(scancodes, i, scancodes.length - 1);
+			scancodes = ArrayUtils.subarray(scancodes, i, scancodes.length);
 		}
 
 	}
