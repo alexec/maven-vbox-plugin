@@ -18,8 +18,8 @@ public class CreateMojoTest {
 	public void setUp() throws Exception {
 		A = getClass().getResource("/UbuntuServer").toURI();
 		assert A != null;
+		new CleanMojo().execute(A);
 		sut = new CreateMojo();
-		tearDown();
 	}
 
 	@After
@@ -28,7 +28,7 @@ public class CreateMojoTest {
 	}
 
 	@Test
-	public void testCreate() throws Exception {
+	public void test() throws Exception {
 		sut.execute(A);
 	}
 }

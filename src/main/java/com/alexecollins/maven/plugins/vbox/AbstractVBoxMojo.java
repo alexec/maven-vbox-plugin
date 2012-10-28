@@ -59,7 +59,10 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 	}
 
 	protected void exec(String... strings) throws IOException, InterruptedException {
-		final Process p = new ProcessBuilder(strings).start();
+
+		final ProcessBuilder b = new ProcessBuilder(strings);
+		getLog().debug("executing " + b.command());
+		final Process p = b.start();
 
 		// stdout
 		log(p.getInputStream());
@@ -67,7 +70,7 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		log(p.getErrorStream());
 
 		if (p.waitFor() != 0) {
-			throw new RuntimeException("exitValue=" + p.exitValue());
+			throw new RuntimeException("failed to execute " + b.command() + " exitValue=" + p.exitValue());
 		}
 	}
 

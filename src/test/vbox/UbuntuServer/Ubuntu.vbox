@@ -6,24 +6,18 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings" version="1.12-macosx">
-    <Machine uuid="{93de6ebd-b7fe-4529-a3a4-a74e08d7583b}" name="Ubuntu" OSType="Other" snapshotFolder="Snapshots"
-             lastStateChange="2012-10-27T18:40:23Z">
+    <Machine uuid="{c7b8a61f-f814-446a-bba4-b1a8b12df89d}" name="Ubuntu" OSType="Ubuntu" snapshotFolder="Snapshots"
+             lastStateChange="2012-10-28T12:35:07Z">
         <MediaRegistry>
             <HardDisks>
-                <HardDisk uuid="{c08e134c-cf62-4541-84aa-6832ba8ef1b3}"
-                          location="/Users/alexec/Documents/workspace/maven-vbox-plugin/target/vbox/Ubuntu/hd0.vdi"
-                          format="VDI" type="Normal"/>
+                <HardDisk uuid="{f2d758fa-bad4-49e1-9cc2-a8e0203d6b8d}" location="Ubuntu.vdi" format="VDI"
+                          type="Normal"/>
             </HardDisks>
-            <DVDImages>
-                <Image uuid="{f2c0d089-d9d4-4a69-97c8-ef72add11c11}"
-                       location="/Users/alexec/Documents/workspace/maven-vbox-plugin/target/Ubuntu.iso"/>
-            </DVDImages>
+            <DVDImages/>
             <FloppyImages/>
         </MediaRegistry>
         <ExtraData>
-            <ExtraDataItem name="GUI/LastCloseAction" value="powerOff"/>
-            <ExtraDataItem name="GUI/LastGuestSizeHint" value="800,600"/>
-            <ExtraDataItem name="GUI/LastNormalWindowPosition" value="320,127,800,621"/>
+            <ExtraDataItem name="GUI/FirstRun" value="yes"/>
         </ExtraData>
         <Hardware version="2">
             <CPU count="1" hotplug="false">
@@ -34,8 +28,8 @@
                 <HardwareVirtExLargePages enabled="false"/>
                 <HardwareVirtForce enabled="false"/>
             </CPU>
-            <Memory RAMSize="128" PageFusion="false"/>
-            <HID Pointing="PS2Mouse" Keyboard="PS2Keyboard"/>
+            <Memory RAMSize="512" PageFusion="false"/>
+            <HID Pointing="USBTablet" Keyboard="PS2Keyboard"/>
             <HPET enabled="false"/>
             <Chipset type="PIIX3"/>
             <Boot>
@@ -44,7 +38,7 @@
                 <Order position="3" device="HardDisk"/>
                 <Order position="4" device="None"/>
             </Boot>
-            <Display VRAMSize="8" monitorCount="1" accelerate3D="false" accelerate2DVideo="false"/>
+            <Display VRAMSize="12" monitorCount="1" accelerate3D="false" accelerate2DVideo="false"/>
             <RemoteDisplay enabled="false" authType="Null"/>
             <BIOS>
                 <ACPI enabled="true"/>
@@ -54,9 +48,16 @@
                 <TimeOffset value="0"/>
                 <PXEDebug enabled="false"/>
             </BIOS>
-            <USBController enabled="false" enabledEhci="false"/>
+            <USBController enabled="true" enabledEhci="false"/>
             <Network>
-                <Adapter slot="0" enabled="false" MACAddress="0800279C98A1" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="0" enabled="true" MACAddress="08002799EE44" cable="true" speed="0" type="82540EM">
+                    <DisabledModes/>
+                    <NAT>
+                        <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
+                        <Alias logging="false" proxy-only="false" use-same-ports="false"/>
+                    </NAT>
+                </Adapter>
+                <Adapter slot="1" enabled="false" MACAddress="080027AA177E" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -64,7 +65,7 @@
                         </NAT>
                     </DisabledModes>
                 </Adapter>
-                <Adapter slot="1" enabled="false" MACAddress="08002780F2AB" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="2" enabled="false" MACAddress="0800274300D6" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -72,7 +73,7 @@
                         </NAT>
                     </DisabledModes>
                 </Adapter>
-                <Adapter slot="2" enabled="false" MACAddress="0800275BAF76" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="3" enabled="false" MACAddress="0800274E8A1D" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -80,7 +81,7 @@
                         </NAT>
                     </DisabledModes>
                 </Adapter>
-                <Adapter slot="3" enabled="false" MACAddress="080027B14A48" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="4" enabled="false" MACAddress="080027BA182F" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -88,7 +89,7 @@
                         </NAT>
                     </DisabledModes>
                 </Adapter>
-                <Adapter slot="4" enabled="false" MACAddress="0800272764FA" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="5" enabled="false" MACAddress="08002746BE49" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -96,7 +97,7 @@
                         </NAT>
                     </DisabledModes>
                 </Adapter>
-                <Adapter slot="5" enabled="false" MACAddress="0800273FA053" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="6" enabled="false" MACAddress="080027F3158A" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -104,15 +105,7 @@
                         </NAT>
                     </DisabledModes>
                 </Adapter>
-                <Adapter slot="6" enabled="false" MACAddress="0800278FD043" cable="true" speed="0" type="Am79C973">
-                    <DisabledModes>
-                        <NAT>
-                            <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
-                            <Alias logging="false" proxy-only="false" use-same-ports="false"/>
-                        </NAT>
-                    </DisabledModes>
-                </Adapter>
-                <Adapter slot="7" enabled="false" MACAddress="080027F87A5A" cable="true" speed="0" type="Am79C973">
+                <Adapter slot="7" enabled="false" MACAddress="08002730EBBA" cable="true" speed="0" type="82540EM">
                     <DisabledModes>
                         <NAT>
                             <DNS pass-domain="true" use-proxy="false" use-host-resolver="false"/>
@@ -123,14 +116,14 @@
             </Network>
             <UART>
                 <Port slot="0" enabled="false" IOBase="0x3f8" IRQ="4" hostMode="Disconnected"/>
-                <Port slot="1" enabled="false" IOBase="0x3f8" IRQ="4" hostMode="Disconnected"/>
+                <Port slot="1" enabled="false" IOBase="0x2f8" IRQ="3" hostMode="Disconnected"/>
             </UART>
             <LPT>
                 <Port slot="0" enabled="false" IOBase="0x378" IRQ="4"/>
                 <Port slot="1" enabled="false" IOBase="0x378" IRQ="4"/>
             </LPT>
-            <AudioAdapter controller="AC97" driver="CoreAudio" enabled="false"/>
-            <RTC localOrUTC="local"/>
+            <AudioAdapter controller="AC97" driver="CoreAudio" enabled="true"/>
+            <RTC localOrUTC="UTC"/>
             <SharedFolders/>
             <Clipboard mode="Disabled"/>
             <IO>
@@ -148,15 +141,13 @@
         </Hardware>
         <StorageControllers>
             <StorageController name="IDE Controller" type="PIIX4" PortCount="2" useHostIOCache="true" Bootable="true">
-                <AttachedDevice passthrough="false" type="DVD" port="0" device="0">
-                    <Image uuid="{f2c0d089-d9d4-4a69-97c8-ef72add11c11}"/>
-                </AttachedDevice>
+                <AttachedDevice passthrough="false" type="DVD" port="1" device="0"/>
             </StorageController>
-            <StorageController name="SATA Controller" type="AHCI" PortCount="30" useHostIOCache="false" Bootable="true"
+            <StorageController name="SATA Controller" type="AHCI" PortCount="1" useHostIOCache="false" Bootable="true"
                                IDE0MasterEmulationPort="0" IDE0SlaveEmulationPort="1" IDE1MasterEmulationPort="2"
                                IDE1SlaveEmulationPort="3">
                 <AttachedDevice type="HardDisk" port="0" device="0">
-                    <Image uuid="{c08e134c-cf62-4541-84aa-6832ba8ef1b3}"/>
+                    <Image uuid="{f2d758fa-bad4-49e1-9cc2-a8e0203d6b8d}"/>
                 </AttachedDevice>
             </StorageController>
         </StorageControllers>

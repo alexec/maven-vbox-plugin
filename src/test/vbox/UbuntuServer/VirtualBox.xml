@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <VirtualBox>
-    <Machine>
+    <Machine OSType="Ubuntu">
         <MediaRegistry>
             <HardDisks>
                 <HardDisk uuid="hd0" size="10000"/>
@@ -33,7 +33,10 @@
     <Provisions>
         <Provision>
             <PortForward hostport="3022" guestport="22"/>
-            <HammerReturn/>
+            <Sleep ms="3000"/>
+            <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>
+            <Sleep ms="1000"/>
+            <KeyboardPutScanCodes line="/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/preseed.cfg"/>
         </Provision>
     </Provisions>
 </VirtualBox>

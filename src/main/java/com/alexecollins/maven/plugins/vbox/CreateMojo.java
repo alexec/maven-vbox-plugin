@@ -24,7 +24,7 @@ public class CreateMojo extends AbstractVBoxMojo {
 
 		final VirtualBox.Machine m = vb.getMachine();
 
-		exec("vboxmanage", "createvm", "--name", name, "--register", "--basefolder", getTarget(name).getCanonicalPath());
+		exec("vboxmanage", "createvm", "--name", name, "--ostype", m.getOSType().value(), "--register", "--basefolder", getTarget(name).getCanonicalPath());
 
 		final VirtualBox.Machine.MediaRegistry mr = m.getMediaRegistry();
 		final VirtualBox.Machine.MediaRegistry.HardDisks.HardDisk hd = mr.getHardDisks().getHardDisk();

@@ -1,0 +1,879 @@
+package com.alexecollins.maven.plugins.vbox;
+
+import org.apache.commons.lang.ArrayUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * @author alexec (alex.e.c@gmail.com)
+ */
+public class ScanCodes {
+	public static int[] forKey(final String key) {
+		final String y = "\n\nEsc\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x001\n" +
+				"\n" +
+				"1\n" +
+				"\n" +
+				"!\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x002\n" +
+				"\n" +
+				"2\n" +
+				"\n" +
+				"@\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x003\n" +
+				"\n" +
+				"3\n" +
+				"\n" +
+				"#\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x004\n" +
+				"\n" +
+				"4\n" +
+				"\n" +
+				"$\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x005\n" +
+				"\n" +
+				"5\n" +
+				"\n" +
+				"%\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x006\n" +
+				"\n" +
+				"6\n" +
+				"\n" +
+				"^\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x007\n" +
+				"\n" +
+				"7\n" +
+				"\n" +
+				"&\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x008\n" +
+				"\n" +
+				"8\n" +
+				"\n" +
+				"*\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x009\n" +
+				"\n" +
+				"9\n" +
+				"\n" +
+				"(\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x00a\n" +
+				"\n" +
+				"0\n" +
+				"\n" +
+				")\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x00b\n" +
+				"\n" +
+				"-\n" +
+				"\n" +
+				"_\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x00c\n" +
+				"\n" +
+				"=\n" +
+				"\n" +
+				"+\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x00d\n" +
+				"\n" +
+				"Backspace\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x00e\n" +
+				"\n" +
+				"Tab\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x00f\n" +
+				"\n" +
+				"q\n" +
+				"\n" +
+				"Q\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x010\n" +
+				"\n" +
+				"w\n" +
+				"\n" +
+				"W\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x011\n" +
+				"\n" +
+				"e\n" +
+				"\n" +
+				"E\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x012\n" +
+				"\n" +
+				"r\n" +
+				"\n" +
+				"R\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x013\n" +
+				"\n" +
+				"t\n" +
+				"\n" +
+				"T\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x014\n" +
+				"\n" +
+				"y\n" +
+				"\n" +
+				"Y\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x015\n" +
+				"\n" +
+				"u\n" +
+				"\n" +
+				"U\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x016\n" +
+				"\n" +
+				"i\n" +
+				"\n" +
+				"I\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x017\n" +
+				"\n" +
+				"o\n" +
+				"\n" +
+				"O\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x018\n" +
+				"\n" +
+				"p\n" +
+				"\n" +
+				"P\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x019\n" +
+				"\n" +
+				"[\n" +
+				"\n" +
+				"{\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x01a\n" +
+				"\n" +
+				"]\n" +
+				"\n" +
+				"}\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x01b\n" +
+				"\n" +
+				"Enter\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x01c\n" +
+				"\n" +
+				"Ctrl\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"left\n" +
+				"\n" +
+				"0x01d\n" +
+				"\n" +
+				"a\n" +
+				"\n" +
+				"A\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x01e\n" +
+				"\n" +
+				"s\n" +
+				"\n" +
+				"S\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x01f\n" +
+				"\n" +
+				"d\n" +
+				"\n" +
+				"D\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x020\n" +
+				"\n" +
+				"f\n" +
+				"\n" +
+				"F\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x021\n" +
+				"\n" +
+				"g\n" +
+				"\n" +
+				"G\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x022\n" +
+				"\n" +
+				"h\n" +
+				"\n" +
+				"H\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x023\n" +
+				"\n" +
+				"j\n" +
+				"\n" +
+				"J\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x024\n" +
+				"\n" +
+				"k\n" +
+				"\n" +
+				"K\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x025\n" +
+				"\n" +
+				"l\n" +
+				"\n" +
+				"L\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x026\n" +
+				"\n" +
+				";\n" +
+				"\n" +
+				":\n" +            // hacked
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x027\n" +
+				"\n" +
+				"'\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x028\n" +
+				"\n" +
+				"`\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x029\n" +
+				"\n" +
+				"Shift\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"left\n" +
+				"\n" +
+				"0x02a\n" +
+				"\n" +
+				"\\\n" +
+				"\n" +
+				"|\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x02b\n" +
+				"\n" +
+				"z\n" +
+				"\n" +
+				"Z\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x02c\n" +
+				"\n" +
+				"x\n" +
+				"\n" +
+				"X\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x02d\n" +
+				"\n" +
+				"c\n" +
+				"\n" +
+				"C\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x02e\n" +
+				"\n" +
+				"v\n" +
+				"\n" +
+				"V\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x02f\n" +
+				"\n" +
+				"b\n" +
+				"\n" +
+				"B\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x030\n" +
+				"\n" +
+				"n\n" +
+				"\n" +
+				"N\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x031\n" +
+				"\n" +
+				"m\n" +
+				"\n" +
+				"M\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x032\n" +
+				"\n" +
+				",\n" +
+				"\n" +
+				"<\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x033\n" +
+				"\n" +
+				".\n" +
+				"\n" +
+				">\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x034\n" +
+				"\n" +
+				"/\n" +
+				"\n" +
+				"?\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x035\n" +
+				"\n" +
+				"Shift\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"right\n" +
+				"\n" +
+				"0x036\n" +
+				"\n" +
+				"*\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x037\n" +
+				"\n" +
+				"Alt\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"left\n" +
+				"\n" +
+				"0x038\n" +
+				"\n" +
+				"Space bar\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x039\n" +
+				"\n" +
+				"Caps Lock\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x03a\n" +
+				"\n" +
+				"F1\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x03b\n" +
+				"\n" +
+				"F2\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x03c\n" +
+				"\n" +
+				"F3\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x03d\n" +
+				"\n" +
+				"F4\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x03e\n" +
+				"\n" +
+				"F5\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x03f\n" +
+				"\n" +
+				"F6\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x040\n" +
+				"\n" +
+				"F7\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x041\n" +
+				"\n" +
+				"F8\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x042\n" +
+				"\n" +
+				"F9\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x043\n" +
+				"\n" +
+				"F10\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x044\n" +
+				"\n" +
+				"Num Lock\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x045\n" +
+				"\n" +
+				"Scroll Lock\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x046\n" +
+				"\n" +
+				"Home\n" +
+				"\n" +
+				"7\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x047\n" +
+				"\n" +
+				"Up arrow\n" +
+				"\n" +
+				"8\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x048\n" +
+				"\n" +
+				"PgUp\n" +
+				"\n" +
+				"9\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x049\n" +
+				"\n" +
+				"-\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x04a\n" +
+				"\n" +
+				"Left arrow\n" +
+				"\n" +
+				"4\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x04b\n" +
+				"\n" +
+				"5\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x04c\n" +
+				"\n" +
+				"Right arrow\n" +
+				"\n" +
+				"6\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x04d\n" +
+				"\n" +
+				"+\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x04e\n" +
+				"\n" +
+				"End\n" +
+				"\n" +
+				"1\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x04f\n" +
+				"\n" +
+				"Down arrow\n" +
+				"\n" +
+				"2\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x050\n" +
+				"\n" +
+				"PgDn\n" +
+				"\n" +
+				"3\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x051\n" +
+				"\n" +
+				"Ins\n" +
+				"\n" +
+				"0\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x052\n" +
+				"\n" +
+				"Del\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x053\n" +
+				"\n" +
+				"F11\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x057\n" +
+				"\n" +
+				"F12\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x058\n" +
+				"\n" +
+				"Break\n" +
+				"\n" +
+				"Pause\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x100\n" +
+				"\n" +
+				"Enter\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x11c\n" +
+				"\n" +
+				"Ctrl\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"right\n" +
+				"\n" +
+				"0x11d\n" +
+				"\n" +
+				"/\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"numeric pad\n" +
+				"\n" +
+				"0x135\n" +
+				"\n" +
+				"SysRq\n" +
+				"\n" +
+				"Print Scrn\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x137\n" +
+				"\n" +
+				"Alt\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"right\n" +
+				"\n" +
+				"0x138\n" +
+				"\n" +
+				"Home\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x147\n" +
+				"\n" +
+				"Up arrow\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x148\n" +
+				"\n" +
+				"Page Up\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x149\n" +
+				"\n" +
+				"Left arrow\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x14b\n" +
+				"\n" +
+				"Right arrow\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x14d\n" +
+				"\n" +
+				"End\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x14f\n" +
+				"\n" +
+				"Down arrow\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x150\n" +
+				"\n" +
+				"Page Down\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x151\n" +
+				"\n" +
+				"Insert\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x152\n" +
+				"\n" +
+				"Delete\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"function pad\n" +
+				"\n" +
+				"0x153\n" +
+				"\n" +
+				"Windows\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"left\n" +
+				"\n" +
+				"0x15b\n" +
+				"\n" +
+				"Windows\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"right\n" +
+				"\n" +
+				"0x15c\n" +
+				"\n" +
+				"Menu\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"0x15d\n\n";
+
+
+		// un-shifted key
+		{
+
+			final Matcher m = Pattern.compile("\n\n" + key + "\n\n[^\n]?\n\n\n\n0x(...)\n\n").matcher(y);
+			if (m.find()) {
+				return new int[]{Integer.parseInt(m.group(1), 16)};
+			}
+		}
+
+		// shifted key
+		{
+			final Matcher m = Pattern.compile("\n\n" + key + "\n\n\n\n0x(...)\n\n").matcher(y);
+			if (m.find()) {
+				return new int[]{0x02a, Integer.parseInt(m.group(1), 16)};
+			}
+		}
+
+		throw new IllegalArgumentException("cannot map " + key);
+	}
+
+	public static int[] forString(final String string) {
+		final List<Integer> sc = new ArrayList<Integer>();
+
+		for (char c : string.toCharArray()) {
+			for (int s : forKey(c == ' ' ? "Space bar" : String.valueOf(c))) {
+				sc.add(s);
+			}
+		}
+
+		return ArrayUtils.toPrimitive(sc.toArray(new Integer[]{sc.size()}));
+	}
+}

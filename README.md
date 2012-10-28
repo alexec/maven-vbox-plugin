@@ -26,10 +26,13 @@ The main mojos are:
 
 An example template can be found in src/test/vbox/UbuntuServer.
 
-Supported OSs
+When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/, e.g. for preseed.cfg.
+
+Supported OS Types
 ===
-* Ubuntu Server only.
+* Ubuntu
 
 Known Issues
 ===
-* Only support for one profile ATM.
+* Only support for one definition ATM.
+* US keyboard layouts.
