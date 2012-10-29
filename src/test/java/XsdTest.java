@@ -10,6 +10,8 @@ public class XsdTest {
 	@Test
 	public void test() throws Exception {
 
-		JAXB.unmarshal(getClass().getResource("/UbuntuServer/VirtualBox.xml"), VirtualBox.class);
+		final VirtualBox cfg = JAXB.unmarshal(VirtualBox.class.getResource("/UbuntuServer_12_10/VirtualBox.xml"), VirtualBox.class);
+
+		assert cfg.getMachine() != null;
 	}
 }

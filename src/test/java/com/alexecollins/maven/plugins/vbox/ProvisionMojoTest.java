@@ -16,25 +16,22 @@ public class ProvisionMojoTest {
 
 	@Before
 	public void setUp() throws Exception {
-		A = getClass().getResource("/UbuntuServer").toURI();
+		A = getClass().getResource("/UbuntuServer_12_10").toURI();
 		assert A != null;
-		new CleanMojo().execute(A);
+		sut.remove(A);
 		new CreateMojo().execute(A);
 		sut = new ProvisionMojo();
 	}
 
-	@After
+	@After        // http://192.168.1.75:10350/preseed.cfg
 	public void tearDown() throws Exception {
 		sut.stopServer();
-		new CleanMojo().execute(A);
+		sut.remove(A);
 	}
 
 	@Test
 	public void test() throws Exception {
 		sut.execute(A);
-
-		System.out.println("sleeping 60s");
-		Thread.sleep(60000);
 	}
 
 	@Test

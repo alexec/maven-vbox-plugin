@@ -1,14 +1,18 @@
 package com.alexecollins.maven.plugins.vbox;
 
 import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ResourceHandler;
 import org.mortbay.resource.Resource;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +22,7 @@ import java.util.List;
  * @goal provision
  * @phase pre-integration-test
  */
-public class ProvisionMojo extends AbstractVBoxMojo {
+public class ProvisionMojo extends AbstractVBoxesMojo {
 	private final int port = 10350;
 	private final Server server = new Server(port);
 
@@ -30,20 +34,24 @@ public class ProvisionMojo extends AbstractVBoxMojo {
 		getLog().info("provisioning '" + name + "'");
 		exec("vboxmanage", "startvm", name);
 
-		startServer(src);
-
 		final VirtualBox cfg = getCfg(src);
 
-		for (Object o : cfg.getProvisions().getProvision().getPortForwardOrHammerReturnOrKeyboardPutScanCodes()) {
-			if (o instanceof VirtualBox.Provisions.Provision.PortForward)
-				portForward(name, (VirtualBox.Provisions.Provision.PortForward) o);
-			else if (o instanceof VirtualBox.Provisions.Provision.HammerReturn)
-				hammerReturn(name, (VirtualBox.Provisions.Provision.HammerReturn) o);
-			else if (o instanceof VirtualBox.Provisions.Provision.KeyboardPutScanCodes)
-				keyboardPutScanCodes(name, ((VirtualBox.Provisions.Provision.KeyboardPutScanCodes) o));
-			else if (o instanceof VirtualBox.Provisions.Provision.Sleep) {
-				getLog().info("sleeping for " + ((VirtualBox.Provisions.Provision.Sleep) o).getMs() + "ms");
-				Thread.sleep(((VirtualBox.Provisions.Provision.Sleep) o).getMs());
+		for (String f : cfg.getManifest().getFile()) {
+			final File d = new File(getTarget(getName(src)), f);
+			if (!d.exists())
+				FileUtils.copyURLToFile(new URL(src.toString() + "/" + f), d);
+		}
+
+		startServer(src);
+
+		for (Object o : cfg.getProvisions().getPortForwardOrKeyboardPutScanCodesOrSleep()) {
+			if (o instanceof VirtualBox.Provisions.PortForward)
+				portForward(name, (VirtualBox.Provisions.PortForward) o);
+			else if (o instanceof VirtualBox.Provisions.KeyboardPutScanCodes)
+				keyboardPutScanCodes(name, ((VirtualBox.Provisions.KeyboardPutScanCodes) o));
+			else if (o instanceof VirtualBox.Provisions.Sleep) {
+				getLog().info("sleeping for " + ((VirtualBox.Provisions.Sleep) o).getMs() + "ms");
+				Thread.sleep(((VirtualBox.Provisions.Sleep) o).getMs());
 			} else
 				throw new AssertionError();
 		}
@@ -52,20 +60,35 @@ public class ProvisionMojo extends AbstractVBoxMojo {
 	}
 
 	void stopServer() throws Exception {
+		getLog().info("stopping server");
 		server.stop();
 	}
 
 	void startServer(URI src) throws Exception {
+		getLog().info("starting server on port " + port);
+
 		final ResourceHandler rh = new ResourceHandler();
-		rh.setBaseResource(Resource.newResource(src.toURL()));
+		final File resource = new File(outputDirectory + "/vbox/" + getName(src));
+		getLog().debug("resource " + resource);
+		assert resource.exists();
+		rh.setBaseResource(Resource.newResource(resource.toURI().toURL()));
 		server.setHandler(rh);
 		server.start();
+
+		final URL u = new URL("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port);
+		getLog().info("testing server by getting " + u);
+		final HttpURLConnection c = (HttpURLConnection) u.openConnection();
+		c.connect();
+		if (403 != c.getResponseCode()) throw new IllegalStateException(c.getResponseMessage());
+		c.disconnect();
+
 	}
 
-	private void keyboardPutScanCodes(String name, VirtualBox.Provisions.Provision.KeyboardPutScanCodes ksc) throws IOException, InterruptedException {
+	private void keyboardPutScanCodes(String name, VirtualBox.Provisions.KeyboardPutScanCodes ksc) throws IOException, InterruptedException {
 
 		final String keys = ksc.getKeys();
 		if (keys != null) {
+			getLog().info("typing keys " + keys);
 			final List<Integer> sc = new ArrayList<Integer>();
 			for (String key : keys.split(",")) {
 				for (int c : ScanCodes.forKey(key)) {
@@ -79,7 +102,7 @@ public class ProvisionMojo extends AbstractVBoxMojo {
 			line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
 			line = line.replaceAll("%PORT%", String.valueOf(port));
 
-			getLog().info("putting " + line);
+			getLog().info("typing line " + line);
 
 
 			keyboardPutScanCodes(name, ArrayUtils.addAll(ScanCodes.forString(line), ScanCodes.forKey("Enter")));
@@ -87,17 +110,8 @@ public class ProvisionMojo extends AbstractVBoxMojo {
 
 	}
 
-	private void hammerReturn(String name, VirtualBox.Provisions.Provision.HammerReturn hr) throws IOException, InterruptedException {
-		getLog().info("hammering 'Return'");
-
-		for (int i = 0; i < hr.getTimes(); i++) {
-			keyboardPutScanCodes(name, new int[]{0x1c});
-			Thread.sleep(5000);
-		}
-	}
-
 	private void keyboardPutScanCodes(String name, int[] scancodes) throws IOException, InterruptedException {
-		getLog().info("putting keyboard scancodes " + Arrays.toString(scancodes) + " into keyboard");
+		getLog().debug("typing " + Arrays.toString(scancodes));
 
 
 		while (scancodes.length > 0) {
@@ -118,7 +132,7 @@ public class ProvisionMojo extends AbstractVBoxMojo {
 
 	}
 
-	private void portForward(String name, VirtualBox.Provisions.Provision.PortForward pf) throws IOException, InterruptedException {
+	private void portForward(String name, VirtualBox.Provisions.PortForward pf) throws IOException, InterruptedException {
 		final int hostPort = pf.getHostport();
 		final int guestPort = pf.getGuestport();
 		getLog().info("adding port forward hostport=" + hostPort + " guestport=" + guestPort);

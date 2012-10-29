@@ -27,7 +27,7 @@ import java.net.URISyntaxException;
  * @goal clean
  * @phase clean
  */
-public class CleanMojo extends AbstractVBoxMojo {
+public class CleanMojo extends AbstractVBoxesMojo {
 
 	protected void execute(URI src) throws URISyntaxException, IOException, InterruptedException {
 
@@ -44,16 +44,7 @@ public class CleanMojo extends AbstractVBoxMojo {
 		getLog().debug("target " + t);
 
 		if (t.exists()) {
-			try {
-				exec("vboxmanage", "controlvm", name, "poweroff");
-				Thread.sleep(3000); // a moment or two to shutdown
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch (Exception e) {
-				getLog().info("failed to power off box (probably OK): " + e.getMessage());
-			}
-			exec("vboxmanage", "unregistervm", name, "--delete");
-
+			remove(src);
 			FileUtils.deleteDirectory(t);
 		}
 	}

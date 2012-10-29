@@ -55,11 +55,11 @@
     </dependencies>
 
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/vbox</directory>
-            </testResource>
-        </testResources>
+        <resources>
+            <resource>
+                <directory>src/main/vbox</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -84,24 +84,6 @@
                 <configuration>
                     <packageName>com.alexecollins.maven.plugins.vbox.schema</packageName>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>process-test-resources</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <ant antfile="build.xml" target="process-test-resources"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

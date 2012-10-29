@@ -2,9 +2,11 @@ package com.alexecollins.maven.plugins.vbox;
 
 import com.alexecollins.maven.plugins.vbox.schema.AttachedDeviceType;
 import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,25 +14,31 @@ import java.util.Map;
  * @goal create
  * @phase pre-integration-test
  */
-public class CreateMojo extends AbstractVBoxMojo {
+public class CreateMojo extends AbstractVBoxesMojo {
 
 	protected void execute(URI src) throws Exception {
 
 		final String name = getName(src);
 
-		getLog().info("creating '" + name + "'");
+		getLog().info("creating '" + name + "' (" + src + ")");
 
 		final VirtualBox vb = getCfg(src);
 
 		final VirtualBox.Machine m = vb.getMachine();
 
-		exec("vboxmanage", "createvm", "--name", name, "--ostype", m.getOSType().value(), "--register", "--basefolder", getTarget(name).getCanonicalPath());
+		assert m != null;
+
+		final File t = getTarget(name);
+		if (!t.exists() && !t.mkdir()) throw new IllegalStateException();
+
+		exec("vboxmanage", "createvm", "--name", name, "--ostype", m.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 
 		final VirtualBox.Machine.MediaRegistry mr = m.getMediaRegistry();
 		final VirtualBox.Machine.MediaRegistry.HardDisks.HardDisk hd = mr.getHardDisks().getHardDisk();
 
 		getLog().debug("creating HD " + hd.getUuid());
-		final File hdImg = new File(getTarget(name), hd.getUuid() + ".vdi");
+		final File hdImg = new File(t, hd.getUuid() + ".vdi");
+		if (hdImg.exists() && !hdImg.delete()) throw new IllegalStateException();
 		exec("vboxmanage", "createhd", "--filename", hdImg.getCanonicalPath(),
 				"--size", String.valueOf(hd.getSize()));
 
@@ -39,16 +47,31 @@ public class CreateMojo extends AbstractVBoxMojo {
 		idToFile.put(hd.getUuid(), hdImg);
 
 		final VirtualBox.Machine.MediaRegistry.DVDImages.DVDImage dvd = mr.getDVDImages().getDVDImage();
+		String location = dvd.getLocation();
 
-		idToFile.put(dvd.getUuid(), new File(dvd.getLocation()));
+		if (location.startsWith("http://")) {
+			final File dest = new File("target/vbox/" + name + "/dvd0.iso");
+			if (!dest.exists()) {
+				getLog().info("downloading " + location + " to " + dest);
+				FileUtils.copyURLToFile(new URL(location), dest);
+			}
+			location = dest.toString();
+		}
+
+		idToFile.put(dvd.getUuid(), new File(location));
 
 		getLog().debug("images " + idToFile);
 
-		getLog().debug("adding network adapters");
-
-		m.getHardware().getNetwork().getAdapter().getNAT();
-
-		exec("vboxmanage", "modifyvm", name, "--nic1", "nat");
+		int i = 1;
+		for (VirtualBox.Machine.Hardware.Network.Adapter a : m.getHardware().getNetwork().getAdapter()) {
+			getLog().info("adding adapter " + i);
+			if (a.getNAT() != null)
+				exec("vboxmanage", "modifyvm", name, "--nic" + i, "nat");
+			else if (a.getBridgedInterface() != null) {
+				exec("vboxmanage", "modifyvm", name, "--nic" + i, "bridged", "--bridgeadapter" + i, a.getBridgedInterface().getName());
+			}
+			i++;
+		}
 
 		for (VirtualBox.Machine.StorageControllers.StorageController s : m.getStorageControllers().getStorageController()) {
 			final String n = s.getName() != null ? s.getName() : s.getType() + " Controller";
@@ -58,8 +81,9 @@ public class CreateMojo extends AbstractVBoxMojo {
 
 			final VirtualBox.Machine.StorageControllers.StorageController.AttachedDevice a = s.getAttachedDevice();
 			final Object u = a.getImage().getUuid();
-			final File f = idToFile.get(u);
+			File f = idToFile.get(u);
 			getLog().debug("attaching " + f + " (UUID " + u + ")");
+			if (!f.exists()) throw new IllegalStateException(f + " does not exist");
 			exec("vboxmanage", "storageattach", name, "--storagectl", n, "--port", "0", "--device", "0",
 					"--type", a.getType() == AttachedDeviceType.DVD ? "dvddrive" : "hdd",
 					"--medium", f.getCanonicalPath());

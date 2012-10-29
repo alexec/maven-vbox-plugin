@@ -9,22 +9,22 @@ import java.net.URI;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class CreateMojoTest {
+public class RecreateMojoTest {
 
-	private CreateMojo sut;
+	private RecreateMojo sut;
 	private URI A;
 
 	@Before
 	public void setUp() throws Exception {
-		A = getClass().getResource("/UbuntuServer").toURI();
+		A = getClass().getResource("/UbuntuServer_12_10").toURI();
 		assert A != null;
-		new CleanMojo().execute(A);
-		sut = new CreateMojo();
+		sut = new RecreateMojo();
+		sut.remove(A);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		new CleanMojo().execute(A);
+		sut.remove(A);
 	}
 
 	@Test

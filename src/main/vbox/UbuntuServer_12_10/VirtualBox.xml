@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <VirtualBox>
+    <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
     <Machine OSType="Ubuntu">
         <MediaRegistry>
             <HardDisks>
                 <HardDisk uuid="hd0" size="10000"/>
             </HardDisks>
             <DVDImages>
-                <DVDImage uuid="dvd0" location="target/UbuntuServer.iso"/>
+                <DVDImage uuid="dvd0"
+                          location="http://www.ubuntu.com/start-download?distro=server&amp;bits=32&amp;release=lts"/>
             </DVDImages>
-            <FloppyImages/>
         </MediaRegistry>
         <Hardware>
             <Network>
                 <Adapter>
-                    <NAT/>
+                    <BridgedInterface name="en1: Wi-Fi (AirPort)"/>
                 </Adapter>
             </Network>
         </Hardware>
@@ -30,13 +31,15 @@
             </StorageController>
         </StorageControllers>
     </Machine>
+    <Manifest>
+        <File>preseed.cfg</File>
+    </Manifest>
     <Provisions>
-        <Provision>
-            <PortForward hostport="3022" guestport="22"/>
-            <Sleep ms="3000"/>
-            <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>
-            <Sleep ms="1000"/>
-            <KeyboardPutScanCodes line="/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/preseed.cfg"/>
-        </Provision>
+        <Sleep ms="5000"/>
+        <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>
+        <Sleep ms="1000"/>
+        <KeyboardPutScanCodes line="/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/preseed.cfg "/>
+        <Sleep ms="120000"/>
+        <PortForward hostport="3022" guestport="22"/>
     </Provisions>
 </VirtualBox>

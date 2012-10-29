@@ -4,16 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.net.URI;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
 public class CleanMojoTest {
 
-
-	public static final URI A = new File("target/vbox/UbuntuServer").toURI();
-	public static final File B = new File("src/test/vbox/UbuntuServer");
+	public static final File A = new File("target/vbox/UbuntuServer_12_10");
+	public static final File B = new File("src/main/vbox/UbuntuServer_12_10");
 
 	@Before
 	public void setUp() throws Exception {
@@ -22,10 +20,8 @@ public class CleanMojoTest {
 
 	@Test
 	public void test() throws Exception {
-		final File f = new File(A);
+		new CleanMojo().execute(B.toURI());
 
-		new CleanMojo().execute(f.toURI());
-
-		assert !f.exists();
+		assert !new File(A, "UbuntuServer_12_10.vbox").exists();
 	}
 }

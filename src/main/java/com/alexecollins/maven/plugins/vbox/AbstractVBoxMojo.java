@@ -2,7 +2,6 @@ package com.alexecollins.maven.plugins.vbox;
 
 import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
 
 import javax.xml.bind.JAXB;
 import java.io.*;
@@ -26,23 +25,10 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 	 */
 	protected File outputDirectory = new File("target");
 
-
-	public void execute() throws MojoExecutionException {
-
-		for (File f : new File(basedir, "src/main/vbox").listFiles(new FileFilter() {
-			public boolean accept(File file) {
-				return file.isDirectory();
-			}
-		})) {
-			try {
-				execute(f.toURI());
-			} catch (Exception e) {
-				throw new MojoExecutionException("failed to create " + f, e);
-			}
-		}
+	protected VirtualBox getCfg(URI src) throws IOException, URISyntaxException {
+		final URI u = new URI(src.toString() + "/VirtualBox.xml");
+		return JAXB.unmarshal(u.toURL().openStream(), VirtualBox.class);
 	}
-
-	protected abstract void execute(URI src) throws Exception;
 
 	protected String getName(URI dir) {
 		final String p = dir.getPath();
@@ -50,12 +36,22 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		return q.substring(q.lastIndexOf('/') + 1);
 	}
 
-	protected VirtualBox getCfg(URI src) throws IOException, URISyntaxException {
-		return JAXB.unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
-	}
-
 	protected File getTarget(String name) {
 		return new File(outputDirectory, "vbox/" + name);
+	}
+
+	protected void remove(URI src) throws IOException, InterruptedException {
+		final String name = getName(src);
+		try {
+			exec("vboxmanage", "controlvm", name, "poweroff");
+			Thread.sleep(3000); // a moment or two to shutdown
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch (Exception e) {
+			getLog().info("failed to power off box or unregister (probably OK): " + e.getMessage());
+		}
+
+		exec("vboxmanage", "unregistervm", name, "--delete");
 	}
 
 	protected void exec(String... strings) throws IOException, InterruptedException {
@@ -67,20 +63,21 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		// stdout
 		log(p.getInputStream());
 		// stderr
-		log(p.getErrorStream());
+		final String errMsg = log(p.getErrorStream());
 
 		if (p.waitFor() != 0) {
-			throw new RuntimeException("failed to execute " + b.command() + " exitValue=" + p.exitValue());
+			throw new RuntimeException("failed to execute " + b.command() + ", exitValue=" + p.exitValue() + (errMsg != null ? ": " + errMsg : ""));
 		}
 	}
 
-	private void log(final InputStream inputStream) throws IOException {
+	private String log(final InputStream inputStream) throws IOException {
 		final BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 		try {
 			String l;
 			while ((l = r.readLine()) != null) {
 				getLog().debug(l);
 			}
+			return l;
 		} finally {
 			r.close();
 		}
