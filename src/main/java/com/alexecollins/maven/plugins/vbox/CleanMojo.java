@@ -18,7 +18,6 @@ package com.alexecollins.maven.plugins.vbox;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,13 +38,9 @@ public class CleanMojo extends AbstractVBoxesMojo {
 
 		getLog().info("cleaning '" + name + "'");
 
-		final File t = getTarget(name);
-
-		getLog().debug("target " + t);
-
-		if (t.exists()) {
+		if (getTarget(name).exists()) {
 			remove(src);
-			FileUtils.deleteDirectory(t);
+			FileUtils.deleteDirectory(getTarget(name));
 		}
 	}
 }

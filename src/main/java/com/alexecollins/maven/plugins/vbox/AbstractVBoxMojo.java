@@ -40,8 +40,14 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		return new File(outputDirectory, "vbox/" + name);
 	}
 
+	protected boolean exists(String name) {
+		return new File(getTarget(name), name + ".vbox").exists();
+	}
+
 	protected void remove(URI src) throws IOException, InterruptedException {
+
 		final String name = getName(src);
+		if (!exists(name)) return;
 		try {
 			exec("vboxmanage", "controlvm", name, "poweroff");
 			Thread.sleep(3000); // a moment or two to shutdown
