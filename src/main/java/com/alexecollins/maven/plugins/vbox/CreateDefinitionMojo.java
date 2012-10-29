@@ -35,10 +35,13 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 		if (!sink.exists() && !sink.mkdir()) throw new IllegalStateException();
 
 		final URL u = getClass().getResource("/" + name);
-		final VirtualBox cfg = getCfg(u.toURI());
+		final VirtualBox cfg = getVirtualBox(u.toURI());
 
-		FileUtils.copyURLToFile(getClass().getResource("/" + name + "/VirtualBox.xml"), new File(sink, "VirtualBox.xml"));
-		for (String f : cfg.getManifest().getFile()) {
+		for (String f : new String[]{"VirtualBox.xml", "Manifest.xml", "Provisions.xml"}) {
+			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(sink, f));
+		}
+
+		for (String f : getManifest(u.toURI()).getFile()) {
 			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(sink, f));
 		}
 	}

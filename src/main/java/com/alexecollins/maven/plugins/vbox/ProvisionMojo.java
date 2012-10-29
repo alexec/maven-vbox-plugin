@@ -1,6 +1,6 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
+import com.alexecollins.maven.plugins.vbox.schema.Provisions;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.mortbay.jetty.Server;
@@ -30,13 +30,16 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	protected void execute(URI src) throws Exception {
 
 		final String name = getName(src);
+		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
+		if (exists(name) && getSnapshots(name).contains(snapshot.toString())) {
+			exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
+			return;
+		}
 
 		getLog().info("provisioning '" + name + "'");
 		exec("vboxmanage", "startvm", name);
 
-		final VirtualBox cfg = getCfg(src);
-
-		for (String f : cfg.getManifest().getFile()) {
+		for (String f : getManifest(src).getFile()) {
 			final File d = new File(getTarget(getName(src)), f);
 			if (!d.exists())
 				FileUtils.copyURLToFile(new URL(src.toString() + "/" + f), d);
@@ -44,19 +47,26 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 		startServer(src);
 
-		for (Object o : cfg.getProvisions().getPortForwardOrKeyboardPutScanCodesOrSleep()) {
-			if (o instanceof VirtualBox.Provisions.PortForward)
-				portForward(name, (VirtualBox.Provisions.PortForward) o);
-			else if (o instanceof VirtualBox.Provisions.KeyboardPutScanCodes)
-				keyboardPutScanCodes(name, ((VirtualBox.Provisions.KeyboardPutScanCodes) o));
-			else if (o instanceof VirtualBox.Provisions.Sleep) {
-				getLog().info("sleeping for " + ((VirtualBox.Provisions.Sleep) o).getMs() + "ms");
-				Thread.sleep(((VirtualBox.Provisions.Sleep) o).getMs());
+		for (Object o : getProvisions(src).getPortForwardOrKeyboardPutScanCodesOrSleep()) {
+			if (o instanceof Provisions.PortForward)
+				portForward(name, (Provisions.PortForward) o);
+			else if (o instanceof Provisions.KeyboardPutScanCodes)
+				keyboardPutScanCodes(name, ((Provisions.KeyboardPutScanCodes) o));
+			else if (o instanceof Provisions.Sleep) {
+				getLog().info("sleeping for " + ((Provisions.Sleep) o).getMs() + "ms");
+				Thread.sleep(((Provisions.Sleep) o).getMs());
 			} else
 				throw new AssertionError();
 		}
-		stopServer();
 
+
+		exec("vboxmanage", "controlvm", name, "acpipowerbutton");
+
+		awaitPowerOff(name);
+
+		exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
+
+		stopServer();
 	}
 
 	void stopServer() throws Exception {
@@ -68,7 +78,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		getLog().info("starting server on port " + port);
 
 		final ResourceHandler rh = new ResourceHandler();
-		final File resource = new File(outputDirectory + "/vbox/" + getName(src));
+		final File resource = new File(outputDirectory + "/vbox/boxes/" + getName(src));
 		getLog().debug("resource " + resource);
 		assert resource.exists();
 		rh.setBaseResource(Resource.newResource(resource.toURI().toURL()));
@@ -84,7 +94,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 	}
 
-	private void keyboardPutScanCodes(String name, VirtualBox.Provisions.KeyboardPutScanCodes ksc) throws IOException, InterruptedException {
+	private void keyboardPutScanCodes(String name, Provisions.KeyboardPutScanCodes ksc) throws IOException, InterruptedException {
 
 		final String keys = ksc.getKeys();
 		if (keys != null) {
@@ -132,7 +142,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 	}
 
-	private void portForward(String name, VirtualBox.Provisions.PortForward pf) throws IOException, InterruptedException {
+	private void portForward(String name, Provisions.PortForward pf) throws IOException, InterruptedException {
 		final int hostPort = pf.getHostport();
 		final int guestPort = pf.getGuestport();
 		getLog().info("adding port forward hostport=" + hostPort + " guestport=" + guestPort);

@@ -19,17 +19,22 @@ public class CreateMojo extends AbstractVBoxesMojo {
 	protected void execute(URI src) throws Exception {
 
 		final String name = getName(src);
+		final Snapshot snapshot = Snapshot.POST_CREATION;
+		if (exists(name) && getSnapshots(name).contains(snapshot.toString())) {
+			exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
+			return;
+		}
 
 		getLog().info("creating '" + name + "' (" + src + ")");
 
-		final VirtualBox vb = getCfg(src);
+		final VirtualBox vb = getVirtualBox(src);
 
 		final VirtualBox.Machine m = vb.getMachine();
 
 		assert m != null;
 
 		final File t = getTarget(name);
-		if (!t.exists() && !t.mkdir()) throw new IllegalStateException();
+		if (!t.exists() && !t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
 		exec("vboxmanage", "createvm", "--name", name, "--ostype", m.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 
@@ -50,10 +55,13 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		String location = dvd.getLocation();
 
 		if (location.startsWith("http://")) {
-			final File dest = new File("target/vbox/" + name + "/dvd0.iso");
+			final File dest = new File("target/vbox/downloads/" + name + "/dvd0.iso");
 			if (!dest.exists()) {
+				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
 				getLog().info("downloading " + location + " to " + dest);
 				FileUtils.copyURLToFile(new URL(location), dest);
+			} else {
+				getLog().info(dest + " already downloaded");
 			}
 			location = dest.toString();
 		}
@@ -88,5 +96,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 					"--type", a.getType() == AttachedDeviceType.DVD ? "dvddrive" : "hdd",
 					"--medium", f.getCanonicalPath());
 		}
+
+		exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
 	}
 }

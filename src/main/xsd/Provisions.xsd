@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0">
+    <xs:element name="Provisions">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="PortForward" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="hostport" type="xs:int" use="required"/>
+                        <xs:attribute name="guestport" type="xs:int" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="KeyboardPutScanCodes">
+                    <xs:complexType>
+                        <xs:attribute name="keys" type="xs:string"/>
+                        <xs:attribute name="line" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Sleep">
+                    <xs:complexType>
+                        <xs:attribute name="ms" type="xs:long" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

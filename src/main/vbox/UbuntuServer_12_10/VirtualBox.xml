@@ -14,7 +14,8 @@
         <Hardware>
             <Network>
                 <Adapter>
-                    <BridgedInterface name="en1: Wi-Fi (AirPort)"/>
+                    <BridgedInterface name="Intel(R) 82579LM Gigabit Network Connection"/>
+                    <!--name="en1: Wi-Fi (AirPort)"-->
                 </Adapter>
             </Network>
         </Hardware>
@@ -31,15 +32,4 @@
             </StorageController>
         </StorageControllers>
     </Machine>
-    <Manifest>
-        <File>preseed.cfg</File>
-    </Manifest>
-    <Provisions>
-        <Sleep ms="5000"/>
-        <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>
-        <Sleep ms="1000"/>
-        <KeyboardPutScanCodes line="/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/preseed.cfg "/>
-        <Sleep ms="120000"/>
-        <PortForward hostport="3022" guestport="22"/>
-    </Provisions>
 </VirtualBox>

@@ -38,8 +38,31 @@ public class CleanMojo extends AbstractVBoxesMojo {
 
 		getLog().info("cleaning '" + name + "'");
 
+		try {
+			exec("vboxmanage", "controlvm", name, "savestate");
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch (Exception e) {
+			getLog().info("failed to power off box (probably OK): " + e.getMessage());
+		}
+
+		try {
+			awaitPowerOff(name);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch (Exception e) {
+			getLog().info("failed to wait for power off (probably OK): " + e.getMessage());
+		}
+
+		try {
+			exec("vboxmanage", "unregistervm", name, "--delete");
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch (Exception e) {
+			getLog().info("failed to un-register (probably OK): " + e.getMessage());
+		}
+
 		if (getTarget(name).exists()) {
-			remove(src);
 			FileUtils.deleteDirectory(getTarget(name));
 		}
 	}

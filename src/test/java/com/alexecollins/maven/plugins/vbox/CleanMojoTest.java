@@ -10,12 +10,16 @@ import java.io.File;
  */
 public class CleanMojoTest {
 
-	public static final File A = new File("target/vbox/UbuntuServer_12_10");
+	public static final File A = new File("target/vbox/boxes/UbuntuServer_12_10");
 	public static final File B = new File("src/main/vbox/UbuntuServer_12_10");
 
 	@Before
 	public void setUp() throws Exception {
-		new CreateMojo().execute(B.toURI());
+		try {
+			new CreateMojo().execute(B.toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test

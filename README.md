@@ -21,8 +21,7 @@ Usage
 The main mojos are:
 
 * clean - deletes all VMs
-* create - creates all VMs, failing on existing VMs
-* recreate - re-create all VMs, reusing existing ISOs, but creating new HDs
+* create - creates all VMs
 * provision - provisions all VMs
 
 Additionally, a mojo for creating VM templates:
@@ -34,6 +33,8 @@ An example template can be found in src/test/vbox/UbuntuServer. Typically you'd 
     src/main/vbox/
         UbuntuServer/      - The name of the server.
             VirtualBox.xml - The configuration of the server (e.g. disk etc.)
+            Manifest.xml   - A list of all files used by the server (e.g. preseed.cfg, Unattended.xml etc.)
+            Provisions.xml - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.)
 
 The example I use downloads (by setting the DVDImage location) and attaches it. It then uses a preseed.cfg to create the VM.
 
