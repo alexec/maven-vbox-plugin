@@ -47,7 +47,7 @@ public class CleanMojo extends AbstractVBoxesMojo {
 		}
 
 		try {
-			awaitPowerOff(name);
+			awaitPowerOff(name, 10000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} catch (Exception e) {

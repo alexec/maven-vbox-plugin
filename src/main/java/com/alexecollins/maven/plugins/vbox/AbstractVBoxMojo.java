@@ -82,10 +82,14 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		return p;
 	}
 
-	protected void awaitPowerOff(final String name) throws InterruptedException, IOException {
+	protected void awaitPowerOff(final String name, long millis) throws InterruptedException, IOException {
+		long s = System.currentTimeMillis();
 		while (!getProperties(name).get("VMState").equals("poweroff")) {
 			getLog().debug("waiting for power off");
 			Thread.sleep(1000);
+			if (System.currentTimeMillis() > s + millis) {
+				throw new IllegalStateException("failed to power off in " + millis + "ms");
+			}
 		}
 		Thread.sleep(3000);
 	}

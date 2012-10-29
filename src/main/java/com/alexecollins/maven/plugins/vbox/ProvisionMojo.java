@@ -62,7 +62,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 		exec("vboxmanage", "controlvm", name, "acpipowerbutton");
 
-		awaitPowerOff(name);
+		awaitPowerOff(name, 10000);
 
 		exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
 
