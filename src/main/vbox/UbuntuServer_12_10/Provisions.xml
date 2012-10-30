@@ -3,7 +3,7 @@
     <Sleep ms="5000"/>
     <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>
     <Sleep ms="1000"/>
-    <KeyboardPutScanCodes line="/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/floppy0/preseed.cfg "/>
+    <KeyboardPutScanCodes line="/install/vmlinuz noapic preseed/file=/floppy/preseed.cfg"/>
     <Sleep ms="60000"/>
     <!-- eject Ubunut ISO -->
     <Exec>vboxmanage storagectl %NAME% --name "IDE Controller" --medium none</Exec>

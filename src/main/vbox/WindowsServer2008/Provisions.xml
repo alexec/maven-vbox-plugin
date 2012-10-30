@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Provisions>
+    <Sleep ms="30000"/>
+    <KeyboardPutScanCodes keys="Tab,Tab,Tab,Enter"/>
+    <Sleep ms="60000"/>
+    <!-- eject ISO -->
+    <Exec>vboxmanage storagectl %NAME% --name "IDE Controller" -port 0 --medium none</Exec>
+</Provisions>

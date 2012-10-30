@@ -2,8 +2,10 @@ package com.alexecollins.maven.plugins.vbox;
 
 
 import com.alexecollins.maven.plugins.vbox.manifest.Manifest;
+import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
 import com.alexecollins.maven.plugins.vbox.provisions.Provisions;
-import com.alexecollins.maven.plugins.vbox.virtualbox.VirtualBox;
+import com.google.common.base.Joiner;
+import de.innotek.virtualbox_settings.VirtualBox;
 import org.apache.maven.plugin.AbstractMojo;
 
 import javax.xml.bind.JAXB;
@@ -35,6 +37,10 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 
 	protected VirtualBox getVirtualBox(URI src) throws IOException, URISyntaxException {
 		return JAXB.unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
+	}
+
+	protected MediaRegistry getMediaRegistry(URI src) throws IOException, URISyntaxException {
+		return JAXB.unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
 	}
 
 	protected Manifest getManifest(URI src) throws IOException, URISyntaxException {
@@ -94,19 +100,23 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		} while (!getProperties(name).get("VMState").equals("poweroff"));
 	}
 
+	protected String exec(String cmd) throws IOException, InterruptedException {
+		return execAux(cmd, Runtime.getRuntime().exec(cmd));
+	}
+
 	protected String exec(String... strings) throws IOException, InterruptedException {
+		return execAux(Joiner.on(" ").join(new ProcessBuilder(strings).command()), new ProcessBuilder(strings).start());
+	}
 
-		final ProcessBuilder b = new ProcessBuilder(strings);
-		getLog().debug("executing " + b.command());
-		final Process p = b.start();
-
+	private String execAux(final String command, final Process p) throws IOException, InterruptedException {
+		getLog().debug("executing " + command);
 		// stdout
 		final String out = log(p.getInputStream());
 		// stderr
 		final String err = log(p.getErrorStream());
 
 		if (p.waitFor() != 0) {
-			throw new RuntimeException("failed to execute " + b.command() + ", exitValue=" + p.exitValue() + (err != null ? ": " + err : ""));
+			throw new RuntimeException("failed to execute " + command + ", exitValue=" + p.exitValue() + (err != null ? ": " + err : ""));
 		}
 
 		return out;

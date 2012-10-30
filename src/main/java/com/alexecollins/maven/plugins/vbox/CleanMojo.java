@@ -21,6 +21,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @goal clean
@@ -45,6 +47,13 @@ public class CleanMojo extends AbstractVBoxesMojo {
 			}
 
 			exec("vboxmanage", "unregistervm", name, "--delete");
+		}
+
+		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(exec("vboxmanage", "list", "hdds"));
+		while (m.find()) {
+			if (m.group().contains(name)) {
+				exec("vboxmanage", "closemedium", "disk", m.group(1).trim());
+			}
 		}
 
 		FileUtils.deleteDirectory(getTarget(name));

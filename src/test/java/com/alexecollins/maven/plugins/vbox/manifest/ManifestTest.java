@@ -1,17 +1,25 @@
 package com.alexecollins.maven.plugins.vbox.manifest;
 
+import com.alexecollins.maven.plugins.vbox.AbstractTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import javax.xml.bind.JAXB;
 
 /**
  * @author alex.collins
  */
-public class ManifestTest {
+@RunWith(Parameterized.class)
+public class ManifestTest extends AbstractTest {
+	public ManifestTest(final String name) {
+		super(name);
+	}
+
 	@Test
 	public void testGetFile() throws Exception {
 
-		final Manifest sut = JAXB.unmarshal(Manifest.class.getResource("/UbuntuServer_12_10/VirtualBox.xml"), Manifest.class);
+		final Manifest sut = JAXB.unmarshal(Manifest.class.getResource("/" + name + "/VirtualBox.xml"), Manifest.class);
 
 		assert sut.getFile().size() >= 0;
 	}

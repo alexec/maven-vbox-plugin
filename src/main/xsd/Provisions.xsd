@@ -22,9 +22,11 @@
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="Exec">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string"/>
-                    </xs:simpleType>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string"/>
+                        </xs:simpleContent>
+                    </xs:complexType>
                 </xs:element>
             </xs:choice>
         </xs:complexType>

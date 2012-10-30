@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <MediaRegistry>
     <HardDisks>
-        <HardDisk uuid="hd0" size="10000"/>
+        <HardDisk uuid="{a827fd2a-3c7b-4197-827d-b85afea0f326}" size="10000"/>
     </HardDisks>
     <DVDImages>
-        <DVDImage uuid="dvd0"
+        <DVDImage uuid="{fb58ce7f-6ade-44a1-ace0-75e858fa2378}"
                   location="http://www.ubuntu.com/start-download?distro=server&amp;bits=32&amp;release=lts"/>
     </DVDImages>
     <FloppyImages>

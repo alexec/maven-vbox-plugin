@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <Manifest>
-    <File>preseed.cfg</File>
+    <File>floppy0/preseed.cfg</File>
 </Manifest>

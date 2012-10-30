@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<MediaRegistry>
+    <HardDisks>
+        <HardDisk uuid="hd0" size="10000"/>
+    </HardDisks>
+    <DVDImages>
+        <DVDImage uuid="dvd0"
+                  location="file:///C:/Users/alex.collins/Desktop/installer-dvd-1.iso"/>
+    </DVDImages>
+    <FloppyImages>
+        <FloppyImage uuid="floppy0" location="floppy0"/>
+    </FloppyImages>
+</MediaRegistry>

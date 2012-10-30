@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
-<VirtualBox>
+<VirtualBox version="1.12-windows">
     <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
-    <Machine OSType="Ubuntu">
+    <Machine OSType="Ubuntu" uuid="{08126755-ee8f-41df-a240-550b6d2c2d5f}" name="UbuntuServer_12_10">
         <MediaRegistry>
             <HardDisks>
-                <HardDisk uuid="hd0" size="10000"/>
+                <HardDisk uuid="{a827fd2a-3c7b-4197-827d-b85afea0f326}"
+                          location="{a827fd2a-3c7b-4197-827d-b85afea0f326}.vdi" format="VDI"/>
             </HardDisks>
             <DVDImages>
-                <DVDImage uuid="dvd0" location="dvd0.iso"/>
+                <DVDImage uuid="{fb58ce7f-6ade-44a1-ace0-75e858fa2378}"
+                          location="../../downloads/UbuntuServer_12_10/{fb58ce7f-6ade-44a1-ace0-75e858fa2378}.iso"/>
             </DVDImages>
             <FloppyImages>
                 <FloppyImage uuid="floppy0" location="floppy0.img"/>
@@ -15,8 +17,14 @@
         </MediaRegistry>
         <Hardware>
             <Memory RAMSize="512"/>
+            <Boot>
+                <Order position="1" device="DVD"/>
+                <Order position="2" device="HardDisk"/>
+                <Order position="3" device="Floppy"/>
+                <Order position="4" device="None"/>
+            </Boot>
             <Network>
-                <Adapter>
+                <Adapter slot="0">
                     <NAT/>
                     <!--
                     <BridgedInterface name="Intel(R) 82579LM Gigabit Network Connection"/>
@@ -29,16 +37,20 @@
         </Hardware>
         <StorageControllers>
             <StorageController Bootable="true" type="PIIX4" name="IDE Controller">
-                <AttachedDevice type="DVD">
-                    <Image uuid="dvd0"/>
+                <AttachedDevice type="DVD" port="0" device="0">
+                    <Image uuid="{fb58ce7f-6ade-44a1-ace0-75e858fa2378}"/>
                 </AttachedDevice>
             </StorageController>
             <StorageController Bootable="true" type="AHCI" name="SATA Controller">
-                <AttachedDevice type="HardDisk">
-                    <Image uuid="hd0"/>
+                <AttachedDevice type="HardDisk" port="0" device="0">
+                    <Image uuid="{a827fd2a-3c7b-4197-827d-b85afea0f326}"/>
                 </AttachedDevice>
             </StorageController>
-            <StorageController name="Floppy Controller" type="I82078" Bootable="true"/>
+            <StorageController name="Floppy Controller" type="I82078" Bootable="false">
+                <AttachedDevice type="Floppy" port="0" device="0">
+                    <Image uuid="floppy0"/>
+                </AttachedDevice>
+            </StorageController>
         </StorageControllers>
     </Machine>
 </VirtualBox>

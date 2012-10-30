@@ -53,7 +53,8 @@ Supported Host OS Types
 
 Supported Guest OS Types
 ===
-* Ubuntu only.
+* Ubuntu
+* Windows2008
 
 Known Issues
 ===

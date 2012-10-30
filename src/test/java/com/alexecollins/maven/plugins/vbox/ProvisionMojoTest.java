@@ -3,21 +3,23 @@ package com.alexecollins.maven.plugins.vbox;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.net.URI;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class ProvisionMojoTest {
+@RunWith(Parameterized.class)
+public class ProvisionMojoTest extends AbstractTest {
 
-	private URI A;
 	private ProvisionMojo sut;
+
+	public ProvisionMojoTest(final String name) {
+		super(name);
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		A = getClass().getResource("/UbuntuServer_12_10").toURI();
-		assert A != null;
 		sut = new ProvisionMojo();
 	}
 
@@ -29,15 +31,15 @@ public class ProvisionMojoTest {
 
 	@Test
 	public void test() throws Exception {
-		new CleanMojo().execute(A);
-		new CreateMojo().execute(A);
-		sut.execute(A);
+		new CleanMojo().execute(src.toURI());
+		new CreateMojo().execute(src.toURI());
+		sut.execute(src.toURI());
 	}
 
 	@Test
 	public void testServer() throws Exception {
-		sut.startServer(A);
-		Thread.sleep(60000);
+		sut.startServer(src.toURI());
+		// TODO Thread.sleep(60000);
 		sut.stopServer();
 	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
-           xmlns="http://www.alexecollins.com/maven/plugins/vbox/virtualbox"
-           targetNamespace="http://www.alexecollins.com/maven/plugins/vbox/virtualbox"
+           xmlns="http://www.innotek.de/VirtualBox-settings"
+           targetNamespace="http://www.innotek.de/VirtualBox-settings"
            xmlns:mr="http://www.alexecollins.com/maven/plugins/vbox/mediaregistry"
            elementFormDefault="unqualified">
     <xs:import namespace="http://www.alexecollins.com/maven/plugins/vbox/mediaregistry"
@@ -21,6 +21,19 @@
                                                 <xs:attribute name="RAMSize" type="xs:int" use="required"/>
                                             </xs:complexType>
                                         </xs:element>
+                                        <xs:element name="Boot">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Order" maxOccurs="4">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="position" type="xs:int" use="required"/>
+                                                            <xs:attribute name="device" type="OrderDevice"
+                                                                          use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
                                         <xs:element name="Network">
                                             <xs:complexType>
                                                 <xs:sequence>
@@ -34,6 +47,7 @@
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:choice>
+                                                            <xs:attribute name="slot" type="xs:int" use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
@@ -80,6 +94,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="HardDisk"/>
             <xs:enumeration value="DVD"/>
+            <xs:enumeration value="Floppy"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="StorageControllerType">
@@ -96,6 +111,14 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="Ubuntu"/>
             <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="OrderDevice">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Floppy"/>
+            <xs:enumeration value="DVD"/>
+            <xs:enumeration value="HardDisk"/>
+            <xs:enumeration value="None"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

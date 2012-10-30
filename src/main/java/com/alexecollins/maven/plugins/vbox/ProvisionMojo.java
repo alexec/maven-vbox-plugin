@@ -57,10 +57,11 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 			else if (o instanceof Provisions.Sleep) {
 				getLog().info("sleeping for " + ((Provisions.Sleep) o).getMs() + "ms");
 				Thread.sleep(((Provisions.Sleep) o).getMs());
+			} else if (o instanceof Provisions.Exec) {
+				exec(formatConfig(name, ((Provisions.Exec) o).getValue()));
 			} else
-				throw new AssertionError();
+				throw new AssertionError("unexpected provision");
 		}
-
 
 		exec("vboxmanage", "controlvm", name, "acpipowerbutton");
 

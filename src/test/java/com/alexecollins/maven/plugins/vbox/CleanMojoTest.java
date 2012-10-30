@@ -1,31 +1,38 @@
 package com.alexecollins.maven.plugins.vbox;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.File;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class CleanMojoTest {
+@RunWith(Parameterized.class)
+public class CleanMojoTest extends AbstractTest {
 
-	public static final File A = new File("target/vbox/boxes/UbuntuServer_12_10");
-	public static final File B = new File("src/main/vbox/UbuntuServer_12_10");
 	private CleanMojo sut;
+
+	public CleanMojoTest(final String name) {
+		super(name);
+	}
 
 	@Before
 	public void setUp() throws Exception {
 		sut = new CleanMojo();
-		new CreateMojo().execute(B.toURI());
 	}
 
 	@Test
-	@Ignore // TODO
 	public void test() throws Exception {
-		sut.execute(B.toURI());
-		assert !new File(A, "UbuntuServer_12_10.vbox").exists();
-		sut.execute(B.toURI());
+		sut.execute(src.toURI());
+		assertFalse("vbox exists", new File(target, name + ".vbox").exists());
+		new CreateMojo().execute(src.toURI());
+		sut.execute(src.toURI());
+		assertFalse("vbox exists", new File(target, name + ".vbox").exists());
+		sut.execute(src.toURI());
 	}
 }

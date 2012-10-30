@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<VirtualBox>
+    <Machine name="WindowsServer2008" OSType="Windows2008">
+        <MediaRegistry>
+            <HardDisks>
+                <HardDisk uuid="hd0" location="hd0.vdi"/>
+            </HardDisks>
+            <DVDImages>
+                <DVDImage uuid="dvd0" location="dvd0.iso"/>
+            </DVDImages>
+            <FloppyImages>
+                <FloppyImage uuid="floppy0" location="floppy0.img"/>
+            </FloppyImages>
+        </MediaRegistry>
+        <Hardware>
+            <Memory RAMSize="512"/>
+            <Boot>
+                <Order position="1" device="DVD"/>
+                <Order position="2" device="HardDisk"/>
+                <Order position="3" device="Floppy"/>
+                <Order position="4" device="None"/>
+            </Boot>
+            <Network>
+                <Adapter>
+                    <NAT/>
+                </Adapter>
+            </Network>
+        </Hardware>
+        <StorageControllers>
+            <StorageController name="IDE Controller" type="PIIX4" Bootable="true">
+                <AttachedDevice type="DVD">
+                    <Image uuid="dvd0"/>
+                </AttachedDevice>
+            </StorageController>
+            <StorageController name="SATA Controller" type="AHCI" Bootable="true">
+                <AttachedDevice type="HardDisk">
+                    <Image uuid="hd0"/>
+                </AttachedDevice>
+            </StorageController>
+            <StorageController name="Floppy Controller" type="I82078" Bootable="false">
+                <AttachedDevice type="Floppy" port="0" device="0">
+                    <Image uuid="floppy0"/>
+                </AttachedDevice>
+            </StorageController>
+        </StorageControllers>
+    </Machine>
+</VirtualBox>
