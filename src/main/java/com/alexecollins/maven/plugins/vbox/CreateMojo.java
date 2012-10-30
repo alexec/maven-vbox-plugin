@@ -147,7 +147,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		String location = image.getLocation();
 
 		if (location.startsWith("http://")) {
-			final File dest = new File("target/vbox/downloads/" + box + "/" + image.getUuid() + ".iso");
+			final File dest = new File(outputDirectory + "/vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
 			if (!dest.exists()) {
 				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
 				getLog().info("downloading " + location + " to " + dest);
@@ -160,8 +160,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 			location = new URI(location).getPath();
 		}
 
-
-		final File src = new File("src/main/vbox/" + box, location);
+		final File src = new File(basedir + "/src/main/vbox/" + box.getName(), location);
 
 		if (src.isDirectory() && image instanceof FloppyImage) {
 			final File dest = new File(box.getTarget(outputDirectory) + "/" + image.getUuid() + ".img");

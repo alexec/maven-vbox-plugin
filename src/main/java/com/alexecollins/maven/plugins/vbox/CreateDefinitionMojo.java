@@ -7,7 +7,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -23,7 +22,7 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
-			createDefn(new VBox(new File("src/main/vbox/" + name).toURI()));
+			createDefn(new VBox(new File(basedir, "src/main/vbox/" + name).toURI()));
 		} catch (Exception e) {
 			throw new MojoExecutionException("failed to create definition", e);
 		}
@@ -33,8 +32,6 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 		if (!box.exists(outputDirectory) && !new File(box.getSrc().toURL().getFile()).mkdirs())
 			throw new IllegalStateException();
-
-		final URL u = getClass().getResource("/" + name);
 
 		for (String f : new String[]{"MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisions.xml" }) {
 			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(box.getTarget(outputDirectory), f));

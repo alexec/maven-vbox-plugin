@@ -30,7 +30,9 @@ public class ZipUtils {
 			if (entry.isDirectory()) {
 				// Assume directories are stored parents first then children.
 				// This is not robust, just for demonstration purposes.
-				new File(entry.getName()).mkdir();
+				if (!new File(entry.getName()).mkdir()) {
+					throw new IllegalStateException();
+				}
 				continue;
 			}
 
