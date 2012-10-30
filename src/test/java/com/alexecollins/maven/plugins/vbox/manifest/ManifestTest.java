@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox.schema;
+package com.alexecollins.maven.plugins.vbox.manifest;
 
 import org.junit.Test;
 

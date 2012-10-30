@@ -1,8 +1,9 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.schema.Manifest;
-import com.alexecollins.maven.plugins.vbox.schema.Provisions;
-import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
+
+import com.alexecollins.maven.plugins.vbox.manifest.Manifest;
+import com.alexecollins.maven.plugins.vbox.provisions.Provisions;
+import com.alexecollins.maven.plugins.vbox.virtualbox.VirtualBox;
 import org.apache.maven.plugin.AbstractMojo;
 
 import javax.xml.bind.JAXB;

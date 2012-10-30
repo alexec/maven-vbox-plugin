@@ -7,12 +7,10 @@
                 <HardDisk uuid="hd0" size="10000"/>
             </HardDisks>
             <DVDImages>
-                <DVDImage uuid="dvd0"
-                          location="http://www.ubuntu.com/start-download?distro=server&amp;bits=32&amp;release=lts"/>
+                <DVDImage uuid="dvd0" location="dvd0.iso"/>
             </DVDImages>
             <FloppyImages>
-                <FloppyImage uuid="floppy0"
-                             location="floppy0"/>
+                <FloppyImage uuid="floppy0" location="floppy0.img"/>
             </FloppyImages>
         </MediaRegistry>
         <Hardware>

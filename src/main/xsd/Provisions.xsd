@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
+           targetNamespace="http://www.alexecollins.com/maven/plugins/vbox/provisions" elementFormDefault="unqualified">
     <xs:element name="Provisions">
         <xs:complexType>
             <xs:choice maxOccurs="unbounded">

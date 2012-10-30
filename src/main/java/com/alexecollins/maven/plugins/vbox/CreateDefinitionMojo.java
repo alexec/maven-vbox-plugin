@@ -1,6 +1,5 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -35,7 +34,6 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 		if (!sink.exists() && !sink.mkdir()) throw new IllegalStateException();
 
 		final URL u = getClass().getResource("/" + name);
-		final VirtualBox cfg = getVirtualBox(u.toURI());
 
 		for (String f : new String[]{"VirtualBox.xml", "Manifest.xml", "Provisions.xml"}) {
 			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(sink, f));

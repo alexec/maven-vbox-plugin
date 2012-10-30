@@ -1,6 +1,6 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.schema.Provisions;
+import com.alexecollins.maven.plugins.vbox.provisions.Provisions;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.mortbay.jetty.Server;

@@ -1,6 +1,11 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.schema.*;
+import com.alexecollins.maven.plugins.vbox.mediaregistry.FloppyImage;
+import com.alexecollins.maven.plugins.vbox.mediaregistry.Image;
+import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
+import com.alexecollins.maven.plugins.vbox.virtualbox.AttachedDeviceType;
+import com.alexecollins.maven.plugins.vbox.virtualbox.StorageControllerType;
+import com.alexecollins.maven.plugins.vbox.virtualbox.VirtualBox;
 import de.waldheinz.fs.fat.FatFile;
 import de.waldheinz.fs.fat.FatFileSystem;
 import de.waldheinz.fs.fat.FatLfnDirectoryEntry;
@@ -46,7 +51,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 
 		exec("vboxmanage", "createvm", "--name", name, "--ostype", m.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 
-		final VirtualBox.Machine.MediaRegistry mr = m.getMediaRegistry();
+		final MediaRegistry mr = m.getMediaRegistry();
 		final Image hd = mr.getHardDisks().getHardDisk();
 
 		getLog().debug("creating HD " + hd.getUuid());
