@@ -35,7 +35,7 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 		final URL u = getClass().getResource("/" + name);
 
-		for (String f : new String[]{"VirtualBox.xml", "Manifest.xml", "Provisions.xml"}) {
+		for (String f : new String[]{"MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisions.xml" }) {
 			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(sink, f));
 		}
 

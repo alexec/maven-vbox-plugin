@@ -34,12 +34,12 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		final String name = getName(src);
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
 		if (exists(name) && getSnapshots(name).contains(snapshot.toString())) {
-			exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
+			ExecUtils.exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
 			return;
 		}
 
 		getLog().info("provisioning '" + name + "'");
-		exec("vboxmanage", "startvm", name);
+		ExecUtils.exec("vboxmanage", "startvm", name);
 
 		for (String f : getManifest(src).getFile()) {
 			final File d = new File(getTarget(getName(src)), f);
@@ -58,16 +58,16 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 				getLog().info("sleeping for " + ((Provisions.Sleep) o).getMs() + "ms");
 				Thread.sleep(((Provisions.Sleep) o).getMs());
 			} else if (o instanceof Provisions.Exec) {
-				exec(formatConfig(name, ((Provisions.Exec) o).getValue()));
+				ExecUtils.exec(formatConfig(name, ((Provisions.Exec) o).getValue()));
 			} else
 				throw new AssertionError("unexpected provision");
 		}
 
-		exec("vboxmanage", "controlvm", name, "acpipowerbutton");
+		ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
 
 		awaitPowerOff(name, 10000);
 
-		exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
+		ExecUtils.exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
 
 		stopServer();
 	}
@@ -124,7 +124,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	private String formatConfig(final String name, String line) throws IOException, InterruptedException {
 		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
 		line = line.replaceAll("%PORT%", String.valueOf(port));
-		final Matcher m = Pattern.compile("Location: *(.*VBoxGuestAdditions\\.iso)").matcher(exec("vboxmanage", "list", "dvds"));
+		final Matcher m = Pattern.compile("Location: *(.*VBoxGuestAdditions\\.iso)").matcher(ExecUtils.exec("vboxmanage", "list", "dvds"));
 		assert m.find();
 		line = line.replaceAll("%VBOX_ADDITIONS%", m.group(1));
 		line = line.replaceAll("%NAME%", name);
@@ -147,7 +147,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 					break;
 				}
 			}
-			exec(command.toArray(new String[command.size()]));
+			ExecUtils.exec(command.toArray(new String[command.size()]));
 			scancodes = ArrayUtils.subarray(scancodes, i, scancodes.length);
 		}
 
@@ -157,8 +157,8 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		final int hostPort = pf.getHostport();
 		final int guestPort = pf.getGuestport();
 		getLog().info("adding port forward hostport=" + hostPort + " guestport=" + guestPort);
-		exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/HostPort", String.valueOf(hostPort));
-		exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/GuestPort", String.valueOf(guestPort));
-		exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/Protocol", "TCP");
+		ExecUtils.exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/HostPort", String.valueOf(hostPort));
+		ExecUtils.exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/GuestPort", String.valueOf(guestPort));
+		ExecUtils.exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/Protocol", "TCP");
 	}
 }

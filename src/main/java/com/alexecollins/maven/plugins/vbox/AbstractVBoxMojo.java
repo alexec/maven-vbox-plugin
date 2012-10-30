@@ -4,12 +4,12 @@ package com.alexecollins.maven.plugins.vbox;
 import com.alexecollins.maven.plugins.vbox.manifest.Manifest;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
 import com.alexecollins.maven.plugins.vbox.provisions.Provisions;
-import com.google.common.base.Joiner;
 import de.innotek.virtualbox_settings.VirtualBox;
 import org.apache.maven.plugin.AbstractMojo;
 
 import javax.xml.bind.JAXB;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
@@ -77,7 +77,7 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 	}
 
 	protected Properties getProperties(final String name) throws IOException, InterruptedException {
-		return getPropertiesFromString(exec("vboxmanage", "showvminfo", name, "--machinereadable"));
+		return getPropertiesFromString(ExecUtils.exec("vboxmanage", "showvminfo", name, "--machinereadable"));
 	}
 
 	static Properties getPropertiesFromString(final String exec) {
@@ -98,42 +98,5 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 				throw new IllegalStateException("failed to power off in " + millis + "ms");
 			}
 		} while (!getProperties(name).get("VMState").equals("poweroff"));
-	}
-
-	protected String exec(String cmd) throws IOException, InterruptedException {
-		return execAux(cmd, Runtime.getRuntime().exec(cmd));
-	}
-
-	protected String exec(String... strings) throws IOException, InterruptedException {
-		return execAux(Joiner.on(" ").join(new ProcessBuilder(strings).command()), new ProcessBuilder(strings).start());
-	}
-
-	private String execAux(final String command, final Process p) throws IOException, InterruptedException {
-		getLog().debug("executing " + command);
-		// stdout
-		final String out = log(p.getInputStream());
-		// stderr
-		final String err = log(p.getErrorStream());
-
-		if (p.waitFor() != 0) {
-			throw new RuntimeException("failed to execute " + command + ", exitValue=" + p.exitValue() + (err != null ? ": " + err : ""));
-		}
-
-		return out;
-	}
-
-	private String log(final InputStream inputStream) throws IOException {
-		final BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-		final StringBuffer out = new StringBuffer();
-		try {
-			String l;
-			while ((l = r.readLine()) != null) {
-				getLog().debug(l);
-				out.append(l).append('\n');
-			}
-		} finally {
-			r.close();
-		}
-		return out.toString();
 	}
 }

@@ -40,19 +40,19 @@ public class CleanMojo extends AbstractVBoxesMojo {
 
 		getLog().info("cleaning '" + name + "'");
 
-		if (exec("vboxmanage", "list", "vms").contains("\"" + name + "\"")) {
+		if (ExecUtils.exec("vboxmanage", "list", "vms").contains("\"" + name + "\"")) {
 			if (getProperties(name).getProperty("VMState").equals("running")) {
-				exec("vboxmanage", "controlvm", name, "poweroff");
+				ExecUtils.exec("vboxmanage", "controlvm", name, "poweroff");
 				awaitPowerOff(name, 10000);
 			}
 
-			exec("vboxmanage", "unregistervm", name, "--delete");
+			ExecUtils.exec("vboxmanage", "unregistervm", name, "--delete");
 		}
 
-		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(exec("vboxmanage", "list", "hdds"));
+		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		while (m.find()) {
 			if (m.group().contains(name)) {
-				exec("vboxmanage", "closemedium", "disk", m.group(1).trim());
+				ExecUtils.exec("vboxmanage", "closemedium", "disk", m.group(1).trim());
 			}
 		}
 

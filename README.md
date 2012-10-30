@@ -31,14 +31,15 @@ Additionally, a mojo for creating VM templates:
 An example template can be found in src/test/vbox/UbuntuServer. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be name "UbuntuServer":
 
     src/main/vbox/
-        UbuntuServer/      - The name of the server.
-            VirtualBox.xml - The configuration of the server (e.g. disk etc.)
-            Manifest.xml   - A list of all files used by the server (e.g. preseed.cfg, Unattended.xml etc.).
-            Provisions.xml - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.)
+        UbuntuServer/         - The name of the server.
+            MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare)
+            VirtualBox.xml    - The configuration of the server (e.g. disk etc.)
+            Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, Unattended.xml etc.).
+            Provisions.xml    - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.)
 
 The example I use downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
 
-You'll want to include an additional files, either a preseed.cfg for a Ubuntu VM, or an AutoUnatted.xml for a Windows. These files tell the installer how to set-up the OS. List these in the Manifest.
+You'll want to include an additional files, either a preseed.cfg for a Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS. List these in the Manifest.
 
 You can access those files from the guest by:
 
@@ -46,19 +47,44 @@ You can access those files from the guest by:
 
 When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/, e.g. for preseed.cfg.
 
+Quick Start
+===
+Execute this:
+
+    mvn com.alexecollins.maven.plugins.vbox:create-definition -Dvbox.name=UbuntuServer_12_10
+
+Add this to your pom.xml:
+
+    <plugin>
+        <groupId>com.alexecollins.maven.plugins.vbox</groupId>
+        <artifactId>maven-vbox-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>recreate</goal>
+                    <goal>provision</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+
 Supported Host OS Types
 ===
 * Mac OS-X
 * Windows 7
 
-Supported Guest OS Types
+Unlisted OSs should all work.
+
+Supported Guest OS Types/Supplied Definitions
 ===
-* Ubuntu
-* Windows2008
+* UbuntuServer_12_10
+* WindowsServer2008
+
+Unlisted OSs may work.
 
 Known Issues
 ===
-* Only support for one definition ATM.
 * US keyboard layouts only.
 
 Troubleshooting

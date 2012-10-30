@@ -2,7 +2,7 @@
 <Provisions>
     <Sleep ms="30000"/>
     <KeyboardPutScanCodes keys="Tab,Tab,Tab,Enter"/>
-    <Sleep ms="60000"/>
+    <Sleep ms="300000"/>
     <!-- eject ISO -->
-    <Exec>vboxmanage storagectl %NAME% --name "IDE Controller" -port 0 --medium none</Exec>
+    <Exec>vboxmanage storageattach %NAME% --name "IDE Controller" -port 0 --medium none</Exec>
 </Provisions>
