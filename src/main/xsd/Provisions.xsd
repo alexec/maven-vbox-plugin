@@ -10,6 +10,12 @@
                         <xs:attribute name="guestport" type="xs:int" use="required"/>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="AwaitPort">
+                    <xs:complexType>
+                        <xs:attribute name="hostport" type="xs:int" use="required"/>
+                        <xs:attribute name="timeout" type="xs:long" use="required"/>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="KeyboardPutScanCodes">
                     <xs:complexType>
                         <xs:attribute name="keys" type="xs:string"/>

@@ -9,12 +9,11 @@ import org.mortbay.resource.Resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -40,12 +39,12 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		for (String f : box.getManifest().getFile()) {
 			final File d = new File(box.getTarget(outputDirectory), f);
 			if (!d.exists())
-				FileUtils.copyURLToFile(new URL(box.toString() + "/" + f), d);
+				FileUtils.copyURLToFile(new URL(box.getSrc() + "/" + f), d);
 		}
 
 		startServer(box);
 		try {
-			for (Object o : box.getProvisions().getPortForwardOrKeyboardPutScanCodesOrSleep()) {
+			for (Object o : box.getProvisions().getPortForwardOrAwaitPortOrKeyboardPutScanCodes()) {
 				if (o instanceof Provisions.PortForward)
 					portForward(box.getName(), (Provisions.PortForward) o);
 				else if (o instanceof Provisions.KeyboardPutScanCodes)
@@ -55,6 +54,8 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 					Thread.sleep(((Provisions.Sleep) o).getMs());
 				} else if (o instanceof Provisions.Exec) {
 					ExecUtils.exec(formatConfig(box.getName(), ((Provisions.Exec) o).getValue()));
+				} else if (o instanceof Provisions.AwaitPort) {
+					awaitPort((Provisions.AwaitPort) o);
 				} else
 					throw new AssertionError("unexpected provision");
 			}
@@ -64,6 +65,26 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 			box.takeSnapshot(snapshot);
 		} finally {
 			stopServer();
+		}
+	}
+
+	private void awaitPort(final Provisions.AwaitPort ap) throws IOException, TimeoutException, InterruptedException {
+		final long start = System.currentTimeMillis();
+
+		while (true) {
+			getLog().info("awaiting port localhost:" + ap.getHostport());
+			try {
+				new Socket("localhost", ap.getHostport()).close();
+				return;
+			} catch (ConnectException e) {
+				// nop
+			}
+
+			if (System.currentTimeMillis() > start + ap.getTimeout()) {
+				throw new TimeoutException("timed out waiting for port localhost:" + ap.getHostport());
+			}
+
+			Thread.sleep(30000);
 		}
 	}
 

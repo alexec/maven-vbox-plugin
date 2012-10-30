@@ -12,40 +12,9 @@ Goals
 To provide support for:
 
 * Multiple host and guest OS, not least including Linux, Windows and OS-X
-* Unattended install and provioning of guest OSs.
+* Unattended install and provisioning of guest OSs.
 * Multiple VMs per project.
-* Not to be a replacement for VeeWee, Vargant, Chef or Puppet.
-
-Usage
-===
-The main mojos are:
-
-* clean - deletes all VMs
-* create - creates all VMs
-* provision - provisions all VMs
-
-Additionally, a mojo for creating VM templates:
-
-* create-definition - creates a VM template definition
-
-An example template can be found in src/test/vbox/UbuntuServer. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be name "UbuntuServer":
-
-    src/main/vbox/
-        UbuntuServer/         - The name of the server.
-            MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare)
-            VirtualBox.xml    - The configuration of the server (e.g. disk etc.)
-            Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, Unattended.xml etc.).
-            Provisions.xml    - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.)
-
-The example I use downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
-
-You'll want to include an additional files, either a preseed.cfg for a Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS. List these in the Manifest.
-
-You can access those files from the guest by:
-
-* HTTP only.
-
-When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/, e.g. for preseed.cfg.
+* Not to be a replacement for VeeWee, Vagrant, Chef or Puppet.
 
 Quick Start
 ===
@@ -68,6 +37,34 @@ Add this to your pom.xml:
             </execution>
         </executions>
     </plugin>
+
+Usage
+===
+The main mojos are:
+
+* clean - deletes all VMs
+* create - creates all VMs
+* provision - provisions all VMs
+
+Additionally, a mojo for creating VM templates:
+
+* create-definition - creates a VM template definition
+
+Definitions can be found in src/test/vbox/UbuntuServer. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be named "UbuntuServer":
+
+    src/main/vbox/
+        UbuntuServer/         - The name of the server.
+            MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
+            VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XMl files.
+            Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
+            Provisions.xml    - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
+
+The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
+
+You'll want to include an additional files, either a preseed.cfg for a Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS.  To expose them to the VM you can either:
+
+* Mount a floppy (esp. for Windows).
+* Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/.
 
 Supported Host OS Types
 ===

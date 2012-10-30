@@ -20,6 +20,6 @@ public class ProvisionsTest extends AbstractTest {
 	public void testGetPortForwardOrKeyboardPutScanCodesOrSleep() throws Exception {
 		final Provisions sut = JAXB.unmarshal(Provisions.class.getResource("/" + name + "/Provisions.xml"), Provisions.class);
 
-		assert sut.getPortForwardOrKeyboardPutScanCodesOrSleep() != null;
+		assert sut.getPortForwardOrAwaitPortOrKeyboardPutScanCodes() != null;
 	}
 }
