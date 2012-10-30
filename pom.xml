@@ -11,6 +11,8 @@
 
     <description>A Maven plugin for creating, starting, and stopping VirtualBoxes.</description>
 
+    <url>http://www.alexecollins.com/?q=content/maven-vbox-plugin</url>
+
     <licenses>
         <license>
             <name>GNU General Public License, version 3 (GPL-3.0)</name>

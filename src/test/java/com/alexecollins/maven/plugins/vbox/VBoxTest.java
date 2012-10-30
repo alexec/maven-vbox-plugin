@@ -9,11 +9,11 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author alex.collins
  */
-public class AbstractVBoxMojoTest {
+public class VBoxTest {
 
 	@Test
 	public void test() throws Exception {
-		final Properties p = AbstractVBoxMojo.getPropertiesFromString("name=\"Ubuntu\"\n" +
+		final Properties p = VBox.getPropertiesFromString("name=\"Ubuntu\"\n" +
 				"ostype=\"Ubuntu\"\n" +
 				"UUID=\"cc094854-cb59-4316-8de3-bcb4e86eb69c\"\n" +
 				"CfgFile=\"C:\\Users\\alex.collins\\VirtualBox VMs\\Ubuntu\\Ubuntu\n" +

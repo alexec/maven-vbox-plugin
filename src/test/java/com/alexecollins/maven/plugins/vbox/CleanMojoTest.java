@@ -28,11 +28,11 @@ public class CleanMojoTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		sut.execute(src.toURI());
+		sut.execute(new VBox(src.toURI()));
 		assertFalse("vbox exists", new File(target, name + ".vbox").exists());
-		new CreateMojo().execute(src.toURI());
-		sut.execute(src.toURI());
+		new CreateMojo().execute(new VBox(src.toURI()));
+		sut.execute(new VBox(src.toURI()));
 		assertFalse("vbox exists", new File(target, name + ".vbox").exists());
-		sut.execute(src.toURI());
+		sut.execute(new VBox(src.toURI()));
 	}
 }

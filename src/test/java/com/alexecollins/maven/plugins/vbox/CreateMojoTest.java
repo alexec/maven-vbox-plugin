@@ -20,7 +20,7 @@ public class CreateMojoTest extends AbstractTest {
 
 	@Before
 	public void setUp() throws Exception {
-		new CleanMojo().execute(src.toURI());
+		new CleanMojo().execute(new VBox(src.toURI()));
 		sut = new CreateMojo();
 	}
 
@@ -31,7 +31,7 @@ public class CreateMojoTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		sut.execute(src.toURI());
-		sut.execute(src.toURI()); // snapshot
+		sut.execute(new VBox(src.toURI()));
+		sut.execute(new VBox(src.toURI())); // snapshot
 	}
 }

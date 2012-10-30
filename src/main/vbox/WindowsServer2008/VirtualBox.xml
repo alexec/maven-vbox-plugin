@@ -28,12 +28,12 @@
         </Hardware>
         <StorageControllers>
             <StorageController name="IDE Controller" type="PIIX4" Bootable="true">
-                <AttachedDevice type="DVD">
+                <AttachedDevice type="DVD" port="0" device="0">
                     <Image uuid="dvd0"/>
                 </AttachedDevice>
             </StorageController>
             <StorageController name="SATA Controller" type="AHCI" Bootable="true">
-                <AttachedDevice type="HardDisk">
+                <AttachedDevice type="HardDisk" port="0" device="0">
                     <Image uuid="hd0"/>
                 </AttachedDevice>
             </StorageController>

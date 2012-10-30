@@ -4,9 +4,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.net.URI;
 
 /**
+ * A mojo that looks for multiple definition and executes on all of them.
+ *
  * @author alexec (alex.e.c@gmail.com)
  */
 public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
@@ -19,12 +20,12 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 			}
 		})) {
 			try {
-				execute(f.toURI());
+				execute(new VBox(f.toURI()));
 			} catch (Exception e) {
 				throw new MojoExecutionException("failed to create " + f, e);
 			}
 		}
 	}
 
-	protected abstract void execute(URI src) throws Exception;
+	protected abstract void execute(VBox box) throws Exception;
 }

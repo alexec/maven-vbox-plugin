@@ -62,7 +62,7 @@
                                         <xs:element name="StorageController" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="AttachedDevice">
+                                                    <xs:element name="AttachedDevice" maxOccurs="unbounded">
                                                         <xs:complexType>
                                                             <xs:sequence>
                                                                 <xs:element name="Image">
@@ -71,13 +71,17 @@
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:sequence>
-                                                            <xs:attribute name="type" type="AttachedDeviceType"/>
+                                                            <xs:attribute name="type" type="AttachedDeviceType"
+                                                                          use="required"/>
+                                                            <xs:attribute name="port" type="xs:int" use="required"/>
+                                                            <xs:attribute name="device" type="xs:int" use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
                                                 <xs:attribute name="name" type="xs:string" use="required"/>
                                                 <xs:attribute name="Bootable" type="xs:boolean" default="false"/>
                                                 <xs:attribute name="type" type="StorageControllerType" use="required"/>
+                                                <xs:attribute name="PortCount" type="xs:int" default="1"/>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>

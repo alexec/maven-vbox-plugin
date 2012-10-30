@@ -15,7 +15,7 @@ public abstract class AbstractTest {
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][]{
 				{"UbuntuServer_12_10" },
-				{"WindowsServer2008" }
+				//	{"WindowsServer2008" }
 		});
 	}
 

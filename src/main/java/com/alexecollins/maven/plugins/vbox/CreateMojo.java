@@ -22,38 +22,38 @@ import java.util.*;
  */
 public class CreateMojo extends AbstractVBoxesMojo {
 
-	protected void execute(URI src) throws Exception {
+	protected void execute(final VBox box) throws Exception {
 
-		final String name = getName(src);
 		final Snapshot snapshot = Snapshot.POST_CREATION;
-		if (exists(name) && getSnapshots(name).contains(snapshot.toString())) {
-			ExecUtils.exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
+		if (box.exists(outputDirectory) && box.getSnapshots().contains(snapshot)) {
+			box.restoreSnapshot(snapshot);
 			return;
 		}
 
-		getLog().info("creating '" + name + "' (" + src + ")");
+		getLog().info("creating '" + box.getName() + "'");
 
-		final VirtualBox vb = getVirtualBox(src);
+		final VirtualBox vb = box.getVirtualBox();
 		final VirtualBox.Machine machine = vb.getMachine();
 
 		assert machine != null;
 
-		final File t = getTarget(name);
+		final File t = box.getTarget(outputDirectory);
 		if (!t.exists() && !t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
-		ExecUtils.exec("vboxmanage", "createvm", "--name", name, "--ostype", machine.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
+		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", machine.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 
 		// set-up media
-		final Map<Object, File> idToFile = createMedia(name, t, getMediaRegistry(src));
+		final Map<Object, File> idToFile = createMedia(box, t, box.getMediaRegistry());
 
-		configureMachine(name, machine);
+		configureMachine(box, machine);
 
-		setupStorage(name, machine, idToFile);
+		setupStorage(box, machine, idToFile);
 
-		ExecUtils.exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
+		box.takeSnapshot(snapshot);
 	}
 
-	private void setupStorage(final String name, final VirtualBox.Machine m, final Map<Object, File> idToFile) throws IOException, InterruptedException {
+
+	private void setupStorage(final VBox box, final VirtualBox.Machine m, final Map<Object, File> idToFile) throws IOException, InterruptedException {
 		final Map<StorageControllerType, String> x = new HashMap<StorageControllerType, String>();
 		x.put(StorageControllerType.PIIX_4, "ide");
 		x.put(StorageControllerType.AHCI, "sata");
@@ -67,21 +67,27 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		for (VirtualBox.Machine.StorageControllers.StorageController s : m.getStorageControllers().getStorageController()) {
 			final String n = s.getName();
 			getLog().debug("creating controller " + n);
-			ExecUtils.exec("vboxmanage", "storagectl", name, "--name", n, "--add", x.get(s.getType()),
+			ExecUtils.exec("vboxmanage", "storagectl", box.getName(), "--name", n, "--add", x.get(s.getType()),
 					"--bootable", s.isBootable() ? "on" : "off");
 
-			final VirtualBox.Machine.StorageControllers.StorageController.AttachedDevice a = s.getAttachedDevice();
-			final String u = a.getImage().getUuid();
-			final File f = idToFile.get(u);
-			getLog().debug("attaching " + f + " (UUID " + u + ")");
-			if (!f.exists()) throw new IllegalStateException(f + " does not exist");
-			ExecUtils.exec("vboxmanage", "storageattach", name, "--storagectl", n, "--port", "0", "--device", "0",
-					"--type", y.get(a.getType()),
-					"--medium", f.getCanonicalPath());
+			for (VirtualBox.Machine.StorageControllers.StorageController.AttachedDevice a : s.getAttachedDevice()) {
+				final String u = a.getImage().getUuid();
+				final File f = idToFile.get(u);
+				getLog().debug("attaching " + f + " (UUID " + u + ")");
+				if (!f.exists()) throw new IllegalStateException(f + " does not exist");
+				ExecUtils.exec("vboxmanage", "storageattach", box.getName(), "--storagectl", n,
+						"--port", String.valueOf(a.getPort()),
+						"--device", String.valueOf(a.getDevice()),
+						"--type", y.get(a.getType()),
+						"--medium", f.getCanonicalPath());
+			}
 		}
 	}
 
-	private Map<Object, File> createMedia(final String name, final File target, final MediaRegistry mr) throws IOException, InterruptedException, URISyntaxException {
+	private Map<Object, File> createMedia(final VBox box, final File target, final MediaRegistry mr) throws IOException, InterruptedException, URISyntaxException {
+
+		VBox.installAdditions();
+
 		final Image hd = mr.getHardDisks().getHardDisk();
 
 		getLog().debug("creating HD " + hd.getUuid());
@@ -95,20 +101,20 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		idToFile.put(hd.getUuid(), hdImg);
 
 		final Image dvd = mr.getDVDImages().getDVDImage();
-		idToFile.put(dvd.getUuid(), acquireImage(name, dvd));
+		idToFile.put(dvd.getUuid(), acquireImage(box, dvd));
 
 		final Image floppy = mr.getFloppyImages().getFloppyImage();
-		idToFile.put(floppy.getUuid(), acquireImage(name, floppy));
+		idToFile.put(floppy.getUuid(), acquireImage(box, floppy));
 
 		getLog().debug("images " + idToFile);
 
 		return idToFile;
 	}
 
-	private void configureMachine(final String name, final VirtualBox.Machine m) throws IOException, InterruptedException {
+	private void configureMachine(final VBox box, final VirtualBox.Machine m) throws IOException, InterruptedException {
 		getLog().info("configuring machine");
 
-		final List<String> modifyVm = new ArrayList<String>(Arrays.asList("vboxmanage", "modifyvm", name));
+		final List<String> modifyVm = new ArrayList<String>(Arrays.asList("vboxmanage", "modifyvm", box.getName()));
 		modifyVm.addAll(Arrays.asList("--memory", String.valueOf(m.getHardware().getMemory().getRAMSize())));
 
 		if (m.getHardware().getBoot() != null) {
@@ -125,7 +131,6 @@ public class CreateMojo extends AbstractVBoxesMojo {
 			}
 		}
 
-		final List<String> x = new ArrayList<String>(Arrays.asList("vboxmanage", "modifyvm", name));
 		for (VirtualBox.Machine.Hardware.Network.Adapter a : m.getHardware().getNetwork().getAdapter()) {
 			if (a.getNAT() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + (a.getSlot() + 1), "nat"));
@@ -138,11 +143,11 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		ExecUtils.exec(modifyVm.toArray(new String[modifyVm.size()]));
 	}
 
-	private File acquireImage(String name, Image image) throws IOException, URISyntaxException, InterruptedException {
+	private File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException {
 		String location = image.getLocation();
 
 		if (location.startsWith("http://")) {
-			final File dest = new File("target/vbox/downloads/" + name + "/" + image.getUuid() + ".iso");
+			final File dest = new File("target/vbox/downloads/" + box + "/" + image.getUuid() + ".iso");
 			if (!dest.exists()) {
 				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
 				getLog().info("downloading " + location + " to " + dest);
@@ -156,10 +161,10 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		}
 
 
-		final File src = new File("src/main/vbox/" + name, location);
+		final File src = new File("src/main/vbox/" + box, location);
 
 		if (src.isDirectory() && image instanceof FloppyImage) {
-			final File dest = new File(getTarget(name) + "/" + image.getUuid() + ".img");
+			final File dest = new File(box.getTarget(outputDirectory) + "/" + image.getUuid() + ".img");
 
 			getLog().info("creating floppy image for " + src + " as " + dest);
 

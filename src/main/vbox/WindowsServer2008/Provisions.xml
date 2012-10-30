@@ -4,5 +4,5 @@
     <KeyboardPutScanCodes keys="Tab,Tab,Tab,Enter"/>
     <Sleep ms="300000"/>
     <!-- eject ISO -->
-    <Exec>vboxmanage storageattach %NAME% --name "IDE Controller" -port 0 --medium none</Exec>
+    <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" -port 0 --medium none</Exec>
 </Provisions>

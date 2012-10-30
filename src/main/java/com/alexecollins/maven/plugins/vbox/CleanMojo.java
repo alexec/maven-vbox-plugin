@@ -19,10 +19,7 @@ package com.alexecollins.maven.plugins.vbox;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @goal clean
@@ -30,32 +27,26 @@ import java.util.regex.Pattern;
  */
 public class CleanMojo extends AbstractVBoxesMojo {
 
-	protected void execute(URI src) throws URISyntaxException, IOException, InterruptedException {
+	protected void execute(VBox box) throws URISyntaxException, IOException, InterruptedException {
 
-		if (src == null) {
-			throw new IllegalArgumentException();
-		}
+		getLog().info("cleaning '" + box.getName() + "'");
 
-		final String name = getName(src);
-
-		getLog().info("cleaning '" + name + "'");
-
-		if (ExecUtils.exec("vboxmanage", "list", "vms").contains("\"" + name + "\"")) {
-			if (getProperties(name).getProperty("VMState").equals("running")) {
-				ExecUtils.exec("vboxmanage", "controlvm", name, "poweroff");
-				awaitPowerOff(name, 10000);
+		if (ExecUtils.exec("vboxmanage", "list", "vms").contains("\"" + box.getName() + "\"")) {
+			if (box.getProperties().getProperty("VMState").equals("running")) {
+				box.powerOff();
+				box.awaitPowerOff(10000);
 			}
 
-			ExecUtils.exec("vboxmanage", "unregistervm", name, "--delete");
+			box.unregister();
 		}
 
-		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
+/*		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		while (m.find()) {
 			if (m.group().contains(name)) {
 				ExecUtils.exec("vboxmanage", "closemedium", "disk", m.group(1).trim());
 			}
-		}
+		}*/
 
-		FileUtils.deleteDirectory(getTarget(name));
+		FileUtils.deleteDirectory(box.getTarget(outputDirectory));
 	}
 }

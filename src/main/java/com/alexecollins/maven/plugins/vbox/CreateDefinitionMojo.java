@@ -23,24 +23,25 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
-			createDefn(new File("src/main/vbox/" + name));
+			createDefn(new VBox(new File("src/main/vbox/" + name).toURI()));
 		} catch (Exception e) {
 			throw new MojoExecutionException("failed to create definition", e);
 		}
 	}
 
-	void createDefn(File sink) throws IOException, URISyntaxException {
+	void createDefn(VBox box) throws IOException, URISyntaxException {
 
-		if (!sink.exists() && !sink.mkdir()) throw new IllegalStateException();
+		if (!box.exists(outputDirectory) && !new File(box.getSrc().toURL().getFile()).mkdirs())
+			throw new IllegalStateException();
 
 		final URL u = getClass().getResource("/" + name);
 
 		for (String f : new String[]{"MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisions.xml" }) {
-			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(sink, f));
+			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(box.getTarget(outputDirectory), f));
 		}
 
-		for (String f : getManifest(u.toURI()).getFile()) {
-			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(sink, f));
+		for (String f : box.getManifest().getFile()) {
+			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(box.getTarget(outputDirectory), f));
 		}
 	}
 

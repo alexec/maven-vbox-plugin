@@ -11,13 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -29,47 +26,45 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	private final Server server = new Server(port);
 
 	@Override
-	protected void execute(URI src) throws Exception {
+	protected void execute(VBox box) throws Exception {
 
-		final String name = getName(src);
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
-		if (exists(name) && getSnapshots(name).contains(snapshot.toString())) {
-			ExecUtils.exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
+		if (box.exists(outputDirectory) && box.getSnapshots().contains(snapshot.toString())) {
+			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
 			return;
 		}
 
-		getLog().info("provisioning '" + name + "'");
-		ExecUtils.exec("vboxmanage", "startvm", name);
+		getLog().info("provisioning '" + box.getName() + "'");
+		box.start();
 
-		for (String f : getManifest(src).getFile()) {
-			final File d = new File(getTarget(getName(src)), f);
+		for (String f : box.getManifest().getFile()) {
+			final File d = new File(box.getTarget(outputDirectory), f);
 			if (!d.exists())
-				FileUtils.copyURLToFile(new URL(src.toString() + "/" + f), d);
+				FileUtils.copyURLToFile(new URL(box.toString() + "/" + f), d);
 		}
 
-		startServer(src);
+		startServer(box);
+		try {
+			for (Object o : box.getProvisions().getPortForwardOrKeyboardPutScanCodesOrSleep()) {
+				if (o instanceof Provisions.PortForward)
+					portForward(box.getName(), (Provisions.PortForward) o);
+				else if (o instanceof Provisions.KeyboardPutScanCodes)
+					keyboardPutScanCodes(box.getName(), ((Provisions.KeyboardPutScanCodes) o));
+				else if (o instanceof Provisions.Sleep) {
+					getLog().info("sleeping for " + ((Provisions.Sleep) o).getMs() + "ms");
+					Thread.sleep(((Provisions.Sleep) o).getMs());
+				} else if (o instanceof Provisions.Exec) {
+					ExecUtils.exec(formatConfig(box.getName(), ((Provisions.Exec) o).getValue()));
+				} else
+					throw new AssertionError("unexpected provision");
+			}
 
-		for (Object o : getProvisions(src).getPortForwardOrKeyboardPutScanCodesOrSleep()) {
-			if (o instanceof Provisions.PortForward)
-				portForward(name, (Provisions.PortForward) o);
-			else if (o instanceof Provisions.KeyboardPutScanCodes)
-				keyboardPutScanCodes(name, ((Provisions.KeyboardPutScanCodes) o));
-			else if (o instanceof Provisions.Sleep) {
-				getLog().info("sleeping for " + ((Provisions.Sleep) o).getMs() + "ms");
-				Thread.sleep(((Provisions.Sleep) o).getMs());
-			} else if (o instanceof Provisions.Exec) {
-				ExecUtils.exec(formatConfig(name, ((Provisions.Exec) o).getValue()));
-			} else
-				throw new AssertionError("unexpected provision");
+			box.pressPowerButton();
+			box.awaitPowerOff(10000);
+			box.takeSnapshot(snapshot);
+		} finally {
+			stopServer();
 		}
-
-		ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
-
-		awaitPowerOff(name, 10000);
-
-		ExecUtils.exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
-
-		stopServer();
 	}
 
 	void stopServer() throws Exception {
@@ -77,11 +72,11 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		server.stop();
 	}
 
-	void startServer(URI src) throws Exception {
+	void startServer(VBox box) throws Exception {
 		getLog().info("starting server on port " + port);
 
 		final ResourceHandler rh = new ResourceHandler();
-		final File resource = new File(outputDirectory + "/vbox/boxes/" + getName(src));
+		final File resource = new File(outputDirectory + "/vbox/boxes/" + box.getName());
 		getLog().debug("resource " + resource);
 		assert resource.exists();
 		rh.setBaseResource(Resource.newResource(resource.toURI().toURL()));
@@ -124,9 +119,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	private String formatConfig(final String name, String line) throws IOException, InterruptedException {
 		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
 		line = line.replaceAll("%PORT%", String.valueOf(port));
-		final Matcher m = Pattern.compile("Location: *(.*VBoxGuestAdditions\\.iso)").matcher(ExecUtils.exec("vboxmanage", "list", "dvds"));
-		assert m.find();
-		line = line.replaceAll("%VBOX_ADDITIONS%", m.group(1));
+		line = line.replaceAll("%VBOX_ADDITIONS%", VBox.findGuestAdditions().getCanonicalPath());
 		line = line.replaceAll("%NAME%", name);
 		return line;
 	}

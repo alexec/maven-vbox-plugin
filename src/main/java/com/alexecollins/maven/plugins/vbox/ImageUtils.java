@@ -25,16 +25,19 @@ public class ImageUtils {
 
 		// TODO - non-Windows support!
 
-		final File f = new File("target/vbox/downloads", "bfi10.zip");
+		final String os = System.getProperty("os.name");
+		if (os.contains("Windows")) {
+			final File f = new File("target/vbox/downloads", "bfi10.zip");
 
-		if (!f.exists())
-			FileUtils.copyURLToFile(new URL("ftp://dl.xs4all.nl/pub/mirror/nu2files/bfi10.zip"), f);
+			if (!f.exists())
+				FileUtils.copyURLToFile(new URL("ftp://dl.xs4all.nl/pub/mirror/nu2files/bfi10.zip"), f);
 
-		assert f.exists();
+			assert f.exists();
 
-		ZipUtils.unzip(f, f.getParentFile());
+			ZipUtils.unzip(f, f.getParentFile());
 
-		ExecUtils.exec(new File(f.getParentFile(), "bfi.exe").getCanonicalPath(), "-f=" + dest.getCanonicalPath(), source.getCanonicalPath());
+			ExecUtils.exec(new File(f.getParentFile(), "bfi.exe").getCanonicalPath(), "-f=" + dest.getCanonicalPath(), source.getCanonicalPath());
+		} else throw new UnsupportedOperationException("cannot create image on " + os);
 	}
 
 	private static void createFloppyImage1(final File source, final File dest) throws Exception {

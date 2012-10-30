@@ -18,7 +18,7 @@ public class CreateDefinitionMojoTest {
 
 		FileUtils.deleteDirectory(tmp);
 		System.out.println("tmp=" + tmp);
-		sut.createDefn(tmp);
+		sut.createDefn(new VBox(tmp.toURI()));
 
 		assert new File(tmp, "VirtualBox.xml").exists();
 		assert new File(tmp, "preseed.cfg").exists();

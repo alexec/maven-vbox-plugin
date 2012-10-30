@@ -31,14 +31,14 @@ public class ProvisionMojoTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		new CleanMojo().execute(src.toURI());
-		new CreateMojo().execute(src.toURI());
-		sut.execute(src.toURI());
+		new CleanMojo().execute(new VBox(src.toURI()));
+		new CreateMojo().execute(new VBox(src.toURI()));
+		sut.execute(new VBox(src.toURI()));
 	}
 
 	@Test
 	public void testServer() throws Exception {
-		sut.startServer(src.toURI());
+		sut.startServer(new VBox(src.toURI()));
 		// TODO Thread.sleep(60000);
 		sut.stopServer();
 	}
