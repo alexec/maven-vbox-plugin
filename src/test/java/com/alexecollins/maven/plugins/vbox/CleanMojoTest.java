@@ -12,20 +12,18 @@ public class CleanMojoTest {
 
 	public static final File A = new File("target/vbox/boxes/UbuntuServer_12_10");
 	public static final File B = new File("src/main/vbox/UbuntuServer_12_10");
+	private CleanMojo sut;
 
 	@Before
 	public void setUp() throws Exception {
-		try {
-			new CreateMojo().execute(B.toURI());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		sut = new CleanMojo();
+		new CreateMojo().execute(B.toURI());
 	}
 
 	@Test
 	public void test() throws Exception {
-		new CleanMojo().execute(B.toURI());
-
+		sut.execute(B.toURI());
 		assert !new File(A, "UbuntuServer_12_10.vbox").exists();
+		sut.execute(B.toURI());
 	}
 }

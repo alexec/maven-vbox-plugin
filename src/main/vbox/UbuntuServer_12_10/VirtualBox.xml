@@ -10,26 +10,37 @@
                 <DVDImage uuid="dvd0"
                           location="http://www.ubuntu.com/start-download?distro=server&amp;bits=32&amp;release=lts"/>
             </DVDImages>
+            <FloppyImages>
+                <FloppyImage uuid="floppy0"
+                             location="floppy0"/>
+            </FloppyImages>
         </MediaRegistry>
         <Hardware>
+            <Memory RAMSize="512"/>
             <Network>
                 <Adapter>
+                    <NAT/>
+                    <!--
                     <BridgedInterface name="Intel(R) 82579LM Gigabit Network Connection"/>
-                    <!--name="en1: Wi-Fi (AirPort)"-->
+                    -->
+                    <!--
+                    <BridgedInterface name="en1: Wi-Fi (AirPort)"/>
+                    -->
                 </Adapter>
             </Network>
         </Hardware>
         <StorageControllers>
-            <StorageController Bootable="true" type="ide">
+            <StorageController Bootable="true" type="PIIX4" name="IDE Controller">
                 <AttachedDevice type="DVD">
                     <Image uuid="dvd0"/>
                 </AttachedDevice>
             </StorageController>
-            <StorageController Bootable="true" type="sata">
+            <StorageController Bootable="true" type="AHCI" name="SATA Controller">
                 <AttachedDevice type="HardDisk">
                     <Image uuid="hd0"/>
                 </AttachedDevice>
             </StorageController>
+            <StorageController name="Floppy Controller" type="I82078" Bootable="true"/>
         </StorageControllers>
     </Machine>
 </VirtualBox>

@@ -11,6 +11,13 @@
 
     <description>A Maven plugin for creating, starting, and stopping VirtualBoxes.</description>
 
+    <licenses>
+        <license>
+            <name>GNU General Public License, version 3 (GPL-3.0)</name>
+        </license>
+    </licenses>
+
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -51,6 +58,11 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>de.waldheinz</groupId>
+            <artifactId>fat32-lib</artifactId>
+            <version>0.6</version>
         </dependency>
     </dependencies>
 

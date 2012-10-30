@@ -1,12 +1,20 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.schema.AttachedDeviceType;
-import com.alexecollins.maven.plugins.vbox.schema.VirtualBox;
+import com.alexecollins.maven.plugins.vbox.schema.*;
+import de.waldheinz.fs.fat.FatFile;
+import de.waldheinz.fs.fat.FatFileSystem;
+import de.waldheinz.fs.fat.FatLfnDirectoryEntry;
+import de.waldheinz.fs.fat.SuperFloppyFormatter;
+import de.waldheinz.fs.util.FileDisk;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +47,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		exec("vboxmanage", "createvm", "--name", name, "--ostype", m.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 
 		final VirtualBox.Machine.MediaRegistry mr = m.getMediaRegistry();
-		final VirtualBox.Machine.MediaRegistry.HardDisks.HardDisk hd = mr.getHardDisks().getHardDisk();
+		final Image hd = mr.getHardDisks().getHardDisk();
 
 		getLog().debug("creating HD " + hd.getUuid());
 		final File hdImg = new File(t, hd.getUuid() + ".vdi");
@@ -51,24 +59,15 @@ public class CreateMojo extends AbstractVBoxesMojo {
 
 		idToFile.put(hd.getUuid(), hdImg);
 
-		final VirtualBox.Machine.MediaRegistry.DVDImages.DVDImage dvd = mr.getDVDImages().getDVDImage();
-		String location = dvd.getLocation();
+		final Image dvd = mr.getDVDImages().getDVDImage();
+		idToFile.put(dvd.getUuid(), acquireImage(name, dvd));
 
-		if (location.startsWith("http://")) {
-			final File dest = new File("target/vbox/downloads/" + name + "/dvd0.iso");
-			if (!dest.exists()) {
-				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
-				getLog().info("downloading " + location + " to " + dest);
-				FileUtils.copyURLToFile(new URL(location), dest);
-			} else {
-				getLog().info(dest + " already downloaded");
-			}
-			location = dest.toString();
-		}
-
-		idToFile.put(dvd.getUuid(), new File(location));
+		final Image floppy = mr.getFloppyImages().getFloppyImage();
+		idToFile.put(floppy.getUuid(), acquireImage(name, floppy));
 
 		getLog().debug("images " + idToFile);
+
+		exec("vboxmanage", "modifyvm", name, "--memory", String.valueOf(m.getHardware().getMemory().getRAMSize()));
 
 		int i = 1;
 		for (VirtualBox.Machine.Hardware.Network.Adapter a : m.getHardware().getNetwork().getAdapter()) {
@@ -81,10 +80,15 @@ public class CreateMojo extends AbstractVBoxesMojo {
 			i++;
 		}
 
+		final Map<StorageControllerType, String> x = new HashMap<StorageControllerType, String>();
+		x.put(StorageControllerType.PIIX_4, "ide");
+		x.put(StorageControllerType.AHCI, "sata");
+		x.put(StorageControllerType.I_82078, "floppy");
+
 		for (VirtualBox.Machine.StorageControllers.StorageController s : m.getStorageControllers().getStorageController()) {
-			final String n = s.getName() != null ? s.getName() : s.getType() + " Controller";
+			final String n = s.getName();
 			getLog().debug("creating controller " + n);
-			exec("vboxmanage", "storagectl", name, "--name", n, "--add", s.getType().toString().toLowerCase(),
+			exec("vboxmanage", "storagectl", name, "--name", n, "--add", x.get(s.getType()),
 					"--bootable", s.isBootable() ? "on" : "off");
 
 			final VirtualBox.Machine.StorageControllers.StorageController.AttachedDevice a = s.getAttachedDevice();
@@ -98,5 +102,83 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		}
 
 		exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
+	}
+
+	private File acquireImage(String name, Image image) throws IOException {
+		String location = image.getLocation();
+
+		if (location.startsWith("http://")) {
+			final File dest = new File("target/vbox/downloads/" + name + "/" + image.getUuid() + ".iso");
+			if (!dest.exists()) {
+				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
+				getLog().info("downloading " + location + " to " + dest);
+				FileUtils.copyURLToFile(new URL(location), dest);
+			} else {
+				getLog().info(dest + " already downloaded");
+			}
+			location = dest.toString();
+		}
+		final File i = new File(location);
+
+		if (i.isDirectory() && image instanceof FloppyImage) {
+			getLog().info("creating floppy image for " + i);
+			final File dest = new File("target/vbox/downloads/" + name + "/" + image.getUuid() + ".img");
+
+			createFloppyImage(i, dest);
+			location = dest.toString();
+		}
+
+		return new File(location);
+	}
+
+	private void createFloppyImage(File i, File dest) throws IOException {
+		final FileDisk disk = FileDisk.create(dest, 1440 * 1024);
+		final FatFileSystem fs = SuperFloppyFormatter.get(disk).format();
+		for (File file : i.listFiles()) {
+			final FatLfnDirectoryEntry fe = fs.getRoot().addFile(file.getName());
+			final FatFile floppyFile = fe.getFile();
+			if (file.isFile()) {
+				FileInputStream fis = new FileInputStream(file);
+
+				FileChannel fci = fis.getChannel();
+				ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+				long counter = 0;
+
+				//   http://www.kodejava.org/examples/49.html
+				// Here we start to read the source file and write it
+				// to the destination file. We repeat this process
+				// until the read method of input stream channel return
+				// nothing (-1).
+				while (true) {
+					// read a block of data and put it in the buffer
+					int read = fci.read(buffer);
+
+					// did we reach the end of the channel? if yes
+					// jump out the while-loop
+					if (read == -1) {
+						break;
+					}
+
+					// flip the buffer
+					buffer.flip();
+
+					// write to the destination channel
+					System.out.print(".");
+					floppyFile.write(counter * 1024, buffer);
+					counter++;
+
+					// clear the buffer and user it for the next read
+					// process
+					buffer.clear();
+				}
+
+				floppyFile.flush();
+
+				fis.close();
+			}
+		}
+		fs.close();
+		disk.close();
 	}
 }

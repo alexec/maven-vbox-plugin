@@ -20,6 +20,11 @@
                         <xs:attribute name="ms" type="xs:long" use="required"/>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="Exec">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string"/>
+                    </xs:simpleType>
+                </xs:element>
             </xs:choice>
         </xs:complexType>
     </xs:element>

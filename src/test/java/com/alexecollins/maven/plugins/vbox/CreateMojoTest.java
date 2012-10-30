@@ -24,7 +24,7 @@ public class CreateMojoTest {
 
 	@After
 	public void tearDown() throws Exception {
-		//new CleanMojo().execute(A);
+		// TODO new CleanMojo().execute(A);
 	}
 
 	@Test

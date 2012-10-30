@@ -12,24 +12,21 @@
                                         <xs:element name="HardDisks">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="HardDisk">
-                                                        <xs:complexType>
-                                                            <xs:attribute name="uuid" type="xs:ID"/>
-                                                            <xs:attribute name="size" type="xs:int"/>
-                                                        </xs:complexType>
-                                                    </xs:element>
+                                                    <xs:element name="HardDisk" type="HardDiskImage"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="DVDImages">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="DVDImage">
-                                                        <xs:complexType>
-                                                            <xs:attribute name="uuid" type="xs:string"/>
-                                                            <xs:attribute name="location" type="xs:string"/>
-                                                        </xs:complexType>
-                                                    </xs:element>
+                                                    <xs:element name="DVDImage" type="DVDImage"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="FloppyImages">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="FloppyImage" type="FloppyImage"/>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -39,6 +36,11 @@
                             <xs:element name="Hardware">
                                 <xs:complexType>
                                     <xs:sequence>
+                                        <xs:element name="Memory">
+                                            <xs:complexType>
+                                                <xs:attribute name="RAMSize" type="xs:int" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
                                         <xs:element name="Network">
                                             <xs:complexType>
                                                 <xs:sequence>
@@ -79,9 +81,9 @@
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
-                                                <xs:attribute name="name" type="xs:string"/>
+                                                <xs:attribute name="name" type="xs:string" use="required"/>
                                                 <xs:attribute name="Bootable" type="xs:boolean" default="false"/>
-                                                <xs:attribute name="type" type="StorageControllerType"/>
+                                                <xs:attribute name="type" type="StorageControllerType" use="required"/>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
@@ -102,8 +104,12 @@
     </xs:simpleType>
     <xs:simpleType name="StorageControllerType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="ide"/>
-            <xs:enumeration value="sata"/>
+            <!-- IDE -->
+            <xs:enumeration value="PIIX4"/>
+            <!-- SATA -->
+            <xs:enumeration value="AHCI"/>
+            <!-- Floppy -->
+            <xs:enumeration value="I82078"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="MachineOSType">
@@ -112,4 +118,24 @@
             <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:complexType name="Image" abstract="true">
+        <xs:attribute name="uuid" type="xs:ID" use="required"/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="location" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="HardDiskImage">
+        <xs:complexContent>
+            <xs:extension base="Image"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DVDImage">
+        <xs:complexContent>
+            <xs:extension base="Image"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FloppyImage">
+        <xs:complexContent>
+            <xs:extension base="Image"/>
+        </xs:complexContent>
+    </xs:complexType>
 </xs:schema>

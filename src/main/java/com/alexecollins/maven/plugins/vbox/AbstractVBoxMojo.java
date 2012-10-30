@@ -55,7 +55,7 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 	}
 
 	protected boolean exists(String name) {
-		return new File(getTarget(name), name + ".vbox").exists();
+		return getTarget(name).exists();
 	}
 
 	protected Set<String> getSnapshots(final String name) throws IOException, InterruptedException {
@@ -69,7 +69,7 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 		return s;
 	}
 
-	private Properties getProperties(final String name) throws IOException, InterruptedException {
+	protected Properties getProperties(final String name) throws IOException, InterruptedException {
 		return getPropertiesFromString(exec("vboxmanage", "showvminfo", name, "--machinereadable"));
 	}
 
@@ -84,14 +84,13 @@ public abstract class AbstractVBoxMojo extends AbstractMojo {
 
 	protected void awaitPowerOff(final String name, long millis) throws InterruptedException, IOException {
 		long s = System.currentTimeMillis();
-		while (!getProperties(name).get("VMState").equals("poweroff")) {
+		do {
 			getLog().debug("waiting for power off");
-			Thread.sleep(1000);
+			Thread.sleep(3000);
 			if (System.currentTimeMillis() > s + millis) {
 				throw new IllegalStateException("failed to power off in " + millis + "ms");
 			}
-		}
-		Thread.sleep(3000);
+		} while (!getProperties(name).get("VMState").equals("poweroff"));
 	}
 
 	protected String exec(String... strings) throws IOException, InterruptedException {

@@ -16,6 +16,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -109,15 +111,23 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		}
 		String line = ksc.getLine();
 		if (line != null) {
-			line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
-			line = line.replaceAll("%PORT%", String.valueOf(port));
+			line = formatConfig(name, line);
 
 			getLog().info("typing line " + line);
 
 
 			keyboardPutScanCodes(name, ArrayUtils.addAll(ScanCodes.forString(line), ScanCodes.forKey("Enter")));
 		}
+	}
 
+	private String formatConfig(final String name, String line) throws IOException, InterruptedException {
+		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
+		line = line.replaceAll("%PORT%", String.valueOf(port));
+		final Matcher m = Pattern.compile("Location: *(.*VBoxGuestAdditions\\.iso)").matcher(exec("vboxmanage", "list", "dvds"));
+		assert m.find();
+		line = line.replaceAll("%VBOX_ADDITIONS%", m.group(1));
+		line = line.replaceAll("%NAME%", name);
+		return line;
 	}
 
 	private void keyboardPutScanCodes(String name, int[] scancodes) throws IOException, InterruptedException {
