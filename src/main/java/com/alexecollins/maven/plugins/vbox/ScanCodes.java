@@ -2,10 +2,7 @@ package com.alexecollins.maven.plugins.vbox;
 
 import org.apache.commons.lang.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1077,12 +1074,17 @@ public class ScanCodes {
 // F12,,,,,,0x058
 		x.put("F12", new Integer[]{88, 216});
 // TODO  - ignoring code 0x059
+
+// special
+		x.put("\r", new Integer[]{});
+		x.put("\n", new Integer[]{28, 156});
+
 	}
 
 	public static int[] forKey(String key) {
 		final Integer[] array = x.get(key);
 		if (array == null) {
-			throw new IllegalArgumentException("invalid key <" + key + ">");
+			throw new IllegalArgumentException("invalid key <" + key + ">, bytes " + Arrays.toString(key.getBytes()));
 		}
 		return ArrayUtils.toPrimitive(array);
 	}

@@ -79,11 +79,6 @@
                 <Username>Administrator</Username>
             </AutoLogon>
             <FirstLogonCommands>
-                <SynchronousCommand wcm:action="add">
-                    <Order>1</Order>
-                    <CommandLine>cmd.exe /c a:install-vbox-guest.bat</CommandLine>
-                    <Description>Install VBox Additions</Description>
-                </SynchronousCommand>
             </FirstLogonCommands>
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>

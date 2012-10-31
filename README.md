@@ -31,12 +31,17 @@ Add this to your pom.xml:
         <executions>
             <execution>
                 <goals>
-                    <goal>recreate</goal>
+                    <goal>clean</goal>
+                    <goal>create</goal>
                     <goal>provision</goal>
                 </goals>
             </execution>
         </executions>
     </plugin>
+
+Execute:
+
+    mvn verify
 
 Usage
 ===
@@ -57,7 +62,7 @@ Definitions can be found in src/test/vbox/UbuntuServer. Typically you'd create a
             MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
             VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XMl files.
             Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
-            Provisions.xml    - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
+            Provisioning.xml  - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
 
 The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
 
@@ -65,6 +70,15 @@ You'll want to include an additional files, either a preseed.cfg for a Ubuntu VM
 
 * Mount a floppy (esp. for Windows).
 * Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/.
+
+Tokens
+---
+The following tokens are recognised in some XML documents:
+
+* %NAME% - Then name of the guest OS.
+* %IP% - The IP of the host.
+* %PORT% - The port the web server is running on.
+* %VBOX_ADDITIONS% - The path the VirtualBox Guest Additions on the host OS.
 
 Supported Host OS Types
 ===
@@ -91,7 +105,6 @@ Troubleshooting
 
 References
 ===
-* [VBoxManage|http://www.virtualbox.org/manual/ch08.html]
-* [Ubuntu/Debian preseed.cfg|https://help.ubuntu.com/10.04/installation-guide/i386/preseed-using.html]
-* [http://www.perkin.org.uk/posts/create-virtualbox-vm-from-the-command-line.html]
-* [VeeWee|https://github.com/jedi4ever/veewee]
+* [VBoxManage](http://www.virtualbox.org/manual/ch08.html)
+* [Ubuntu/Debian preseed.cfg](https://help.ubuntu.com/12.10/installation-guide/i386/preseed-using.html)
+* [VeeWee](https://github.com/jedi4ever/veewee)
