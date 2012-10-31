@@ -14,6 +14,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utils for creating disk images.
@@ -23,6 +25,8 @@ import java.util.concurrent.ExecutionException;
 public class ImageUtils {
 
 	public static void createFloppyImage(final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
+
+		// http://wiki.osdev.org/Disk_Images
 
 		assert dest.getName().endsWith(".img");
 
@@ -38,16 +42,25 @@ public class ImageUtils {
 			ZipUtils.unzip(f, f.getParentFile());
 
 			ExecUtils.exec(new File(f.getParentFile(), "bfi.exe").getCanonicalPath(), "-f=" + dest.getCanonicalPath(), source.getCanonicalPath());
-		} else {
-			// assume all other OSs are *NIX
+		} else if (os.contains("Mac")) {
+			// http://www.jedi.be/blog/2009/11/17/commandline-creation-of-msdos-floppy-on-macosx/
 			ExecUtils.exec("dd", "bs=512", "count=2880", "if=/dev/zero", "of=" + dest.getPath());
-			ExecUtils.exec("mkfs.msdos",  dest.getPath());
-			final File mnt = new File(dest.getPath() + ".mnt");
-			ExecUtils.exec("mount", "-o", "loop",  dest.getPath(), mnt.getPath());
-			FileUtils.copyDirectory(source, mnt);
-			ExecUtils.exec("umount", mnt.getPath());
-			// TODO FileUtils.deleteDirectory(mnt);
-		}
+			final String dev = ExecUtils.exec("hdid", "-nomount", dest.getPath()).trim();
+			try {
+				ExecUtils.exec("newfs_msdos", dev);
+			} finally {
+				ExecUtils.exec("hdiutil", "detach",  dev);
+			}
+			final Matcher m = Pattern.compile("  *(.*)").matcher(ExecUtils.exec("hdid", dest.getPath()));
+			assert m.find();
+			final File device = new File(m.group(1).trim());
+			try {
+				FileUtils.copyDirectory(source, device);
+			}   finally {
+				ExecUtils.exec("hdiutil", "detach", device.getPath());
+			}
+		} else
+			throw new UnsupportedOperationException("unsupported OS " + os);
 	}
 
 	private static void createFloppyImage1(final File source, final File dest) throws Exception {
