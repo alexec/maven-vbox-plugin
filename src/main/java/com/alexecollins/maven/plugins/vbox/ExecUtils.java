@@ -8,30 +8,33 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.ExecutionException;
 
 /**
- * @author alex.collins
+ * Util for executing programs.
+ *
+ * @author alex.e.c@gmail.com
  */
 public class ExecUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExecUtils.class);
 
-	public static String exec(String cmd) throws IOException, InterruptedException {
+	public static String exec(String cmd) throws IOException, InterruptedException, ExecutionException {
 		return execAux(cmd, Runtime.getRuntime().exec(cmd));
 	}
 
-	public static String exec(String... strings) throws IOException, InterruptedException {
+	public static String exec(String... strings) throws IOException, InterruptedException, ExecutionException {
 		return execAux(Joiner.on(" ").join(new ProcessBuilder(strings).command()), new ProcessBuilder(strings).start());
 	}
 
-	public static String execAux(final String command, final Process p) throws IOException, InterruptedException {
+	private static String execAux(final String command, final Process p) throws IOException, InterruptedException, ExecutionException {
 		// stdout
 		final String out = log(p.getInputStream());
 		// stderr
 		final String err = log(p.getErrorStream());
 
 		if (p.waitFor() != 0) {
-			throw new RuntimeException("failed to execute " + command + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out));
+			throw new ExecutionException("failed to execute " + command + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
 		}
 
 		return out;

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Manifest>
     <File>floppy0/Autounattend.xml</File>
-    <File>floppy0/install-vbox-guest.bat</File>
     <File>floppy0/oracle-cert.cer</File>
+    <File>floppy0/postinstall.bat</File>
 </Manifest>

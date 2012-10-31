@@ -4,18 +4,17 @@
     <Machine OSType="Ubuntu" uuid="{08126755-ee8f-41df-a240-550b6d2c2d5f}" name="UbuntuServer_12_10">
         <MediaRegistry>
             <HardDisks>
-                <HardDisk uuid="{a827fd2a-3c7b-4197-827d-b85afea0f326}"
-                          location="{a827fd2a-3c7b-4197-827d-b85afea0f326}.vdi" format="VDI"/>
+                <HardDisk uuid="hd0" location="hd0.vdi" format="VDI"/>
             </HardDisks>
             <DVDImages>
-                <DVDImage uuid="{fb58ce7f-6ade-44a1-ace0-75e858fa2378}"
-                          location="../../downloads/UbuntuServer_12_10/{fb58ce7f-6ade-44a1-ace0-75e858fa2378}.iso"/>
+                <DVDImage uuid="dvd0" location="../../downloads/UbuntuServer_12_10/dvd0.iso"/>
             </DVDImages>
             <FloppyImages>
                 <FloppyImage uuid="floppy0" location="floppy0.img"/>
             </FloppyImages>
         </MediaRegistry>
         <Hardware>
+            <CPU count="1"/>
             <Memory RAMSize="512"/>
             <Boot>
                 <Order position="1" device="DVD"/>
@@ -23,6 +22,9 @@
                 <Order position="3" device="Floppy"/>
                 <Order position="4" device="None"/>
             </Boot>
+            <BIOS>
+                <ACPI enabled="true"/>
+            </BIOS>
             <Network>
                 <Adapter slot="0">
                     <NAT/>
@@ -38,12 +40,12 @@
         <StorageControllers>
             <StorageController Bootable="true" type="PIIX4" name="IDE Controller">
                 <AttachedDevice type="DVD" port="0" device="0">
-                    <Image uuid="{fb58ce7f-6ade-44a1-ace0-75e858fa2378}"/>
+                    <Image uuid="dvd0"/>
                 </AttachedDevice>
             </StorageController>
             <StorageController Bootable="true" type="AHCI" name="SATA Controller">
                 <AttachedDevice type="HardDisk" port="0" device="0">
-                    <Image uuid="{a827fd2a-3c7b-4197-827d-b85afea0f326}"/>
+                    <Image uuid="hd0"/>
                 </AttachedDevice>
             </StorageController>
             <StorageController name="Floppy Controller" type="I82078" Bootable="false">

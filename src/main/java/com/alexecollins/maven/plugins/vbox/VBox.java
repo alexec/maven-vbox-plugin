@@ -17,11 +17,13 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author alex.collins
+ * @author alex.e.c@gmail.com
  */
 public class VBox {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VBox.class);
@@ -61,7 +63,7 @@ public class VBox {
 	/**
 	 * @return A collection of snapshot names.
 	 */
-	protected Set<Snapshot> getSnapshots() throws IOException, InterruptedException {
+	protected Set<Snapshot> getSnapshots() throws IOException, InterruptedException, ExecutionException {
 		final Set<Snapshot> s = new HashSet<Snapshot>();
 		final Properties p = getProperties();
 		for (Object o : p.keySet()) {
@@ -75,7 +77,7 @@ public class VBox {
 	/**
 	 * @return The box's properties.
 	 */
-	protected Properties getProperties() throws IOException, InterruptedException {
+	protected Properties getProperties() throws IOException, InterruptedException, ExecutionException {
 		return getPropertiesFromString(ExecUtils.exec("vboxmanage", "showvminfo", name, "--machinereadable"));
 	}
 
@@ -88,15 +90,17 @@ public class VBox {
 		return p;
 	}
 
-	protected void awaitPowerOff(long millis) throws InterruptedException, IOException {
+	protected void awaitState(final long millis, final String state) throws InterruptedException, IOException, TimeoutException, ExecutionException {
 		long s = System.currentTimeMillis();
 		do {
-			LOGGER.info("waiting for power off");
-			Thread.sleep(3000);
+			LOGGER.info("awaiting " + state);
 			if (System.currentTimeMillis() > s + millis) {
-				throw new IllegalStateException("failed to power off in " + millis + "ms");
+				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");
 			}
-		} while (!getProperties().get("VMState").equals("poweroff"));
+			Thread.sleep(10000);
+		} while (!getProperties().get("VMState").equals(state));
+
+		LOGGER.info("in state " + state);
 	}
 
 	protected VirtualBox getVirtualBox() throws IOException, URISyntaxException {
@@ -119,7 +123,7 @@ public class VBox {
 	/**
 	 * @return A collection of all DVDs.
 	 */
-	protected static Set<File> getDvds() throws IOException, InterruptedException {
+	protected static Set<File> getDvds() throws IOException, InterruptedException, ExecutionException {
 		final Matcher m = Pattern.compile("Location: *(.*VBoxGuestAdditions\\.iso)").matcher(ExecUtils.exec("vboxmanage", "list", "dvds"));
 		final HashSet<File> files = new HashSet<File>();
 		while (m.find()) {
@@ -132,7 +136,7 @@ public class VBox {
 	/**
 	 * @return The location of the guest additions, or null if not found.
 	 */
-	protected static File findGuestAdditions() throws IOException, InterruptedException {
+	protected static File findGuestAdditions() throws IOException, InterruptedException, ExecutionException {
 
 		for (String c : new String[]{
 				"C:\\Program Files\\Oracle\\VirtualBox\\VBoxGuestAdditions.iso"
@@ -150,7 +154,7 @@ public class VBox {
 	}
 
 
-	public static void installAdditions() throws IOException, InterruptedException {
+	public static void installAdditions() throws IOException, InterruptedException, ExecutionException {
 
 		if (VBox.findGuestAdditions() != null) return;
 
@@ -166,27 +170,27 @@ public class VBox {
 		return src;
 	}
 
-	public void powerOff() throws IOException, InterruptedException {
+	public void powerOff() throws IOException, InterruptedException, ExecutionException {
 		ExecUtils.exec("vboxmanage", "controlvm", name, "poweroff");
 	}
 
-	public void unregister() throws IOException, InterruptedException {
+	public void unregister() throws IOException, InterruptedException, ExecutionException {
 		ExecUtils.exec("vboxmanage", "unregistervm", name, "--delete");
 	}
 
-	public void restoreSnapshot(final Snapshot snapshot) throws IOException, InterruptedException {
+	public void restoreSnapshot(final Snapshot snapshot) throws IOException, InterruptedException, ExecutionException {
 		ExecUtils.exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
 	}
 
-	public void start() throws IOException, InterruptedException {
+	public void start() throws IOException, InterruptedException, ExecutionException {
 		ExecUtils.exec("vboxmanage", "startvm", name);
 	}
 
-	public void takeSnapshot(final Snapshot snapshot) throws IOException, InterruptedException {
+	public void takeSnapshot(final Snapshot snapshot) throws IOException, InterruptedException, ExecutionException {
 		ExecUtils.exec("vboxmanage", "snapshot", name, "take", snapshot.toString());
 	}
 
-	public void pressPowerButton() throws IOException, InterruptedException {
-		ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
+	public void pressPowerButton() throws IOException, InterruptedException, ExecutionException {
+		 ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
 	}
 }

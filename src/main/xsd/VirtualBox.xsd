@@ -16,6 +16,11 @@
                             <xs:element name="Hardware">
                                 <xs:complexType>
                                     <xs:sequence>
+                                        <xs:element name="CPU" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:attribute name="Count" type="xs:int" default="1"/>
+                                            </xs:complexType>
+                                        </xs:element>
                                         <xs:element name="Memory">
                                             <xs:complexType>
                                                 <xs:attribute name="RAMSize" type="xs:int" use="required"/>
@@ -29,6 +34,17 @@
                                                             <xs:attribute name="position" type="xs:int" use="required"/>
                                                             <xs:attribute name="device" type="OrderDevice"
                                                                           use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="BIOS" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="ACPI" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="enabled" type="xs:boolean" use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>

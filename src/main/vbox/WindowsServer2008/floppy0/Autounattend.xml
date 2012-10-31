@@ -79,6 +79,11 @@
                 <Username>Administrator</Username>
             </AutoLogon>
             <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c shutdown /s /t 0</CommandLine>
+                    <Description>Shutdown</Description>
+                    <Order>1</Order>
+                </SynchronousCommand>
             </FirstLogonCommands>
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>

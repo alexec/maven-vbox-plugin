@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Utils for converting text into keyboard scancodes.
+ *
  * @author alexec (alex.e.c@gmail.com)
  */
 public class ScanCodes {

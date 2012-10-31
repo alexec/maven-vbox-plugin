@@ -5,6 +5,9 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/**
+ * Util for unzipping files.
+ */
 public class ZipUtils {
 
 	private static final void copyInputStream(InputStream in, OutputStream out)

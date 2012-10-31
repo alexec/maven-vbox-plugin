@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -62,8 +63,10 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 					getLog().info("executing target " + stage.getName());
 					executeTarget(box, stage);
 					if (stage.equals(targets.get(targets.size() - 1))) {
-						box.pressPowerButton();
-						box.awaitPowerOff(10000);
+						if (box.getProperties().getProperty("VMState").equals("running")) {
+							box.pressPowerButton();
+							box.awaitState((long) 10000, "poweroff");
+						}
 						box.takeSnapshot(snapshot);
 					}
 				} else {
@@ -75,8 +78,8 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		}
 	}
 
-	private void executeTarget(final VBox box, final Provisioning.Target stage) throws IOException, InterruptedException, TimeoutException {
-		for (Object o : stage.getPortForwardOrAwaitPortOrKeyboardPutScanCodes()) {
+	private void executeTarget(final VBox box, final Provisioning.Target stage) throws IOException, InterruptedException, TimeoutException, ExecutionException {
+		for (Object o : stage.getPortForwardOrAwaitPortOrAwaitState()) {
 			if (o instanceof Provisioning.Target.PortForward)
 				portForward(box.getName(), (Provisioning.Target.PortForward) o);
 			else if (o instanceof Provisioning.Target.KeyboardPutScanCodes)
@@ -88,9 +91,18 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 				getLog().info("sleeping for " + seconds + " second(s)");
 				Thread.sleep(seconds * 1000);
 			} else if (o instanceof Provisioning.Target.Exec) {
-				ExecUtils.exec(formatConfig(box.getName(), ((Provisioning.Target.Exec) o).getValue()));
+				try {
+					ExecUtils.exec(formatConfig(box.getName(), ((Provisioning.Target.Exec) o).getValue()));
+				} catch (ExecutionException e) {
+					if (((Provisioning.Target.Exec) o).isFailonerror())
+						throw e;
+					else
+						getLog().info("ignoring error " + e.getMessage());
+				}
 			} else if (o instanceof Provisioning.Target.AwaitPort) {
 				awaitPort((Provisioning.Target.AwaitPort) o);
+			} else if (o instanceof Provisioning.Target.AwaitState) {
+				box.awaitState(1000 * DurationUtils.secondsForString(((Provisioning.Target.AwaitState) o).getTimeout()), ((Provisioning.Target.AwaitState) o).getState());
 			} else
 				throw new AssertionError("unexpected provision");
 		}
@@ -108,7 +120,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 				// nop
 			}
 
-			if (System.currentTimeMillis() > start + ap.getTimeout()) {
+			if (System.currentTimeMillis() > start + DurationUtils.secondsForString(ap.getTimeout())) {
 				throw new TimeoutException("timed out waiting for port localhost:" + ap.getHostport());
 			}
 
@@ -118,13 +130,13 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 	void stopServer() throws Exception {
 		if (server.isRunning()) {
-			getLog().info("stopping server");
+			getLog().info("stopping local web server");
 			server.stop();
 		}
 	}
 
 	void startServer(VBox box) throws Exception {
-		getLog().info("starting server on port " + port);
+		getLog().info("starting local web server on port " + port);
 
 		final ResourceHandler rh = new ResourceHandler();
 		final File resource = new File("target/vbox/boxes/" + box.getName());
@@ -143,7 +155,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 	}
 
-	public void keyboardPutScanCodes(String name, Provisioning.Target.KeyboardPutScanCodes ksc) throws IOException, InterruptedException {
+	public void keyboardPutScanCodes(String name, Provisioning.Target.KeyboardPutScanCodes ksc) throws IOException, InterruptedException, ExecutionException {
 
 		{
 			final String keys = ksc.getKeys();
@@ -182,7 +194,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		}
 	}
 
-	public String formatConfig(final String name, String line) throws IOException, InterruptedException {
+	public String formatConfig(final String name, String line) throws IOException, InterruptedException, ExecutionException {
 		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
 		line = line.replaceAll("%PORT%", String.valueOf(port));
 		line = line.replaceAll("%VBOX_ADDITIONS%", VBox.findGuestAdditions().getPath().replaceAll("\\\\", "/"));
@@ -190,7 +202,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		return line;
 	}
 
-	private void keyboardPutScanCodes(String name, int[] scancodes) throws IOException, InterruptedException {
+	private void keyboardPutScanCodes(String name, int[] scancodes) throws IOException, InterruptedException, ExecutionException {
 		getLog().debug("typing " + Arrays.toString(scancodes));
 
 		while (scancodes.length > 0) {
@@ -212,7 +224,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		}
 	}
 
-	private void portForward(String name, Provisioning.Target.PortForward pf) throws IOException, InterruptedException {
+	private void portForward(String name, Provisioning.Target.PortForward pf) throws IOException, InterruptedException, ExecutionException {
 		final int hostPort = pf.getHostport();
 		final int guestPort = pf.getGuestport();
 		getLog().info("adding port forward hostport=" + hostPort + " guestport=" + guestPort);

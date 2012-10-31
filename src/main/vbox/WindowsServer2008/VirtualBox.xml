@@ -20,6 +20,9 @@
                 <Order position="3" device="Floppy"/>
                 <Order position="4" device="None"/>
             </Boot>
+            <BIOS>
+                <ACPI enabled="true"/>
+            </BIOS>
             <Network>
                 <Adapter>
                     <NAT/>

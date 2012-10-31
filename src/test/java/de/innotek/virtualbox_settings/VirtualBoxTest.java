@@ -8,7 +8,7 @@ import org.junit.runners.Parameterized;
 import javax.xml.bind.JAXB;
 
 /**
- * @author alex.collins
+ * @author alex.e.c@gmail.com
  */
 @RunWith(Parameterized.class)
 public class VirtualBoxTest extends AbstractTest {

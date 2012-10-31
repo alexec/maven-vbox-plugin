@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * @author alex.collins
+ * @author alex.e.c@gmail.com
  */
 public abstract class AbstractTest {
 
@@ -15,7 +15,7 @@ public abstract class AbstractTest {
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][]{
 				{"UbuntuServer_12_10" },
-				//	{"WindowsServer2008" }
+				// TODO {"WindowsServer2008" }
 		});
 	}
 

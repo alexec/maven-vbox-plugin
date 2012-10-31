@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @goal create
@@ -45,15 +46,15 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		// set-up media
 		final Map<Object, File> idToFile = createMedia(box, t, box.getMediaRegistry());
 
-		configureMachine(box, machine);
+		configureMachine(box, machine.getHardware());
 
-		setupStorage(box, machine, idToFile);
+		setupStorage(box, machine.getStorageControllers(), idToFile);
 
 		box.takeSnapshot(snapshot);
 	}
 
 
-	private void setupStorage(final VBox box, final VirtualBox.Machine m, final Map<Object, File> idToFile) throws IOException, InterruptedException {
+	private void setupStorage(final VBox box, final VirtualBox.Machine.StorageControllers controllers, final Map<Object, File> idToFile) throws IOException, InterruptedException, ExecutionException {
 		final Map<StorageControllerType, String> x = new HashMap<StorageControllerType, String>();
 		x.put(StorageControllerType.PIIX_4, "ide");
 		x.put(StorageControllerType.AHCI, "sata");
@@ -64,7 +65,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		y.put(AttachedDeviceType.HARD_DISK, "hdd");
 		y.put(AttachedDeviceType.FLOPPY, "fdd");
 
-		for (VirtualBox.Machine.StorageControllers.StorageController s : m.getStorageControllers().getStorageController()) {
+		for (VirtualBox.Machine.StorageControllers.StorageController s : controllers.getStorageController()) {
 			final String n = s.getName();
 			getLog().debug("creating controller " + n);
 			ExecUtils.exec("vboxmanage", "storagectl", box.getName(), "--name", n, "--add", x.get(s.getType()),
@@ -84,7 +85,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		}
 	}
 
-	private Map<Object, File> createMedia(final VBox box, final File target, final MediaRegistry mr) throws IOException, InterruptedException, URISyntaxException {
+	private Map<Object, File> createMedia(final VBox box, final File target, final MediaRegistry mr) throws IOException, InterruptedException, URISyntaxException, ExecutionException {
 
 		VBox.installAdditions();
 
@@ -111,13 +112,17 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		return idToFile;
 	}
 
-	private void configureMachine(final VBox box, final VirtualBox.Machine m) throws IOException, InterruptedException {
+	private void configureMachine(final VBox box, final VirtualBox.Machine.Hardware hardware) throws IOException, InterruptedException, ExecutionException {
 		getLog().info("configuring machine");
 
 		final List<String> modifyVm = new ArrayList<String>(Arrays.asList("vboxmanage", "modifyvm", box.getName()));
-		modifyVm.addAll(Arrays.asList("--memory", String.valueOf(m.getHardware().getMemory().getRAMSize())));
+		modifyVm.addAll(Arrays.asList("--memory", String.valueOf(hardware.getMemory().getRAMSize())));
 
-		if (m.getHardware().getBoot() != null) {
+		final VirtualBox.Machine.Hardware.CPU c = hardware.getCPU();
+		modifyVm.add("--cpus");
+		modifyVm.add(String.valueOf(c != null ? c.getCount() : 1));
+
+		if (hardware.getBoot() != null) {
 			final Map<OrderDevice, String> odm = new HashMap<OrderDevice, String>();
 			getLog().info("setting boot order");
 			odm.put(OrderDevice.NONE, "none");
@@ -125,13 +130,23 @@ public class CreateMojo extends AbstractVBoxesMojo {
 			odm.put(OrderDevice.DVD, "dvd");
 			odm.put(OrderDevice.HARD_DISK, "disk");
 
-			for (VirtualBox.Machine.Hardware.Boot.Order o : m.getHardware().getBoot().getOrder()) {
+			for (VirtualBox.Machine.Hardware.Boot.Order o : hardware.getBoot().getOrder()) {
 				modifyVm.add("--boot" + o.getPosition());
 				modifyVm.add(odm.get(o.getDevice()));
 			}
 		}
 
-		for (VirtualBox.Machine.Hardware.Network.Adapter a : m.getHardware().getNetwork().getAdapter()) {
+		// http://askubuntu.com/questions/82015/shutting-down-ubuntu-server-running-in-headless-virtualbox
+		final VirtualBox.Machine.Hardware.BIOS b = hardware.getBIOS();
+		if (b != null) {
+			final VirtualBox.Machine.Hardware.BIOS.ACPI a = b.getACPI();
+			if (a !=null) {
+				modifyVm.add("--acpi");
+				modifyVm.add(a.isEnabled() ? "on" : "off");
+			}
+		}
+
+		for (VirtualBox.Machine.Hardware.Network.Adapter a : hardware.getNetwork().getAdapter()) {
 			if (a.getNAT() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + (a.getSlot() + 1), "nat"));
 			else if (a.getBridgedInterface() != null)
@@ -143,7 +158,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		ExecUtils.exec(modifyVm.toArray(new String[modifyVm.size()]));
 	}
 
-	private File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException {
+	private File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		String location = image.getLocation();
 
 		if (location.startsWith("http://")) {

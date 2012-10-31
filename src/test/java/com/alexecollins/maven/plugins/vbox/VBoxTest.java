@@ -7,7 +7,7 @@ import java.util.Properties;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author alex.collins
+ * @author alex.e.c@gmail.com
  */
 public class VBoxTest {
 

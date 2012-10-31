@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 <Manifest>
+    <File>floppy0/postinstall.sh</File>
     <File>floppy0/preseed.cfg</File>
 </Manifest>

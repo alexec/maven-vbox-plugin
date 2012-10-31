@@ -66,7 +66,7 @@ Definitions can be found in src/test/vbox/UbuntuServer. Typically you'd create a
 
 The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
 
-You'll want to include an additional files, either a preseed.cfg for a Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS.  To expose them to the VM you can either:
+You'll want to include an additional files, either a preseed.cfg for an Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS.  To expose them to the VM you can either:
 
 * Mount a floppy (esp. for Windows).
 * Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/.

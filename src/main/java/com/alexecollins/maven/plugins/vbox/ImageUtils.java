@@ -13,17 +13,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.concurrent.ExecutionException;
 
 /**
- * @author alex.collins
+ * Utils for creating disk images.
+ *
+ * @author alex.e.c@gmail.com
  */
 public class ImageUtils {
 
-	public static void createFloppyImage(final File source, final File dest) throws IOException, InterruptedException {
+	public static void createFloppyImage(final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
 
 		assert dest.getName().endsWith(".img");
-
-		// TODO - non-Windows support!
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Windows")) {
@@ -37,7 +38,16 @@ public class ImageUtils {
 			ZipUtils.unzip(f, f.getParentFile());
 
 			ExecUtils.exec(new File(f.getParentFile(), "bfi.exe").getCanonicalPath(), "-f=" + dest.getCanonicalPath(), source.getCanonicalPath());
-		} else throw new UnsupportedOperationException("cannot create image on " + os);
+		} else {
+			// assume all other OSs are *NIX
+			ExecUtils.exec("dd", "bs=512", "count=2880", "if=/dev/zero", "of=" + dest.getPath());
+			ExecUtils.exec("mkfs.msdos",  dest.getPath());
+			final File mnt = new File(dest.getPath() + ".mnt");
+			ExecUtils.exec("mount", "-o", "loop",  dest.getPath(), mnt.getPath());
+			FileUtils.copyDirectory(source, mnt);
+			ExecUtils.exec("umount", mnt.getPath());
+			// TODO FileUtils.deleteDirectory(mnt);
+		}
 	}
 
 	private static void createFloppyImage1(final File source, final File dest) throws Exception {

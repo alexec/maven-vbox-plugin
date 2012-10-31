@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
 <Provisioning>
     <Target name="install-os">
-        <Sleep seconds="5"/>
+        <Sleep seconds="10"/>
         <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>
         <Sleep seconds="1"/>
         <KeyboardPutScanCodes
                 line="/install/vmlinuz noapic preseed/file=/floppy/preseed.cfg debian-installer=en_US auto locale=en_US kbd-chooser/method=us fb=false debconf/frontend=noninteractive keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=us keyboard-configuration/variant=us console-setup/ask_detect=false initrd=/install/initrd.gz --"/>
-        <Sleep minutes="5"/>
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium none</Exec>
-    </Target>
-    <Target name="mount-vbox-additions">
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
+        <AwaitState state="poweroff" timeout="5 minutes"/>
     </Target>
     <Target name="install-vbox-additions">
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
+        <Exec failonerror="false">vboxmanage startvm %NAME%</Exec>
+        <Sleep minutes="1"/>
         <KeyboardPutScanCodes>ubuntu
 insecure
 sudo su -
@@ -20,10 +19,9 @@ insecure
 mount /dev/fd0 /media/floppy
 /media/floppy/postinstall.sh
         </KeyboardPutScanCodes>
-        <Sleep minutes="1"/>
+        <AwaitState state="poweroff" timeout="10 minute"/>
     </Target>
     <Target name="cleanup">
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 -type dvddrive --medium none</Exec>
-        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" -port 0 --device 0 -type fdd --mediumnone</Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium none</Exec>
     </Target>
 </Provisioning>

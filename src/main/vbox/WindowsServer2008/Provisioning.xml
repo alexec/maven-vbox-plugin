@@ -3,16 +3,19 @@
     <Target name="install-os">
         <Sleep seconds="30"/>
         <KeyboardPutScanCodes keys="Tab,Tab,Tab,Enter"/>
-        <PortForward hostport="13389" guestport="3389"/>
-        <AwaitPort hostport="13389" timeout="500000"/>
+        <AwaitState state="poweroff" timeout="5 minutes"/>
     </Target>
     <Target name="install-vbox-additions">
+        <Exec>vboxmanage startvm %NAME%</Exec>
+        <Sleep minutes="1"/>
         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium none</Exec>
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium %VBOX_ADDITIONS%</Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
         <KeyboardPutScanCodes line="a:\postinstall.bat"/>
-        <Sleep seconds="3"/>
+        <Sleep minutes="3"/>
     </Target>
     <Target name="cleanup">
+        <Exec>vboxmanage controlvm %NAME% acpipowerbutton</Exec>
+        <AwaitState state="poweroff" timeout="1 minute"/>
         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --medium none</Exec>
         <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" -port 0 --device 0 --medium none</Exec>
     </Target>
