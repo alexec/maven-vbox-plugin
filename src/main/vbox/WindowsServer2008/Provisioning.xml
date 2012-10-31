@@ -7,12 +7,8 @@
         <AwaitPort hostport="13389" timeout="500000"/>
     </Target>
     <Target name="install-vbox-additions">
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium
-            none
-        </Exec>
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium
-            %VBOX_ADDITIONS%
-        </Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium none</Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium %VBOX_ADDITIONS%</Exec>
         <KeyboardPutScanCodes line="a:\postinstall.bat"/>
         <Sleep seconds="3"/>
     </Target>
