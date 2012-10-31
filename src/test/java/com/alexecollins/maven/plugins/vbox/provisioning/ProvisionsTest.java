@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox.provisions;
+package com.alexecollins.maven.plugins.vbox.provisioning;
 
 import com.alexecollins.maven.plugins.vbox.AbstractTest;
 import org.junit.Test;
@@ -18,8 +18,12 @@ public class ProvisionsTest extends AbstractTest {
 
 	@Test
 	public void testGetPortForwardOrKeyboardPutScanCodesOrSleep() throws Exception {
-		final Provisions sut = JAXB.unmarshal(Provisions.class.getResource("/" + name + "/Provisions.xml"), Provisions.class);
+		final Provisioning sut = JAXB.unmarshal(Provisioning.class.getResource("/" + name + "/Provisioning.xml"), Provisioning.class);
 
-		assert sut.getPortForwardOrAwaitPortOrKeyboardPutScanCodes() != null;
+		assert sut.getTarget().size() > 0;
+		for (Provisioning.Target target : sut.getTarget()) {
+			assert target.getName() != null;
+		}
+
 	}
 }

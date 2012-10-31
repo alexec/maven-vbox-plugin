@@ -47,6 +47,6 @@ public class CleanMojo extends AbstractVBoxesMojo {
 			}
 		}*/
 
-		FileUtils.deleteDirectory(box.getTarget(outputDirectory));
+		FileUtils.deleteDirectory(box.getTarget());
 	}
 }

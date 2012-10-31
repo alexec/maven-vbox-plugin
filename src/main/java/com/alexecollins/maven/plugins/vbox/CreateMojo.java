@@ -25,7 +25,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 	protected void execute(final VBox box) throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_CREATION;
-		if (box.exists(outputDirectory) && box.getSnapshots().contains(snapshot)) {
+		if (box.exists() && box.getSnapshots().contains(snapshot)) {
 			box.restoreSnapshot(snapshot);
 			return;
 		}
@@ -37,7 +37,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 
 		assert machine != null;
 
-		final File t = box.getTarget(outputDirectory);
+		final File t = box.getTarget();
 		if (!t.exists() && !t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
 		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", machine.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
@@ -147,7 +147,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		String location = image.getLocation();
 
 		if (location.startsWith("http://")) {
-			final File dest = new File(outputDirectory + "/vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
+			final File dest = new File("target/vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
 			if (!dest.exists()) {
 				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
 				getLog().info("downloading " + location + " to " + dest);
@@ -160,10 +160,10 @@ public class CreateMojo extends AbstractVBoxesMojo {
 			location = new URI(location).getPath();
 		}
 
-		final File src = new File(basedir + "/src/main/vbox/" + box.getName(), location);
+		final File src = new File("src/main/vbox/" + box.getName(), location);
 
 		if (src.isDirectory() && image instanceof FloppyImage) {
-			final File dest = new File(box.getTarget(outputDirectory) + "/" + image.getUuid() + ".img");
+			final File dest = new File(box.getTarget() + "/" + image.getUuid() + ".img");
 
 			getLog().info("creating floppy image for " + src + " as " + dest);
 

@@ -2,9 +2,11 @@ package com.alexecollins.maven.plugins.vbox;
 
 import com.alexecollins.maven.plugins.vbox.manifest.Manifest;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
-import com.alexecollins.maven.plugins.vbox.provisions.Provisions;
+import com.alexecollins.maven.plugins.vbox.provisioning.Provisioning;
 import de.innotek.virtualbox_settings.VirtualBox;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXB;
 import java.io.File;
@@ -22,6 +24,7 @@ import java.util.regex.Pattern;
  * @author alex.collins
  */
 public class VBox {
+	private static final Logger LOGGER = LoggerFactory.getLogger(VBox.class);
 	private final URI src;
 	private final String name;
 
@@ -41,19 +44,17 @@ public class VBox {
 	}
 
 	/**
-	 * @param outputDirectory Target.
 	 * @return The target (aka work) directory for the box.
 	 */
-	protected File getTarget(final File outputDirectory) {
-		return new File(outputDirectory, "vbox/boxes/" + name);
+	protected File getTarget() {
+		return new File("target/vbox/boxes/" + name);
 	}
 
 	/**
-	 * @param outputDirectory
 	 * @return If the box exists.
 	 */
-	protected boolean exists(final File outputDirectory) {
-		return getTarget(outputDirectory).exists();
+	protected boolean exists() {
+		return getTarget().exists();
 	}
 
 
@@ -90,7 +91,7 @@ public class VBox {
 	protected void awaitPowerOff(long millis) throws InterruptedException, IOException {
 		long s = System.currentTimeMillis();
 		do {
-			System.out.println("waiting for power off");
+			LOGGER.info("waiting for power off");
 			Thread.sleep(3000);
 			if (System.currentTimeMillis() > s + millis) {
 				throw new IllegalStateException("failed to power off in " + millis + "ms");
@@ -110,8 +111,8 @@ public class VBox {
 		return JAXB.unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
 	}
 
-	protected Provisions getProvisions() throws IOException, URISyntaxException {
-		return JAXB.unmarshal(new URI(src.toString() + "/Provisions.xml").toURL().openStream(), Provisions.class);
+	protected Provisioning getProvisioning() throws IOException, URISyntaxException {
+		return JAXB.unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
 	}
 
 
@@ -136,7 +137,6 @@ public class VBox {
 		for (String c : new String[]{
 				"C:\\Program Files\\Oracle\\VirtualBox\\VBoxGuestAdditions.iso"
 		}) {
-			System.out.println(c);
 			final File f = new File(c);
 			if (f.exists()) {
 				return f;

@@ -82,8 +82,11 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 			else if (o instanceof Provisioning.Target.KeyboardPutScanCodes)
 				keyboardPutScanCodes(box.getName(), ((Provisioning.Target.KeyboardPutScanCodes) o));
 			else if (o instanceof Provisioning.Target.Sleep) {
-				getLog().info("sleeping for " + ((Provisioning.Target.Sleep) o).getMs() + "ms");
-				Thread.sleep(((Provisioning.Target.Sleep) o).getMs());
+				final Provisioning.Target.Sleep s = (Provisioning.Target.Sleep) o;
+				final long seconds = s.getMinutes() * 60 + s.getSeconds();
+
+				getLog().info("sleeping for " + seconds + " second(s)");
+				Thread.sleep(seconds * 1000);
 			} else if (o instanceof Provisioning.Target.Exec) {
 				ExecUtils.exec(formatConfig(box.getName(), ((Provisioning.Target.Exec) o).getValue()));
 			} else if (o instanceof Provisioning.Target.AwaitPort) {
