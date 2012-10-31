@@ -139,7 +139,8 @@ public class VBox {
 	protected static File findGuestAdditions() throws IOException, InterruptedException, ExecutionException {
 
 		for (String c : new String[]{
-				"C:\\Program Files\\Oracle\\VirtualBox\\VBoxGuestAdditions.iso"
+				"C:\\Program Files\\Oracle\\VirtualBox\\VBoxGuestAdditions.iso",
+				"/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"
 		}) {
 			final File f = new File(c);
 			if (f.exists()) {
