@@ -19,22 +19,15 @@ public class ExecUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExecUtils.class);
 
-	public static String exec(String cmd) throws IOException, InterruptedException, ExecutionException {
-		return execAux(cmd, Runtime.getRuntime().exec(cmd));
-	}
-
 	public static String exec(String... strings) throws IOException, InterruptedException, ExecutionException {
-		return execAux(Joiner.on(" ").join(new ProcessBuilder(strings).command()), new ProcessBuilder(strings).start());
-	}
-
-	private static String execAux(final String command, final Process p) throws IOException, InterruptedException, ExecutionException {
+		final Process p = new ProcessBuilder(strings).start();
 		// stdout
 		final String out = log(p.getInputStream());
 		// stderr
 		final String err = log(p.getErrorStream());
 
 		if (p.waitFor() != 0) {
-			throw new ExecutionException("failed to execute " + command + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
+			throw new ExecutionException("failed to execute " + Joiner.on(" ").join(new ProcessBuilder(strings).command()) + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
 		}
 
 		return out;

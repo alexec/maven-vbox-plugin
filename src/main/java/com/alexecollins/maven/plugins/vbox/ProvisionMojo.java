@@ -1,5 +1,6 @@
 package com.alexecollins.maven.plugins.vbox;
 
+import au.com.bytecode.opencsv.CSVReader;
 import com.alexecollins.maven.plugins.vbox.provisioning.Provisioning;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -9,6 +10,7 @@ import org.mortbay.resource.Resource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,7 +94,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 				Thread.sleep(seconds * 1000);
 			} else if (o instanceof Provisioning.Target.Exec) {
 				try {
-					ExecUtils.exec(formatConfig(box.getName(), ((Provisioning.Target.Exec) o).getValue()));
+					ExecUtils.exec(new CSVReader(new StringReader(formatConfig(box.getName(), ((Provisioning.Target.Exec) o).getValue())), ' ').readNext());
 				} catch (ExecutionException e) {
 					if (((Provisioning.Target.Exec) o).isFailonerror())
 						throw e;
