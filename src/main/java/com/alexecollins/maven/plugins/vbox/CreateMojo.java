@@ -173,7 +173,7 @@ public class CreateMojo extends AbstractVBoxesMojo {
 	private File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		String location = image.getLocation();
 
-		if (location.startsWith("http://")) {
+		if (location.startsWith("http://") || location.startsWith("ftp://")) {
 			final File dest = new File("target/vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
 			if (!dest.exists()) {
 				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();

@@ -5,7 +5,7 @@
     </HardDisks>
     <DVDImages>
         <DVDImage uuid="dvd0"
-                  location="http://www.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
+                  location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
     </DVDImages>
     <FloppyImages>
         <FloppyImage uuid="floppy0" location="floppy0"/>

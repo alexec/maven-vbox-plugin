@@ -2,8 +2,8 @@
 <Provisioning>
     <Target name="install-os">
         <Sleep seconds="10"/>
-        <KeyboardPutScanCodes keys="Tab"/>
-        <Sleep seconds="1"/>
+        <KeyboardPutScanCodes keys="Esc"/>
+        <Sleep seconds="2"/>
         <KeyboardPutScanCodes line="linux ks=floppy text"/>
         <AwaitState state="poweroff" timeout="20 minutes"/>
     </Target>
