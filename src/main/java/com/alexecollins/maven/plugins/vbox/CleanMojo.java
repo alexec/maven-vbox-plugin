@@ -4,6 +4,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
@@ -29,13 +32,20 @@ public class CleanMojo extends AbstractVBoxesMojo {
 		}
 
 		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
+		final List<String> disks = new ArrayList<String>();
 		while (m.find()) {
 			if (m.group().contains(box.getTarget().getPath())) {
-				final String disk = m.group(1).trim();
-				getLog().info("closing " + disk);
-				ExecUtils.exec("vboxmanage", "closemedium", "disk", disk);
+				disks.add(m.group(1).trim());
 			}
 		}
+
+		Collections.reverse(disks);
+
+		for (String disk : disks) {
+			getLog().info("closing " + disk);
+			ExecUtils.exec("vboxmanage", "closemedium", "disk", disk);
+		}
+
 
 		FileUtils.deleteDirectory(box.getTarget());
 	}

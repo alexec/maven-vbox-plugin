@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.io.File;
-
 import static org.junit.Assert.assertFalse;
 
 /**
@@ -29,10 +27,10 @@ public class CleanMojoTest extends AbstractTest {
 	@Test
 	public void test() throws Exception {
 		sut.execute(new VBox(src.toURI()));
-		assertFalse("vbox exists", new File(target, name + ".vbox").exists());
+		assertFalse("vbox exists", target.exists());
 		new CreateMojo().execute(new VBox(src.toURI()));
 		sut.execute(new VBox(src.toURI()));
-		assertFalse("vbox exists", new File(target, name + ".vbox").exists());
+		assertFalse("vbox exists", target.exists());
 		sut.execute(new VBox(src.toURI()));
 	}
 }
