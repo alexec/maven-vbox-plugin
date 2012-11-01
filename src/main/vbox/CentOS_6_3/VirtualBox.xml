@@ -7,7 +7,7 @@
                 <HardDisk uuid="hd0" location="hd0.vdi" format="VDI"/>
             </HardDisks>
             <DVDImages>
-                <DVDImage uuid="dvd0" location="../../downloads/UbuntuServer_12_10/dvd0.iso"/>
+                <DVDImage uuid="dvd0" location="../../downloads/CentOS_6_3/dvd0.iso"/>
             </DVDImages>
             <FloppyImages>
                 <FloppyImage uuid="floppy0" location="floppy0.img"/>

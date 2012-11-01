@@ -8,20 +8,21 @@
                 line="/install/vmlinuz noapic preseed/file=/floppy/preseed.cfg debian-installer=en_US auto locale=en_US kbd-chooser/method=us fb=false debconf/frontend=noninteractive keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=us keyboard-configuration/variant=us console-setup/ask_detect=false initrd=/install/initrd.gz --"/>
         <AwaitState state="poweroff" timeout="20 minutes"/>
     </Target>
-    <Target name="install-vbox-additions">
+    <Target name="run-post-install">
         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
         <Exec failonerror="false">vboxmanage startvm %NAME%</Exec>
         <Sleep minutes="1"/>
-        <KeyboardPutScanCodes>ubuntu
-insecure
+        <KeyboardPutScanCodes>tallquark
+keenbrick
 sudo su -
-insecure
+keenbrick
 mount /dev/fd0 /media/floppy
 /media/floppy/postinstall.sh
         </KeyboardPutScanCodes>
         <AwaitState state="poweroff" timeout="10 minutes"/>
     </Target>
     <Target name="cleanup">
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium none</Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --medium none</Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" -port 0 --device 0 --medium none</Exec>
     </Target>
 </Provisioning>

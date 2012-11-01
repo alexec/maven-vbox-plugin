@@ -3,6 +3,7 @@ package com.alexecollins.maven.plugins.vbox;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.FloppyImage;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.Image;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
+import com.google.common.collect.ImmutableMap;
 import de.innotek.virtualbox_settings.AttachedDeviceType;
 import de.innotek.virtualbox_settings.OrderDevice;
 import de.innotek.virtualbox_settings.StorageControllerType;
@@ -55,21 +56,24 @@ public class CreateMojo extends AbstractVBoxesMojo {
 
 
 	private void setupStorage(final VBox box, final VirtualBox.Machine.StorageControllers controllers, final Map<Object, File> idToFile) throws IOException, InterruptedException, ExecutionException {
-		final Map<StorageControllerType, String> x = new HashMap<StorageControllerType, String>();
-		x.put(StorageControllerType.PIIX_4, "ide");
-		x.put(StorageControllerType.AHCI, "sata");
-		x.put(StorageControllerType.I_82078, "floppy");
+		final Map<StorageControllerType, String> x = ImmutableMap.of(
+				StorageControllerType.PIIX_4, "ide",
+				StorageControllerType.AHCI, "sata",
+				StorageControllerType.I_82078, "floppy"
+		);
 
-		final Map<AttachedDeviceType, String> y = new HashMap<AttachedDeviceType, String>();
-		y.put(AttachedDeviceType.DVD, "dvddrive");
-		y.put(AttachedDeviceType.HARD_DISK, "hdd");
-		y.put(AttachedDeviceType.FLOPPY, "fdd");
+		final Map<AttachedDeviceType, String> y = ImmutableMap.of(
+			AttachedDeviceType.DVD, "dvddrive",
+			AttachedDeviceType.HARD_DISK, "hdd",
+			AttachedDeviceType.FLOPPY, "fdd"
+		);
 
 		for (VirtualBox.Machine.StorageControllers.StorageController s : controllers.getStorageController()) {
 			final String n = s.getName();
 			getLog().debug("creating controller " + n);
 			ExecUtils.exec("vboxmanage", "storagectl", box.getName(), "--name", n, "--add", x.get(s.getType()),
-					"--bootable", s.isBootable() ? "on" : "off");
+					"--bootable", s.isBootable() ? "on" : "off",
+					"--hostiocache", s.isUseHostIOCache() ? "on" : "off");
 
 			for (VirtualBox.Machine.StorageControllers.StorageController.AttachedDevice a : s.getAttachedDevice()) {
 				final String u = a.getImage().getUuid();
@@ -123,12 +127,12 @@ public class CreateMojo extends AbstractVBoxesMojo {
 		modifyVm.add(String.valueOf(c != null ? c.getCount() : 1));
 
 		if (hardware.getBoot() != null) {
-			final Map<OrderDevice, String> odm = new HashMap<OrderDevice, String>();
 			getLog().info("setting boot order");
-			odm.put(OrderDevice.NONE, "none");
-			odm.put(OrderDevice.FLOPPY, "floppy");
-			odm.put(OrderDevice.DVD, "dvd");
-			odm.put(OrderDevice.HARD_DISK, "disk");
+			final Map<OrderDevice, String> odm = ImmutableMap.of(
+					OrderDevice.NONE, "none",
+					OrderDevice.FLOPPY, "floppy",
+					OrderDevice.DVD, "dvd",
+					OrderDevice.HARD_DISK, "disk");
 
 			for (VirtualBox.Machine.Hardware.Boot.Order o : hardware.getBoot().getOrder()) {
 				modifyVm.add("--boot" + o.getPosition());
@@ -153,6 +157,14 @@ public class CreateMojo extends AbstractVBoxesMojo {
 				modifyVm.addAll(Arrays.asList("--nic" + (a.getSlot() + 1), "bridged", "--bridgeadapter" + a.getSlot(), a.getBridgedInterface().getName()));
 			else
 				throw new UnsupportedOperationException();
+		}
+
+		final VirtualBox.Machine.Hardware.IO io = hardware.getIO();
+		if (io != null) {
+			final VirtualBox.Machine.Hardware.IO.IOCache ic = io.getIOCache();
+			if (ic != null) {
+				// TODO nop
+			}
 		}
 
 		ExecUtils.exec(modifyVm.toArray(new String[modifyVm.size()]));

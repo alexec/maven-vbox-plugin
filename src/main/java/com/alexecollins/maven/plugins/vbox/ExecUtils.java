@@ -1,13 +1,11 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.google.common.base.Joiner;
+import au.com.bytecode.opencsv.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -27,7 +25,9 @@ public class ExecUtils {
 		final String err = log(p.getErrorStream());
 
 		if (p.waitFor() != 0) {
-			throw new ExecutionException("failed to execute " + Joiner.on(" ").join(new ProcessBuilder(strings).command()) + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
+			final StringWriter w = new StringWriter();
+			new CSVWriter(w, ' ').writeAll(Arrays.<String[]>asList(strings));
+			throw new ExecutionException("failed to execute " + w + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
 		}
 
 		return out;

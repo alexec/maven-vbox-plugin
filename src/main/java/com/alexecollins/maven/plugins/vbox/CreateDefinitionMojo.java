@@ -1,5 +1,6 @@
 package com.alexecollins.maven.plugins.vbox;
 
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -7,6 +8,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -33,13 +35,10 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 		if (!box.exists() && !new File(box.getSrc().toURL().getFile()).mkdirs())
 			throw new IllegalStateException();
 
-		for (String f : new String[]{"MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml"}) {
-			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(box.getTarget(), f));
-		}
-
-		for (String f : box.getManifest().getFile()) {
+		for (String f : ImmutableSet.<String>builder()
+				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml"))
+				.addAll(box.getManifest().getFile()).build()) {
 			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(box.getTarget(), f));
 		}
 	}
-
 }

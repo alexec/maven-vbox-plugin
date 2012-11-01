@@ -60,7 +60,7 @@ Definitions can be found in src/test/vbox/UbuntuServer. Typically you'd create a
     src/main/vbox/
         UbuntuServer/         - The name of the server.
             MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
-            VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XMl files.
+            VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XML files.
             Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
             Provisioning.xml  - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
 
@@ -80,6 +80,10 @@ The following tokens are recognised in some XML documents:
 * %PORT% - The port the web server is running on.
 * %VBOX_ADDITIONS% - The path the VirtualBox Guest Additions on the host OS.
 
+Authentication
+---
+By default the username is "tallquark" and the default password "keenbrick".
+
 Supported Host OS Types
 ===
 * Mac OS-X
@@ -89,6 +93,7 @@ Unlisted OSs should all work.
 
 Supported Guest OS Types/Supplied Definitions
 ===
+* CentOS_6_3
 * UbuntuServer_12_10
 * WindowsServer2008
 

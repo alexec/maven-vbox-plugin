@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @goal clean
@@ -26,12 +28,14 @@ public class CleanMojo extends AbstractVBoxesMojo {
 			box.unregister();
 		}
 
-/*		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
+		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		while (m.find()) {
-			if (m.group().contains(name)) {
-				ExecUtils.exec("vboxmanage", "closemedium", "disk", m.group(1).trim());
+			if (m.group().contains(box.getTarget().getPath())) {
+				final String disk = m.group(1).trim();
+				getLog().info("closing " + disk);
+				ExecUtils.exec("vboxmanage", "closemedium", "disk", disk);
 			}
-		}*/
+		}
 
 		FileUtils.deleteDirectory(box.getTarget());
 	}

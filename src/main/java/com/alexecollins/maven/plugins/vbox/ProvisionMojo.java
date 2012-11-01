@@ -25,8 +25,7 @@ import java.util.concurrent.TimeoutException;
  * @phase pre-integration-test
  */
 public class ProvisionMojo extends AbstractVBoxesMojo {
-	private final int port = 10350;
-	private final Server server = new Server(port);
+	private final Server server;
 
 	/**
 	 * Which targets to do, or all if "*".
@@ -34,6 +33,10 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	 * @parameter expression="${vbox.provision.targets}", default="*"
 	 */
 	protected String targets = "*";
+
+	public ProvisionMojo() throws IOException {
+		server = new Server(findFreePort());
+	}
 
 	@Override
 	protected void execute(VBox box) throws Exception {
@@ -45,10 +48,6 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		}
 
 		getLog().info("provisioning '" + box.getName() + "'");
-		if (!box.getProperties().getProperty("VMState").equals("running")) {
-			box.start();
-		}
-
 		for (String f : box.getManifest().getFile()) {
 			final File d = new File(box.getTarget(), f);
 			if (!d.exists())
@@ -60,19 +59,24 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 			final List<String> allowedTargets = Arrays.asList(this.targets.split(","));
 
 			final List<Provisioning.Target> targets = box.getProvisioning().getTarget();
-			for (Provisioning.Target stage : targets) {
-				if (allowedTargets.contains(stage.getName()) || allowedTargets.equals(Collections.singletonList("*"))) {
-					getLog().info("executing target " + stage.getName());
-					executeTarget(box, stage);
-					if (stage.equals(targets.get(targets.size() - 1))) {
+			for (Provisioning.Target target : targets) {
+				if (allowedTargets.contains(target.getName()) || allowedTargets.equals(Collections.singletonList("*"))) {
+					getLog().info("executing target " + target.getName());
+					if (target.equals(targets.get(0)) && !box.getProperties().getProperty("VMState").equals("running")) {
+						getLog().info("starting box");
+						box.start();
+					}
+					executeTarget(box, target);
+					if (target.equals(targets.get(targets.size() - 1))) {
 						if (box.getProperties().getProperty("VMState").equals("running")) {
+							getLog().info("stopping box");
 							box.pressPowerButton();
 							box.awaitState((long) 10000, "poweroff");
 						}
 						box.takeSnapshot(snapshot);
 					}
 				} else {
-					getLog().info("skipping target " + stage.getName());
+					getLog().info("skipping target " + target.getName());
 				}
 			}
 		} finally {
@@ -138,7 +142,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	}
 
 	void startServer(VBox box) throws Exception {
-		getLog().info("starting local web server on port " + port);
+		getLog().info("starting local web server on port " + getServerPort());
 
 		final ResourceHandler rh = new ResourceHandler();
 		final File resource = new File("target/vbox/boxes/" + box.getName());
@@ -148,13 +152,20 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		server.setHandler(rh);
 		server.start();
 
-		final URL u = new URL("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port);
+		final URL u = new URL("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + getServerPort());
 		getLog().info("testing server by getting " + u);
 		final HttpURLConnection c = (HttpURLConnection) u.openConnection();
 		c.connect();
 		if (403 != c.getResponseCode()) throw new IllegalStateException(c.getResponseMessage());
 		c.disconnect();
 
+	}
+
+	private  static int findFreePort() throws IOException {
+		final ServerSocket server = new ServerSocket(0);
+		final int port = server.getLocalPort();
+		server.close();
+		return port;
 	}
 
 	public void keyboardPutScanCodes(String name, Provisioning.Target.KeyboardPutScanCodes ksc) throws IOException, InterruptedException, ExecutionException {
@@ -198,7 +209,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 
 	public String formatConfig(final String name, String line) throws IOException, InterruptedException, ExecutionException {
 		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
-		line = line.replaceAll("%PORT%", String.valueOf(port));
+		line = line.replaceAll("%PORT%", String.valueOf(getServerPort()));
 		line = line.replaceAll("%VBOX_ADDITIONS%", VBox.findGuestAdditions().getPath().replaceAll("\\\\", "/"));
 		line = line.replaceAll("%NAME%", name);
 		return line;
@@ -233,5 +244,9 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 		ExecUtils.exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/HostPort", String.valueOf(hostPort));
 		ExecUtils.exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/GuestPort", String.valueOf(guestPort));
 		ExecUtils.exec("vboxmanage", "setextradata", name, "VBoxInternal/Devices/e1000/0/LUN#0/Config/" + guestPort + "/Protocol", "TCP");
+	}
+
+	public int getServerPort() {
+		return server.getConnectors()[0].getPort();
 	}
 }

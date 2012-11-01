@@ -72,7 +72,7 @@
                    xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
             <AutoLogon>
                 <Password>
-                    <Value>123456</Value>
+                    <Value>keenbrick</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
@@ -92,7 +92,7 @@
             </OOBE>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>123456</Value>
+                    <Value>keenbrick</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
             </UserAccounts>
