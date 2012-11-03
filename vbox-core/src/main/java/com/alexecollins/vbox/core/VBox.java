@@ -32,6 +32,9 @@ public class VBox {
 	private final String name;
 
 	public VBox(final URI src) {
+
+		if (src == null) {throw new IllegalArgumentException("src is null");};
+
 		this.src = src;
 
 		final String p = src.getPath();

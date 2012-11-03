@@ -18,7 +18,21 @@ To provide support for:
 
 Ant
 ===
-TODO
+Quick Start
+---
+Add this to your build.xml:
+
+    <project name="vbox-ant-tasks" default="use">
+        <target name="use">
+            <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
+
+            <create-definition name="CentOS_6_3"/>
+        </target>
+    </project>
+
+Add the vbox-ant-tasks-*.jar to Ant's class path.
+
+TODO - more here
 
 Maven
 ===

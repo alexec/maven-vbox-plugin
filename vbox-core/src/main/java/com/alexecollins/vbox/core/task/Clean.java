@@ -52,6 +52,7 @@ public class Clean implements Invokable {
 		}
 
 
+		LOGGER.debug("deleting " +  box.getTarget());
 		FileUtils.deleteDirectory(box.getTarget());
 	}
 }

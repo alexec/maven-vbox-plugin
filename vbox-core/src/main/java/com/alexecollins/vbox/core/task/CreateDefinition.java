@@ -4,6 +4,8 @@ import com.alexecollins.util.Invokable;
 import com.alexecollins.vbox.core.VBox;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ import java.util.Arrays;
  * @author alexec (alex.e.c@gmail.com)
  */
 public class CreateDefinition implements Invokable {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CreateDefinition.class);
 	private final VBox box;
 
 	public CreateDefinition(VBox box) {
@@ -20,13 +23,16 @@ public class CreateDefinition implements Invokable {
 
 	public void invoke() throws Exception {
 
-		if (!box.exists() && !new File(box.getSrc().toURL().getFile()).mkdirs())
-			throw new IllegalStateException();
+		final File out = new File("src/main/vbox/" + box.getName());
+		if (!out.exists() && !out.mkdirs())
+			throw new IllegalStateException(box.getName() + " does not exit and cannot create " + out);
 
 		for (String f : ImmutableSet.<String>builder()
 				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml"))
 				.addAll(box.getManifest().getFile()).build()) {
-			FileUtils.copyURLToFile(getClass().getResource("/" + box.getName() + "/" + f), new File(box.getTarget(), f));
+			FileUtils.copyURLToFile(getClass().getResource("/" + box.getName() + "/" + f), new File(out, f));
 		}
+
+		LOGGER.info("created " + out);
 	}
 }
