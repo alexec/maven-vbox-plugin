@@ -28,6 +28,6 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 	}
 
 	void createDefn(VBox box) throws Exception {
-	   new CreateDefinition(box, box.getTarget()).invoke();
+	   new CreateDefinition(name, box.getTarget()).invoke();
 	}
 }

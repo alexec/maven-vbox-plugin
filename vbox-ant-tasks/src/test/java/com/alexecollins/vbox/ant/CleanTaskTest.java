@@ -12,6 +12,7 @@ public class CleanTaskTest extends AbstractTaskTest {
 	public void testExecute() throws Exception {
 		final CreateDefinitionTask defn = new CreateDefinitionTask();
 		defn.setName("CentOS_6_3");
+		defn.setDir(dir);
 		defn.execute();
 		final CleanTask sut = new CleanTask();
 		sut.setDir(dir);
