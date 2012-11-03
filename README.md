@@ -16,6 +16,18 @@ To provide support for:
 * Multiple VMs per project.
 * Not to be a replacement for VeeWee, Vagrant, Chef or Puppet.
 
+Usage
+===
+The main mojos/tasks are:
+
+* clean - deletes VMs
+* create - creates VMs
+* provision - provisions VMs
+
+Additionally, a mojo for creating VM templates:
+
+* create-definition - creates a VM template definition
+
 Ant
 ===
 Quick Start
@@ -37,6 +49,8 @@ Add this to your build.xml:
     </project>
 
 Add the vbox-ant-tasks-*.jar to Ant's class path.
+
+Ant tasks do not currently allow you to do multiple VMs in a single command. You'll need to use multiple ones.
 
 Maven
 ===
@@ -67,19 +81,11 @@ Execute:
 
     mvn verify
 
-Usage
----
-The main mojos are:
+Maven searches for VM definitions (see below) under src/main/vbox.
 
-* clean - deletes all VMs
-* create - creates all VMs
-* provision - provisions all VMs
-
-Additionally, a mojo for creating VM templates:
-
-* create-definition - creates a VM template definition
-
-Definitions can be found in src/test/vbox/UbuntuServer. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be named "UbuntuServer":
+Definitions
+===
+Definitions can be found in src/test/vbox. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be named "UbuntuServer":
 
     src/main/vbox/
         UbuntuServer/         - The name of the server.
