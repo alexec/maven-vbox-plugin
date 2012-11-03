@@ -58,7 +58,7 @@ Quick Start
 ---
 Execute this:
 
-    mvn com.alexecollins.maven.plugins.vbox:create-definition -Dvbox.name=UbuntuServer_12_10
+    mvn com.alexecollins.vbox:vbox-maven-plugins:create-definition -Dvbox.name=UbuntuServer_12_10
 
 Add this to your pom.xml:
 
