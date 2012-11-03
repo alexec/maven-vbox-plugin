@@ -57,7 +57,7 @@ public class Provision implements Invokable{
 		try {
 			final List<Provisioning.Target> targets = box.getProvisioning().getTarget();
 			for (Provisioning.Target target : targets) {
-				if (this.targets.contains(target.getName()) || this.targets.equals(Collections.singletonList("*"))) {
+				if (this.targets.contains(target.getName()) || this.targets.equals(Collections.<String>singleton("*"))) {
 					LOGGER.info("executing target " + target.getName());
 					if (target.equals(targets.get(0)) && !box.getProperties().getProperty("VMState").equals("running")) {
 						LOGGER.info("starting box");
