@@ -1,5 +1,7 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.mojo;
 
+import com.alexecollins.maven.plugins.vbox.util.ExecUtils;
+import com.alexecollins.maven.plugins.vbox.VBox;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.util;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import org.slf4j.Logger;

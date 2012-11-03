@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.mojo;
 
 
 import org.apache.maven.plugin.AbstractMojo;

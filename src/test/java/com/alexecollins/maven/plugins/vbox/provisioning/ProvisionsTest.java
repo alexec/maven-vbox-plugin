@@ -1,6 +1,6 @@
 package com.alexecollins.maven.plugins.vbox.provisioning;
 
-import com.alexecollins.maven.plugins.vbox.AbstractTest;
+import com.alexecollins.maven.plugins.vbox.mojo.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

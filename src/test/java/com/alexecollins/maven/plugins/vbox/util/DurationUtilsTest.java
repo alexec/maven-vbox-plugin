@@ -1,5 +1,6 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.util;
 
+import com.alexecollins.maven.plugins.vbox.util.DurationUtils;
 import org.junit.Test;
 
 /**

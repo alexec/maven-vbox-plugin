@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.util;
 
 import de.waldheinz.fs.fat.FatFile;
 import de.waldheinz.fs.fat.FatFileSystem;

@@ -3,6 +3,7 @@ package com.alexecollins.maven.plugins.vbox;
 import com.alexecollins.maven.plugins.vbox.manifest.Manifest;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
 import com.alexecollins.maven.plugins.vbox.provisioning.Provisioning;
+import com.alexecollins.maven.plugins.vbox.util.ExecUtils;
 import de.innotek.virtualbox_settings.VirtualBox;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -48,14 +49,14 @@ public class VBox {
 	/**
 	 * @return The target (aka work) directory for the box.
 	 */
-	protected File getTarget() {
+	public File getTarget() {
 		return new File("target/vbox/boxes/" + name);
 	}
 
 	/**
 	 * @return If the box exists.
 	 */
-	protected boolean exists() {
+	public boolean exists() {
 		return getTarget().exists();
 	}
 
@@ -63,7 +64,7 @@ public class VBox {
 	/**
 	 * @return A collection of snapshot names.
 	 */
-	protected Set<Snapshot> getSnapshots() throws IOException, InterruptedException, ExecutionException {
+	public Set<Snapshot> getSnapshots() throws IOException, InterruptedException, ExecutionException {
 		final Set<Snapshot> s = new HashSet<Snapshot>();
 		final Properties p = getProperties();
 		for (Object o : p.keySet()) {
@@ -77,7 +78,7 @@ public class VBox {
 	/**
 	 * @return The box's properties.
 	 */
-	protected Properties getProperties() throws IOException, InterruptedException, ExecutionException {
+	public Properties getProperties() throws IOException, InterruptedException, ExecutionException {
 		return getPropertiesFromString(ExecUtils.exec("vboxmanage", "showvminfo", name, "--machinereadable"));
 	}
 
@@ -90,7 +91,7 @@ public class VBox {
 		return p;
 	}
 
-	protected void awaitState(final long millis, final String state) throws InterruptedException, IOException, TimeoutException, ExecutionException {
+	public void awaitState(final long millis, final String state) throws InterruptedException, IOException, TimeoutException, ExecutionException {
 		long s = System.currentTimeMillis();
 		do {
 			LOGGER.info("awaiting " + state);
@@ -103,19 +104,19 @@ public class VBox {
 		LOGGER.info("in state " + state);
 	}
 
-	protected VirtualBox getVirtualBox() throws IOException, URISyntaxException {
+	public VirtualBox getVirtualBox() throws IOException, URISyntaxException {
 		return JAXB.unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
 	}
 
-	protected MediaRegistry getMediaRegistry() throws IOException, URISyntaxException {
+	public MediaRegistry getMediaRegistry() throws IOException, URISyntaxException {
 		return JAXB.unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
 	}
 
-	protected Manifest getManifest() throws IOException, URISyntaxException {
+	public Manifest getManifest() throws IOException, URISyntaxException {
 		return JAXB.unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
 	}
 
-	protected Provisioning getProvisioning() throws IOException, URISyntaxException {
+	public Provisioning getProvisioning() throws IOException, URISyntaxException {
 		return JAXB.unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
 	}
 
@@ -136,7 +137,7 @@ public class VBox {
 	/**
 	 * @return The location of the guest additions, or null if not found.
 	 */
-	protected static File findGuestAdditions() throws IOException, InterruptedException, ExecutionException {
+	public static File findGuestAdditions() throws IOException, InterruptedException, ExecutionException {
 
 		for (String c : new String[]{
 				"C:\\Program Files\\Oracle\\VirtualBox\\VBoxGuestAdditions.iso",

@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.util;
 
 import java.io.*;
 import java.util.Enumeration;

@@ -1,7 +1,10 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.mojo;
 
 import au.com.bytecode.opencsv.CSVReader;
+import com.alexecollins.maven.plugins.vbox.*;
 import com.alexecollins.maven.plugins.vbox.provisioning.Provisioning;
+import com.alexecollins.maven.plugins.vbox.util.DurationUtils;
+import com.alexecollins.maven.plugins.vbox.util.ExecUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.mortbay.jetty.Server;

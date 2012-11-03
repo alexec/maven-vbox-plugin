@@ -1,5 +1,9 @@
-package com.alexecollins.maven.plugins.vbox;
+package com.alexecollins.maven.plugins.vbox.mojo;
 
+import com.alexecollins.maven.plugins.vbox.util.ExecUtils;
+import com.alexecollins.maven.plugins.vbox.util.ImageUtils;
+import com.alexecollins.maven.plugins.vbox.Snapshot;
+import com.alexecollins.maven.plugins.vbox.VBox;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.FloppyImage;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.Image;
 import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
