@@ -37,7 +37,10 @@ public class VBox {
 
 		this.src = src;
 
-		final String p = src.getPath();
+		final String p = src.toString();
+
+		if (p == null) {throw new IllegalStateException(src + " has null path");}
+
 		final String q = p.endsWith("/") ? p.substring(0, p.length() - 1) : p;
 		name = q.substring(q.lastIndexOf('/') + 1);
 	}
