@@ -49,20 +49,6 @@ public class VBox {
 		return name;
 	}
 
-	/**
-	 * @return The target (aka work) directory for the box.
-	 */
-	public File getTarget() {
-		return new File("target/vbox/boxes/" + name);
-	}
-
-	/**
-	 * @return If the box exists.
-	 */
-	public boolean exists() {
-		return getTarget().exists();
-	}
-
 
 	/**
 	 * @return A collection of snapshot names.
@@ -159,11 +145,11 @@ public class VBox {
 	}
 
 
-	public static void installAdditions() throws IOException, InterruptedException, ExecutionException {
+	public static void installAdditions(File work) throws IOException, InterruptedException, ExecutionException {
 
 		if (VBox.findGuestAdditions() != null) return;
 
-		final File file = new File("target/vbox/downloads/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack");
+		final File file = new File(work, "vbox/downloads/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack");
 		if (!file.exists()) {
 			FileUtils.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/4.1.22/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack"), file);
 		}

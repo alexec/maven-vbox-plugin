@@ -10,6 +10,7 @@ public class CreateTaskTest extends AbstractTaskTest {
 	public void testExecute() throws Exception {
 		final CreateTask sut = new CreateTask();
 		sut.setDir(dir);
+		sut.setWork("target");
 		sut.execute();
 	}
 }

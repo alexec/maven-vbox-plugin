@@ -25,14 +25,18 @@ Add this to your build.xml:
     <project name="vbox-ant-tasks" default="use">
         <target name="use">
             <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
+            <taskdef name="clean" classname="com.alexecollins.vbox.ant.CleanTask"/>
+            <taskdef name="create" classname="com.alexecollins.vbox.ant.CreateTask"/>
+            <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
 
-            <create-definition name="CentOS_6_3"/>
+            <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
+            <clean dir="src/vbox/CentOS_6_3" work="build"/>
+            <create dir="src/vbox/CentOS_6_3" work="build"/>
+            <provision dir="src/vbox/CentOS_6_3" work="build"/>
         </target>
     </project>
 
 Add the vbox-ant-tasks-*.jar to Ant's class path.
-
-TODO - more here
 
 Maven
 ===

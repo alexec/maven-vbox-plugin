@@ -4,8 +4,6 @@ import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.Clean;
 import org.apache.tools.ant.BuildException;
 
-import java.io.File;
-
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
@@ -16,8 +14,9 @@ public class CleanTask extends AbstractTask {
 		if (dir == null) {
 			throw new BuildException("dir is null");
 		}
+		if (work == null) {throw new BuildException("work is null");}
 		try {
-			new Clean(new VBox(new File(dir).toURI())).invoke();
+			new Clean(work, new VBox(dir.toURI())).invoke();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

@@ -1,10 +1,9 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.util.Invokable;
-import com.alexecollins.vbox.core.Snapshot;
-import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.util.ExecUtils;
 import com.alexecollins.util.ImageUtils;
+import com.alexecollins.vbox.core.Snapshot;
+import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.mediaregistry.FloppyImage;
 import com.alexecollins.vbox.mediaregistry.Image;
 import com.alexecollins.vbox.mediaregistry.MediaRegistry;
@@ -25,18 +24,19 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class Create implements Invokable {
+public class Create extends AbstractInvokable  {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
 	private final VBox box;
 
-	public Create(final VBox box) {
+	public Create(final File work, final VBox box) {
+		super(work);
 		this.box = box;
 	}
 
 	public void invoke() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_CREATION;
-		if (box.exists() && box.getSnapshots().contains(snapshot)) {
+		if (exists(box) && box.getSnapshots().contains(snapshot)) {
 			box.restoreSnapshot(snapshot);
 			return;
 		}
@@ -48,7 +48,7 @@ public class Create implements Invokable {
 
 		assert machine != null;
 
-		final File t = box.getTarget();
+		final File t = getTarget(box);
 		if (!t.exists() && !t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
 		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", machine.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
@@ -99,7 +99,7 @@ public class Create implements Invokable {
 
 	private Map<Object, File> createMedia(final VBox box, final File target, final MediaRegistry mr) throws IOException, InterruptedException, URISyntaxException, ExecutionException {
 
-		VBox.installAdditions();
+		VBox.installAdditions(work);
 
 		final Image hd = mr.getHardDisks().getHardDisk();
 
@@ -182,7 +182,7 @@ public class Create implements Invokable {
 		String location = image.getLocation();
 
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
-			final File dest = new File("target/vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
+			final File dest = new File(work, "vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
 			if (!dest.exists()) {
 				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
 				LOGGER.info("downloading " + location + " to " + dest);
@@ -198,11 +198,11 @@ public class Create implements Invokable {
 		final File src = new File("src/main/vbox/" + box.getName(), location);
 
 		if (src.isDirectory() && image instanceof FloppyImage) {
-			final File dest = new File(box.getTarget() + "/" + image.getUuid() + ".img");
+			final File dest = new File(getTarget(box), image.getUuid() + ".img");
 
 			LOGGER.info("creating floppy image for " + src + " as " + dest);
 
-			ImageUtils.createFloppyImage(src, dest);
+			ImageUtils.createFloppyImage(work, src, dest);
 
 			location = dest.toString();
 		}

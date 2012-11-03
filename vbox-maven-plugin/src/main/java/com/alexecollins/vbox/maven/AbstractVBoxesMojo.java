@@ -20,6 +20,7 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 	 * @parameter expression="${vbox.names}", default="*"
 	 */
 	protected String names = "*";
+	final File work = new File("target");
 
 	public void execute() throws MojoExecutionException {
 

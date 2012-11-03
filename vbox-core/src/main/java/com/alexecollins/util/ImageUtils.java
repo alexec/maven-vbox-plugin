@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class ImageUtils {
 
-	public static void createFloppyImage(final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
+	public static void createFloppyImage(File work, final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
 
 		// http://wiki.osdev.org/Disk_Images
 
@@ -25,7 +25,7 @@ public class ImageUtils {
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Windows")) {
-			final File f = new File("target/vbox/downloads", "bfi10.zip");
+			final File f = new File(work, "vbox/downloads/bfi10.zip");
 
 			if (!f.exists())
 				FileUtils.copyURLToFile(new URL("ftp://dl.xs4all.nl/pub/mirror/nu2files/bfi10.zip"), f);

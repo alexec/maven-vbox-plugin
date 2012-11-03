@@ -8,7 +8,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/vbox" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/jaxb" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target/boxes" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/downloads" />
       <excludeFolder url="file://$MODULE_DIR$/target/jaxb2" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />

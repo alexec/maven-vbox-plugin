@@ -1,12 +1,11 @@
 package com.alexecollins.vbox.core.task;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.alexecollins.util.Invokable;
+import com.alexecollins.util.DurationUtils;
+import com.alexecollins.util.ExecUtils;
 import com.alexecollins.vbox.core.ScanCodes;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
-import com.alexecollins.util.DurationUtils;
-import com.alexecollins.util.ExecUtils;
 import com.alexecollins.vbox.provisioning.Provisioning;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -24,14 +23,15 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-public class Provision implements Invokable{
+public class Provision extends AbstractInvokable{
 	private static final Logger LOGGER = LoggerFactory.getLogger(Provision.class);
 	private final Server server;
 	private final VBox box;
 	private final Set<String> targets;
 
 
-	public Provision(VBox box, Set<String> targets) throws IOException {
+	public Provision(File work, VBox box, Set<String> targets) throws IOException {
+		super(work);
 		this.box = box;
 		this.targets = targets;
 
@@ -41,14 +41,14 @@ public class Provision implements Invokable{
 	public void invoke() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
-		if (box.exists() && box.getSnapshots().contains(snapshot.toString())) {
+		if (exists(box) && box.getSnapshots().contains(snapshot.toString())) {
 			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
 			return;
 		}
 
 		LOGGER.info("provisioning '" + box.getName() + "'");
 		for (String f : box.getManifest().getFile()) {
-			final File d = new File(box.getTarget(), f);
+			final File d = new File(getTarget(box), f);
 			if (!d.exists())
 				FileUtils.copyURLToFile(new URL(box.getSrc() + "/" + f), d);
 		}
@@ -142,7 +142,7 @@ public class Provision implements Invokable{
 		LOGGER.info("starting local web server on port " + getServerPort());
 
 		final ResourceHandler rh = new ResourceHandler();
-		final File resource = new File("target/vbox/boxes/" + box.getName());
+		final File resource = new File(work, "vbox/boxes/" + box.getName());
 		LOGGER.debug("resource " + resource);
 		assert resource.exists();
 		rh.setBaseResource(Resource.newResource(resource.toURI().toURL()));

@@ -1,12 +1,12 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.util.Invokable;
-import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.util.ExecUtils;
+import com.alexecollins.vbox.core.VBox;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,11 +16,12 @@ import java.util.regex.Pattern;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class Clean implements Invokable {
+public class Clean extends AbstractInvokable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Clean.class);
 	private final VBox box;
 
-	public Clean(VBox box) {
+	public Clean(File work, VBox box) {
+		super(work);
 		this.box = box;
 	}
 
@@ -39,7 +40,7 @@ public class Clean implements Invokable {
 		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		final List<String> disks = new ArrayList<String>();
 		while (m.find()) {
-			if (m.group().contains(box.getTarget().getPath())) {
+			if (m.group().contains(getTarget(box).getPath())) {
 				disks.add(m.group(1).trim());
 			}
 		}
@@ -52,7 +53,7 @@ public class Clean implements Invokable {
 		}
 
 
-		LOGGER.debug("deleting " +  box.getTarget());
-		FileUtils.deleteDirectory(box.getTarget());
+		LOGGER.debug("deleting " + getTarget(box));
+		FileUtils.deleteDirectory(getTarget(box));
 	}
 }

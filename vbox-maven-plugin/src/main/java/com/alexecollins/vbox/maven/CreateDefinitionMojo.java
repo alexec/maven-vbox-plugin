@@ -1,6 +1,5 @@
 package com.alexecollins.vbox.maven;
 
-import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.CreateDefinition;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -21,13 +20,9 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
-			createDefn(new VBox(new File("src/main/vbox/" + name).toURI()));
+			new CreateDefinition(name, new File("src/main/vbox/" + name)).invoke();
 		} catch (Exception e) {
 			throw new MojoExecutionException("failed to create definition", e);
 		}
-	}
-
-	void createDefn(VBox box) throws Exception {
-	   new CreateDefinition(name, box.getTarget()).invoke();
 	}
 }

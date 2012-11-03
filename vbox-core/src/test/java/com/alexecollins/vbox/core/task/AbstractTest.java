@@ -24,11 +24,12 @@ public abstract class AbstractTest {
 	public final String name;
 	protected final File src;
 	final File target;
+	File work = new File("target");
 
 	public AbstractTest(final String name) {
 		this.name = name;
 		System.out.println("name=" + name);
 		src = new File("src/main/vbox/" + name);
-		target = new File("target/vbox/boxes/" + name);
+		target = new File(work, "vbox/boxes/" + name);
 	}
 }

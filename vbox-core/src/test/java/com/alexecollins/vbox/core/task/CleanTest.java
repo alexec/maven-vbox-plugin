@@ -24,14 +24,14 @@ public class CleanTest extends AbstractTest {
 	@Before
 	public void setUp() throws Exception {
 		box = new VBox(src.toURI());
-		sut = new Clean(box);
+		sut = new Clean(work,box);
 	}
 
 	@Test
 	public void test() throws Exception {
 		sut.invoke();
 		assertFalse("vbox exists", target.exists());
-		new Create(box).invoke();
+		new Create(work,box).invoke();
 		sut.invoke();
 		assertFalse("vbox exists", target.exists());
 		sut.invoke();

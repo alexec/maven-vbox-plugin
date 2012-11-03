@@ -3,8 +3,6 @@ package com.alexecollins.vbox.ant;
 import com.alexecollins.vbox.core.task.CreateDefinition;
 import org.apache.tools.ant.BuildException;
 
-import java.io.File;
-
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
@@ -25,7 +23,7 @@ public class CreateDefinitionTask extends AbstractTask {
 			throw new BuildException("dir is null");
 		}
 		try {
-			new CreateDefinition(name, new File(dir)).invoke();
+			new CreateDefinition(name, dir).invoke();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

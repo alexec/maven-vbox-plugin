@@ -6,8 +6,8 @@
         <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
 
         <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
-        <clean dir="src/vbox/CentOS_6_3" todir="build/vbox/CentOS_6_3"/>
-        <create dir="src/vbox/CentOS_6_3" todir="build/vbox/CentOS_6_3"/>
-        <provision dir="src/vbox/CentOS_6_3" todir="build/vbox/CentOS_6_3"/>
+        <clean dir="src/vbox/CentOS_6_3" work="build"/>
+        <create dir="src/vbox/CentOS_6_3" work="build"/>
+        <provision dir="src/vbox/CentOS_6_3" work="build"/>
     </target>
 </project>

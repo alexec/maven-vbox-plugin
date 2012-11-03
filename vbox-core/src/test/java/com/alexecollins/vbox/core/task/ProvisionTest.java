@@ -24,7 +24,7 @@ public class ProvisionTest extends AbstractTest {
 
 	@Before
 	public  void setUp() throws Exception {
-		sut = new Provision(vBox, Collections.<String>singleton("*"));
+		sut = new Provision(work, vBox, Collections.<String>singleton("*"));
 	}
 
 	@After
@@ -36,8 +36,8 @@ public class ProvisionTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		new Clean(vBox).invoke();
-		new Create(vBox).invoke();
+		new Clean(work,vBox).invoke();
+		new Create(work,vBox).invoke();
 		sut.invoke();
 	}
 

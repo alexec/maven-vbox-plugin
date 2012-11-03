@@ -10,9 +10,11 @@ public class ProvisionTaskTest extends AbstractTaskTest {
 	public void testExecute() throws Exception {
 		final CreateTask create = new CreateTask();
 		create.setDir(dir);
+		create.setWork("target");
 		create.execute();
 		final ProvisionTask sut = new ProvisionTask();
 		sut.setDir(dir);
+		sut.setWork("target");
 		sut.execute();
 	}
 }

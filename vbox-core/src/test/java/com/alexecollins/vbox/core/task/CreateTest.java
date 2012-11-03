@@ -22,8 +22,8 @@ public class CreateTest extends AbstractTest {
 
 	@Before
 	public void setUp() throws Exception {
-		new Clean(box).invoke();
-		sut = new Create(box);
+		new Clean(work,box).invoke();
+		sut = new Create(work, box);
 	}
 
 	@After

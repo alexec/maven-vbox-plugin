@@ -1,7 +1,7 @@
 package com.alexecollins.vbox.maven;
 
-import com.alexecollins.vbox.core.task.Provision;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.task.Provision;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	@Override
 	protected void execute(VBox box) throws Exception {
 
-		new Provision(box, new HashSet<String>(Arrays.asList(this.targets.split(",")))).invoke();;
+		new Provision(work, box, new HashSet<String>(Arrays.asList(this.targets.split(",")))).invoke();;
 	}
 
 

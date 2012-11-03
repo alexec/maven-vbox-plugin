@@ -4,7 +4,6 @@ import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.Provision;
 import org.apache.tools.ant.BuildException;
 
-import java.io.File;
 import java.util.Collections;
 
 /**
@@ -17,8 +16,9 @@ public class ProvisionTask extends AbstractTask{
 		if (dir == null) {
 			throw new BuildException("dir is null");
 		}
+		if (work == null) {throw new BuildException("work is null");}
 		try {
-			new Provision(new VBox(new File(dir).toURI()), Collections.<String>singleton("*")).invoke();
+			new Provision(work, new VBox(dir.toURI()), Collections.<String>singleton("*")).invoke();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

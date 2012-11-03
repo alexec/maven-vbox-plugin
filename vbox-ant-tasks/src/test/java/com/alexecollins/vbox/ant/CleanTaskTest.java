@@ -13,9 +13,11 @@ public class CleanTaskTest extends AbstractTaskTest {
 		final CreateDefinitionTask defn = new CreateDefinitionTask();
 		defn.setName("CentOS_6_3");
 		defn.setDir(dir);
+		defn.setWork("target");
 		defn.execute();
 		final CleanTask sut = new CleanTask();
 		sut.setDir(dir);
+		sut.setWork("target");
 		sut.execute();
 	}
 }
