@@ -15,24 +15,27 @@ import java.util.Arrays;
  */
 public class CreateDefinition implements Invokable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreateDefinition.class);
-	private final VBox box;
+	private final String name;
+	private final File target;
 
-	public CreateDefinition(VBox box) {
-		this.box = box;
+	public CreateDefinition(String name, File target) {
+		this.name = name;
+		this.target = target;
 	}
 
 	public void invoke() throws Exception {
 
-		final File out = new File("src/main/vbox/" + box.getName());
-		if (!out.exists() && !out.mkdirs())
-			throw new IllegalStateException(box.getName() + " does not exit and cannot create " + out);
+		if (!target.exists() && !target.mkdirs())
+			throw new IllegalStateException(target + " does not exit and cannot create");
+
+		final VBox box = new VBox(getClass().getResource("/" + name).toURI());
 
 		for (String f : ImmutableSet.<String>builder()
 				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml"))
 				.addAll(box.getManifest().getFile()).build()) {
-			FileUtils.copyURLToFile(getClass().getResource("/" + box.getName() + "/" + f), new File(out, f));
+			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(target, f));
 		}
 
-		LOGGER.info("created " + out);
+		LOGGER.info("created " + target);
 	}
 }

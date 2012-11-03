@@ -2,6 +2,6 @@
     <target name="use">
         <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
 
-        <create-definition name="CentOS_6_3"/>
+        <create-definition name="CentOS_6_3" dir="CentOS_6_4"/>
     </target>
 </project>

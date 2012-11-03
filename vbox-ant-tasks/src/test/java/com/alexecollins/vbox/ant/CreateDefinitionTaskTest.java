@@ -8,6 +8,7 @@ public class CreateDefinitionTaskTest {
 	public void testExecute() throws Exception {
 		final CreateDefinitionTask sut = new CreateDefinitionTask();
 		sut.setName("CentOS_6_3");
+		sut.setDir("target/vbox/CentOS_6_3");
 		sut.execute();
 	}
 }
