@@ -1,7 +1,6 @@
 package com.alexecollins.vbox.mediaregistry;
 
-import com.alexecollins.maven.plugins.vbox.mojo.AbstractTest;
-import com.alexecollins.vbox.mediaregistry.MediaRegistry;
+import com.alexecollins.vbox.maven.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
