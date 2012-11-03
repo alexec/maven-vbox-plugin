@@ -26,7 +26,6 @@ public class ProvisionMojoTest extends AbstractTest {
 
 	@After        // http://192.168.1.75:10350/preseed.cfg
 	public void tearDown() throws Exception {
-		sut.stopServer();
 		// TODO new CleanMojo().execute(A);
 	}
 
@@ -35,12 +34,5 @@ public class ProvisionMojoTest extends AbstractTest {
 		new CleanMojo().execute(new VBox(src.toURI()));
 		new CreateMojo().execute(new VBox(src.toURI()));
 		sut.execute(new VBox(src.toURI()));
-	}
-
-	@Test
-	public void testServer() throws Exception {
-		sut.startServer(new VBox(src.toURI()));
-		// TODO Thread.sleep(60000);
-		sut.stopServer();
 	}
 }

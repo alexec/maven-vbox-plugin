@@ -22,7 +22,7 @@ public abstract class AbstractTest {
 
 
 	public final String name;
-	final File src;
+	protected final File src;
 	final File target;
 
 	public AbstractTest(final String name) {
