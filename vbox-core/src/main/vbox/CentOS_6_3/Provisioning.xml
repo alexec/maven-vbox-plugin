@@ -14,6 +14,7 @@
         <KeyboardPutScanCodes>root
 keenbrick
 modprobe floppy
+mkdir /media/floppy
 mount /dev/fd0 /media/floppy
 /media/floppy/post-install.sh
         </KeyboardPutScanCodes>
