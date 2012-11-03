@@ -1,6 +1,6 @@
 Overview
 ===
-This plugin provides support for creating, starting and stopping VirtualBox VMs. This is aimed at development and integration testing of projects by allowing you to package a complete software stack onto a single machine, install your code and perform your tests.
+This project provides support for creating, starting and stopping VirtualBox VMs. This is aimed at development and integration testing of projects by allowing you to package a complete software stack onto a single machine, install your code and perform your tests.
 
 Some typical scenarios would be:
 
@@ -16,8 +16,14 @@ To provide support for:
 * Multiple VMs per project.
 * Not to be a replacement for VeeWee, Vagrant, Chef or Puppet.
 
-Quick Start
+Ant
 ===
+TODO
+
+Maven
+===
+Quick Start
+---
 Execute this:
 
     mvn com.alexecollins.maven.plugins.vbox:create-definition -Dvbox.name=UbuntuServer_12_10
@@ -44,7 +50,7 @@ Execute:
     mvn verify
 
 Usage
-===
+---
 The main mojos are:
 
 * clean - deletes all VMs
