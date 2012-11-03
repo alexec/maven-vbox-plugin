@@ -1,9 +1,9 @@
 package com.alexecollins.maven.plugins.vbox;
 
-import com.alexecollins.maven.plugins.vbox.manifest.Manifest;
-import com.alexecollins.maven.plugins.vbox.mediaregistry.MediaRegistry;
-import com.alexecollins.maven.plugins.vbox.provisioning.Provisioning;
 import com.alexecollins.maven.plugins.vbox.util.ExecUtils;
+import com.alexecollins.vbox.manifest.Manifest;
+import com.alexecollins.vbox.mediaregistry.MediaRegistry;
+import com.alexecollins.vbox.provisioning.Provisioning;
 import de.innotek.virtualbox_settings.VirtualBox;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;

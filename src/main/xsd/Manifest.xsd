@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
-           targetNamespace="http://www.alexecollins.com/maven/plugins/vbox/manifest"
+           targetNamespace="http://www.alexecollins.com/vbox/manifest"
            elementFormDefault="unqualified">
     <xs:element name="Manifest">
         <xs:complexType>

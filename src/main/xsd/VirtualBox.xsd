@@ -2,9 +2,9 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
            xmlns="http://www.innotek.de/VirtualBox-settings"
            targetNamespace="http://www.innotek.de/VirtualBox-settings"
-           xmlns:mr="http://www.alexecollins.com/maven/plugins/vbox/mediaregistry"
+           xmlns:mr="http://www.alexecollins.com/vbox/mediaregistry"
            elementFormDefault="unqualified">
-    <xs:import namespace="http://www.alexecollins.com/maven/plugins/vbox/mediaregistry"
+    <xs:import namespace="http://www.alexecollins.com/vbox/mediaregistry"
                schemaLocation="MediaRegistry.xsd"/>
     <xs:element name="VirtualBox">
         <xs:complexType>

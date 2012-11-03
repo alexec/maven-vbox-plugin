@@ -1,4 +1,4 @@
-package com.alexecollins.maven.plugins.vbox.manifest;
+package com.alexecollins.vbox.manifest;
 
 import com.alexecollins.maven.plugins.vbox.mojo.AbstractTest;
 import org.junit.Test;
