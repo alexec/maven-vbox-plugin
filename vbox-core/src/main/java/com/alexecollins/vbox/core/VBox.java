@@ -1,12 +1,12 @@
 package com.alexecollins.vbox.core;
 
 import com.alexecollins.util.ExecUtils;
+import com.alexecollins.util.FileUtils2;
 import com.alexecollins.vbox.manifest.Manifest;
 import com.alexecollins.vbox.mediaregistry.MediaRegistry;
 import com.alexecollins.vbox.provisioning.Provisioning;
 import com.google.common.annotations.VisibleForTesting;
 import de.innotek.virtualbox_settings.VirtualBox;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -154,9 +154,7 @@ public class VBox {
 		if (VBox.findGuestAdditions() != null) return;
 
 		final File file = new File(work, "vbox/downloads/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack");
-		if (!file.exists()) {
-			FileUtils.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/4.1.22/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack"), file);
-		}
+		FileUtils2.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/4.1.22/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack"), file);
 
 		ExecUtils.exec("vboxmanage", "extpack", "install", file.getCanonicalPath());
 	}

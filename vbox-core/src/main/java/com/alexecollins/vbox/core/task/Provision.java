@@ -114,7 +114,7 @@ public class Provision extends AbstractInvokable{
 			} else
 				throw new AssertionError("unexpected provision");
 		}
-		box.takeSnapshot(Snapshot.valueOf(target.getName()));
+		box.takeSnapshot(Snapshot.valueOf("post-provision-" + target.getName()));
 	}
 
 	private void awaitPort(final Provisioning.Target.AwaitPort ap) throws IOException, TimeoutException, InterruptedException {

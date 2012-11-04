@@ -1,6 +1,7 @@
 package com.alexecollins.vbox.core.task;
 
 import com.alexecollins.util.ExecUtils;
+import com.alexecollins.util.FileUtils2;
 import com.alexecollins.util.ImageUtils;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
@@ -12,7 +13,6 @@ import de.innotek.virtualbox_settings.AttachedDeviceType;
 import de.innotek.virtualbox_settings.OrderDevice;
 import de.innotek.virtualbox_settings.StorageControllerType;
 import de.innotek.virtualbox_settings.VirtualBox;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -188,13 +188,9 @@ public class Create extends AbstractInvokable  {
 
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
 			final File dest = new File(work, "vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
-			if (!dest.exists()) {
-				if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
-				LOGGER.info("downloading " + location + " to " + dest);
-				FileUtils.copyURLToFile(new URL(location), dest);
-			} else {
-				LOGGER.info(dest + " already downloaded");
-			}
+			if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
+			LOGGER.info("downloading " + location + " to " + dest);
+			FileUtils2.copyURLToFile(new URL(location), dest);
 			location = dest.toString();
 		} else if (location.startsWith("file://")) {
 			location = new URI(location).getPath();
