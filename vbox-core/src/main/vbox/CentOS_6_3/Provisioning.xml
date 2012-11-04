@@ -22,6 +22,6 @@ mount /dev/fd0 /media/floppy
     </Target>
     <Target name="cleanup">
         <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
-        <PortForwarding hostport="10022" guestport="22"/>
+        <PortForward hostport="10022" guestport="22"/>
     </Target>
 </Provisioning>
