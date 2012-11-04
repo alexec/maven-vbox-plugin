@@ -44,13 +44,16 @@ public class ImageUtils {
 			} finally {
 				ExecUtils.exec("hdiutil", "detach",  dev);
 			}
-			final Matcher m = Pattern.compile("  *(.*)").matcher(ExecUtils.exec("hdid", dest.getPath()));
-			assert m.find();
-			final File device = new File(m.group(1).trim());
+			final String out = ExecUtils.exec("hdid", dest.getPath());
+			final Matcher m = Pattern.compile("  *(.*)").matcher(out);
 			try {
+				if (!m.find()) {
+					throw new IllegalStateException("failed to find mount point in " + out);
+				}
+				final File device = new File(m.group(1).trim());
 				FileUtils.copyDirectory(source, device);
 			}   finally {
-				ExecUtils.exec("hdiutil", "detach", device.getPath());
+				ExecUtils.exec("hdiutil", "detach", dest.getPath());
 			}
 		} else
 			throw new UnsupportedOperationException("unsupported OS " + os);

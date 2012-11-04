@@ -36,9 +36,14 @@ public class Create extends AbstractInvokable  {
 	public void invoke() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_CREATION;
-		if (exists(box) && box.getSnapshots().contains(snapshot)) {
-			box.restoreSnapshot(snapshot);
-			return;
+		if (box.exists()) {
+			if (box.getSnapshots().contains(snapshot)) {
+				box.restoreSnapshot(snapshot);
+				return;
+			}
+			// the box may have been created, but this was incomplete,
+			// hence the lack of snapshot, delete and try again
+			box.unregister();
 		}
 
 		LOGGER.info("creating '" + box.getName() + "'");
@@ -49,7 +54,7 @@ public class Create extends AbstractInvokable  {
 		assert machine != null;
 
 		final File t = getTarget(box);
-		if (!t.exists() && !t.mkdirs()) throw new IllegalStateException("failed to create " + t);
+		if (!t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
 		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", machine.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 

@@ -28,14 +28,7 @@ public class Clean extends AbstractInvokable {
 	public void invoke() throws Exception {
 		LOGGER.info("cleaning '" + box.getName() + "'");
 
-		if (ExecUtils.exec("vboxmanage", "list", "vms").contains("\"" + box.getName() + "\"")) {
-			if (box.getProperties().getProperty("VMState").equals("running")) {
-				box.powerOff();
-				box.awaitState(10000l, "poweroff");
-			}
-
-			box.unregister();
-		}
+		box.unregister();
 
 		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		final List<String> disks = new ArrayList<String>();

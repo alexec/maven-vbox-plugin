@@ -1,8 +1,8 @@
 package com.alexecollins.vbox.core;
 
-import com.alexecollins.vbox.core.VBox;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
@@ -107,5 +107,10 @@ public class VBoxTest {
 				"GuestAdditionsVersion=\"4.1.12\"");
 
 		assertEquals("poweroff", p.getProperty("VMState"));
+	}
+
+	@Test
+	public void testParseVms() throws Exception {
+		assertEquals(Collections.singleton("oeuaoeuaoe"), VBox.parseVms("\"oeuaoeuaoe\" {78c15dce-cac4-4b61-96b1-4f85e1cbadab}"));
 	}
 }

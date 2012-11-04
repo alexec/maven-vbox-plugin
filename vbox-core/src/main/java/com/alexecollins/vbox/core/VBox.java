@@ -4,6 +4,7 @@ import com.alexecollins.util.ExecUtils;
 import com.alexecollins.vbox.manifest.Manifest;
 import com.alexecollins.vbox.mediaregistry.MediaRegistry;
 import com.alexecollins.vbox.provisioning.Provisioning;
+import com.google.common.annotations.VisibleForTesting;
 import de.innotek.virtualbox_settings.VirtualBox;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -74,7 +75,7 @@ public class VBox {
 		return getPropertiesFromString(ExecUtils.exec("vboxmanage", "showvminfo", name, "--machinereadable"));
 	}
 
-	static Properties getPropertiesFromString(final String exec) {
+	@VisibleForTesting static Properties getPropertiesFromString(final String exec) {
 		final Properties p = new Properties();
 		final Matcher m = Pattern.compile("([^=\n]*)=\"([^\"]*)\"").matcher(exec);
 		while (m.find()) {
@@ -168,8 +169,14 @@ public class VBox {
 		ExecUtils.exec("vboxmanage", "controlvm", name, "poweroff");
 	}
 
-	public void unregister() throws IOException, InterruptedException, ExecutionException {
-		ExecUtils.exec("vboxmanage", "unregistervm", name, "--delete");
+	public void unregister() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+		if (exists()) {
+			if (getProperties().getProperty("VMState").equals("running")) {
+				powerOff();
+				awaitState(10000l, "poweroff");
+			}
+			ExecUtils.exec("vboxmanage", "unregistervm", name, "--delete");
+		}
 	}
 
 	public void restoreSnapshot(final Snapshot snapshot) throws IOException, InterruptedException, ExecutionException {
@@ -186,5 +193,19 @@ public class VBox {
 
 	public void pressPowerButton() throws IOException, InterruptedException, ExecutionException {
 		 ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
+	}
+
+	public boolean exists() throws IOException, ExecutionException, InterruptedException {
+		return parseVms(ExecUtils.exec("vboxmanage", "list", "vms")).contains(name);
+	}
+
+	@VisibleForTesting static Set<String> parseVms(String exec) {
+
+		final Matcher m = Pattern.compile("\"(.*)\"").matcher(exec);
+		final Set<String> names = new HashSet<String>();
+		while (m.find()) {
+			names.add(m.group(1));
+		}
+		return names;
 	}
 }

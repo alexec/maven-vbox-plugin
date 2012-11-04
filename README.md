@@ -21,8 +21,8 @@ Usage
 The main mojos/tasks are:
 
 * clean - deletes VMs
-* create - creates VMs
-* provision - provisions VMs
+* create - creates VMs, generally not used as provision will create
+* provision - provisions VMs, creating them if needs be
 
 Additionally, a mojo for creating VM templates:
 
@@ -38,12 +38,10 @@ Add this to your build.xml:
         <target name="use">
             <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
             <taskdef name="clean" classname="com.alexecollins.vbox.ant.CleanTask"/>
-            <taskdef name="create" classname="com.alexecollins.vbox.ant.CreateTask"/>
             <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
 
             <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
             <clean dir="src/vbox/CentOS_6_3" work="build"/>
-            <create dir="src/vbox/CentOS_6_3" work="build"/>
             <provision dir="src/vbox/CentOS_6_3" work="build"/>
         </target>
     </project>
@@ -70,7 +68,6 @@ Add this to your pom.xml:
             <execution>
                 <goals>
                     <goal>clean</goal>
-                    <goal>create</goal>
                     <goal>provision</goal>
                 </goals>
             </execution>

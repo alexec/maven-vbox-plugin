@@ -41,9 +41,14 @@ public class Provision extends AbstractInvokable{
 	public void invoke() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
-		if (exists(box) && box.getSnapshots().contains(snapshot.toString())) {
+		if (box.exists() && box.getSnapshots().contains(snapshot.toString())) {
 			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
 			return;
+		}
+
+		// if the box doesn't exist, create it
+		if (!box.exists()) {
+			new Create(work, box).invoke();
 		}
 
 		LOGGER.info("provisioning '" + box.getName() + "'");
@@ -81,8 +86,8 @@ public class Provision extends AbstractInvokable{
 		}
 	}
 
-	private void executeTarget(final VBox box, final Provisioning.Target stage) throws IOException, InterruptedException, TimeoutException, ExecutionException {
-		for (Object o : stage.getPortForwardOrAwaitPortOrAwaitState()) {
+	private void executeTarget(final VBox box, final Provisioning.Target target) throws IOException, InterruptedException, TimeoutException, ExecutionException {
+		for (Object o : target.getPortForwardOrAwaitPortOrAwaitState()) {
 			if (o instanceof Provisioning.Target.PortForward)
 				portForward(box.getName(), (Provisioning.Target.PortForward) o);
 			else if (o instanceof Provisioning.Target.KeyboardPutScanCodes)
@@ -109,6 +114,7 @@ public class Provision extends AbstractInvokable{
 			} else
 				throw new AssertionError("unexpected provision");
 		}
+		box.takeSnapshot(Snapshot.valueOf(target.getName()));
 	}
 
 	private void awaitPort(final Provisioning.Target.AwaitPort ap) throws IOException, TimeoutException, InterruptedException {

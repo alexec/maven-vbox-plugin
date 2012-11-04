@@ -22,11 +22,4 @@ public abstract class AbstractInvokable implements Invokable{
 	File getTarget(VBox box) {
 		return new File(work, "vbox/boxes/" + box.getName());
 	}
-
-	/**
-	 * @return If the box exists.
-	 */
-	public boolean exists(VBox box) {
-		return getTarget(box).exists();
-	}
 }
