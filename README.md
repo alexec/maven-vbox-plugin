@@ -23,6 +23,8 @@ The main mojos/tasks are:
 * clean - deletes VMs
 * create - creates VMs, generally not used as provision will create
 * provision - provisions VMs, creating them if needs be
+* start - start VMs
+* stop - stops VMs
 
 Additionally, a mojo for creating VM templates:
 
@@ -39,10 +41,15 @@ Add this to your build.xml:
             <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
             <taskdef name="clean" classname="com.alexecollins.vbox.ant.CleanTask"/>
             <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
+            <taskdef name="start" classname="com.alexecollins.vbox.ant.StartTask"/>
+            <taskdef name="stop" classname="com.alexecollins.vbox.ant.StopTask"/>
 
-            <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
+                <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
             <clean dir="src/vbox/CentOS_6_3" work="build"/>
             <provision dir="src/vbox/CentOS_6_3" work="build"/>
+            <start dir="src/vbox/CentOS_6_3"/>
+            <!-- ... -->
+            <stop dir="src/vbox/CentOS_6_3"/>
         </target>
     </project>
 
@@ -69,6 +76,8 @@ Add this to your pom.xml:
                 <goals>
                     <goal>clean</goal>
                     <goal>provision</goal>
+                    <goal>start</goal>
+                    <goal>stop</goal>
                 </goals>
             </execution>
         </executions>
@@ -97,6 +106,11 @@ You'll want to include an additional files, either a preseed.cfg for an Ubuntu V
 
 * Mount a floppy (esp. for Windows).
 * Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/.
+
+Typically you'll want to make sure you VMs has:
+
+* SSH access (or similar).
+* ACPI support for graceful shutdown (many minimal installs don't).
 
 Tokens
 ---
@@ -129,6 +143,7 @@ Unlisted OSs may work.
 Known Issues
 ===
 * US keyboard layouts only.
+* Limit sub-set of vbox set-up supported, e.g. Internal Network no supported.
 
 Troubleshooting
 ===
@@ -140,3 +155,4 @@ References
 * [VBoxManage](http://www.virtualbox.org/manual/ch08.html)
 * [Ubuntu/Debian preseed.cfg](https://help.ubuntu.com/12.10/installation-guide/i386/preseed-using.html)
 * [VeeWee](https://github.com/jedi4ever/veewee)
+* [Oracle blog on VirtualBox networking](https://blogs.oracle.com/fatbloke/entry/networking_in_virtualbox1)

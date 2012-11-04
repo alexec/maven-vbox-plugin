@@ -1,5 +1,6 @@
 package com.alexecollins.vbox.core.task;
 
+import com.alexecollins.vbox.core.VBox;
 import org.junit.runners.Parameterized;
 
 import java.io.File;
@@ -20,16 +21,17 @@ public abstract class AbstractTest {
 		});
 	}
 
-
-	public final String name;
-	protected final File src;
+	protected final String name;
+	final File src;
+	final VBox box;
 	final File target;
-	File work = new File("target");
+	final File work = new File("target");
 
 	public AbstractTest(final String name) {
 		this.name = name;
 		System.out.println("name=" + name);
 		src = new File("src/main/vbox/" + name);
 		target = new File(work, "vbox/boxes/" + name);
+		box = new VBox(src.toURI());
 	}
 }

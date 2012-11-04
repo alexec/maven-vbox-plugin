@@ -91,7 +91,7 @@ public class VBox {
 			if (System.currentTimeMillis() > s + millis) {
 				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");
 			}
-			Thread.sleep(10000);
+			Thread.sleep(Math.min(10000, millis / 2));
 		} while (!getProperties().get("VMState").equals(state));
 
 		LOGGER.info("in state " + state);
@@ -190,7 +190,7 @@ public class VBox {
 	}
 
 	public void pressPowerButton() throws IOException, InterruptedException, ExecutionException {
-		 ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
+		ExecUtils.exec("vboxmanage", "controlvm", name, "acpipowerbutton");
 	}
 
 	public boolean exists() throws IOException, ExecutionException, InterruptedException {

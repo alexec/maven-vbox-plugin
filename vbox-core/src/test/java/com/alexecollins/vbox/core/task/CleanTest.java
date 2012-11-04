@@ -1,6 +1,5 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.vbox.core.VBox;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,6 @@ import static org.junit.Assert.assertFalse;
 public class CleanTest extends AbstractTest {
 
 	private Clean sut;
-	private VBox box;
 
 	public CleanTest(final String name) {
 		super(name);
@@ -23,7 +21,6 @@ public class CleanTest extends AbstractTest {
 
 	@Before
 	public void setUp() throws Exception {
-		box = new VBox(src.toURI());
 		sut = new Clean(work,box);
 	}
 

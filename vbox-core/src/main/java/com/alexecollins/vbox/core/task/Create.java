@@ -164,10 +164,13 @@ public class Create extends AbstractInvokable  {
 		}
 
 		for (VirtualBox.Machine.Hardware.Network.Adapter a : hardware.getNetwork().getAdapter()) {
+			final int n = a.getSlot() + 1;
 			if (a.getNAT() != null)
-				modifyVm.addAll(Arrays.asList("--nic" + (a.getSlot() + 1), "nat"));
+				modifyVm.addAll(Arrays.asList("--nic" + n, "nat"));
 			else if (a.getBridgedInterface() != null)
-				modifyVm.addAll(Arrays.asList("--nic" + (a.getSlot() + 1), "bridged", "--bridgeadapter" + a.getSlot(), a.getBridgedInterface().getName()));
+				modifyVm.addAll(Arrays.asList("--nic" + n, "bridged", "--bridgeadapter" + n, a.getBridgedInterface().getName()));
+			else if (a.getHostOnlyInterface() != null)
+				modifyVm.addAll(Arrays.asList("--nic" + n, "hostonly", "--hostonlyadapter" + n, a.getHostOnlyInterface().getName()));
 			else
 				throw new UnsupportedOperationException();
 		}

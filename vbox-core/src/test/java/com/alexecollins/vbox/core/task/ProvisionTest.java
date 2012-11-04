@@ -1,6 +1,5 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.vbox.core.VBox;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import java.util.Collections;
 public class ProvisionTest extends AbstractTest {
 
 	private Provision sut;
-	private final VBox vBox = new VBox(src.toURI());
 
 	public ProvisionTest(final String name) {
 		super(name);
@@ -24,7 +22,7 @@ public class ProvisionTest extends AbstractTest {
 
 	@Before
 	public  void setUp() throws Exception {
-		sut = new Provision(work, vBox, Collections.<String>singleton("*"));
+		sut = new Provision(work, box, Collections.<String>singleton("*"));
 	}
 
 	@After
@@ -36,7 +34,7 @@ public class ProvisionTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		new Clean(work,vBox).invoke();
+		new Clean(work,box).invoke();
 		sut.invoke();
 	}
 

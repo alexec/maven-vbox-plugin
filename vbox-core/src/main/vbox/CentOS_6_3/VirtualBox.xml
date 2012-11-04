@@ -29,6 +29,9 @@
                 <Adapter slot="0">
                     <NAT/>
                     <!--
+                    <HostOnlyInterface name="vboxnet0"/>
+                    -->
+                    <!--
                     <BridgedInterface name="Intel(R) 82579LM Gigabit Network Connection"/>
                     -->
                     <!--
