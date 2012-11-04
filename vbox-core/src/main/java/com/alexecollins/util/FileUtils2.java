@@ -1,8 +1,11 @@
 package com.alexecollins.util;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -15,7 +18,15 @@ public class FileUtils2 {
 	 * @see org.apache.commons.io.FileUtils#copyURLToFile(java.net.URL, java.io.File)
 	 */
 	public static void copyURLToFile(URL url, File file) throws IOException {
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		URLConnection connection = url.openConnection();
+		if (connection instanceof HttpURLConnection) {
+			getHttpUrl(file, (HttpURLConnection)connection);
+		} else {
+			FileUtils.copyURLToFile(url, file);
+		}
+	}
+
+	private static void getHttpUrl(File file, HttpURLConnection connection) throws IOException {
 		final long downloaded = file.exists() ? file.length() : 0;
 		// LOGGER.info("requesting " + url + " range >= " + downloaded);
 		connection.setRequestProperty("Range", "bytes=" + downloaded + "-");
