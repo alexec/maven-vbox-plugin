@@ -1,5 +1,6 @@
 package com.alexecollins.util;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import static junit.framework.Assert.assertTrue;
  */
 public class FileUtils2Test {
 	@Test
+	@Ignore
 	public void testCopyURLToFile() throws Exception {
 			final URL u = new URL("http://www.alexecollins.com/sites/default/files/alex.e.collins_2.png");
 			final int s = 117741;
