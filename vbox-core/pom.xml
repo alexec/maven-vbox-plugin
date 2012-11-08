@@ -50,6 +50,12 @@
             <version>2.1</version>
         </dependency>
         <dependency>
+            <!-- for Java 5 -->
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.2</version>
@@ -77,7 +83,7 @@
         <dependency>
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>2.3</version>
+            <version>1.8</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -33,7 +33,7 @@ public class FileUtils2Test {
 				}
 			});
 			t.start();
-			Thread.sleep(250);
+			Thread.sleep(150);
 			t.stop();
 
 			Thread.sleep(100);
