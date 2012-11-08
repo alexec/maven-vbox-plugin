@@ -161,6 +161,11 @@ public class Create extends AbstractInvokable  {
 				modifyVm.add("--acpi");
 				modifyVm.add(a.isEnabled() ? "on" : "off");
 			}
+			final VirtualBox.Machine.Hardware.BIOS.IOACPI i = b.getIOACPI();
+			if (i != null) {
+				modifyVm.add("--ioapic");
+				modifyVm.add(i.isEnabled() ? "on" : "off");
+			}
 		}
 
 		for (VirtualBox.Machine.Hardware.Network.Adapter a : hardware.getNetwork().getAdapter()) {

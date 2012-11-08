@@ -24,6 +24,8 @@
             </Boot>
             <BIOS>
                 <ACPI enabled="true"/>
+                <!-- single CPU -->
+                <IOAPIC enabled="false"/>
             </BIOS>
             <Network>
                 <Adapter slot="0">

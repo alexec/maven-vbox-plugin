@@ -47,6 +47,11 @@
                                                             <xs:attribute name="enabled" type="xs:boolean" use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>
+                                                    <xs:element name="IOACPI" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="enabled" type="xs:boolean" use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
