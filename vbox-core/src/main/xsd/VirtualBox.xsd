@@ -18,7 +18,7 @@
                                     <xs:sequence>
                                         <xs:element name="CPU" minOccurs="0">
                                             <xs:complexType>
-                                                <xs:attribute name="Count" type="xs:int" default="1"/>
+                                                <xs:attribute name="count" type="xs:int" default="1"/>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="Memory">
