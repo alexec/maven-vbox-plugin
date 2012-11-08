@@ -17,7 +17,7 @@ keenbrick
 sudo su -
 keenbrick
 mount /dev/fd0 /media/floppy
-/media/floppy/postinstall.sh
+/media/floppy/post-install.sh
         </KeyboardPutScanCodes>
         <AwaitState state="poweroff" timeout="10 minutes"/>
     </Target>
