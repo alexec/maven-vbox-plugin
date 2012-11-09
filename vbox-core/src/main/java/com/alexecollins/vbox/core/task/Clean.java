@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class Clean extends AbstractInvokable {
+public class Clean extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Clean.class);
 	private final VBox box;
 
@@ -25,7 +25,7 @@ public class Clean extends AbstractInvokable {
 		this.box = box;
 	}
 
-	public void invoke() throws Exception {
+	public Void call() throws Exception {
 		LOGGER.info("cleaning '" + box.getName() + "'");
 
 		box.unregister();
@@ -48,5 +48,6 @@ public class Clean extends AbstractInvokable {
 
 		LOGGER.debug("deleting " + getTarget(box));
 		FileUtils.deleteDirectory(getTarget(box));
+		return null;
 	}
 }

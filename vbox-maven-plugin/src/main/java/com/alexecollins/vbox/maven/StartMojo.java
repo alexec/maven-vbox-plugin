@@ -10,6 +10,6 @@ import com.alexecollins.vbox.core.task.Start;
 public class StartMojo extends AbstractVBoxesMojo {
 
 	protected void execute(VBox box) throws Exception {
-		new Start(box).invoke();
+		new Start(box).call();
 	}
 }

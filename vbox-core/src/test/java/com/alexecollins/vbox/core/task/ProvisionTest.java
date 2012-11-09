@@ -34,8 +34,8 @@ public class ProvisionTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		new Clean(work,box).invoke();
-		sut.invoke();
+		new Clean(work,box).call();
+		sut.call();
 	}
 
 	@Test

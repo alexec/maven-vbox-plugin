@@ -24,7 +24,7 @@ public class CreateDefinitionTest extends AbstractTest {
 
 		FileUtils.deleteDirectory(tmp);
 		System.out.println("tmp=" + tmp);
-		sut.invoke();
+		sut.call();
 
 		assert new File(tmp, "VirtualBox.xml").exists();
 	}

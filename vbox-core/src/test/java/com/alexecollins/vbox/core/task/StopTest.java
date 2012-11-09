@@ -16,6 +16,6 @@ public class StopTest extends AbstractTest {
 
 	@Test
 	public void testInvoke() throws Exception {
-	 	new Stop(box).invoke();
+	 	new Stop(box).call();
 	}
 }

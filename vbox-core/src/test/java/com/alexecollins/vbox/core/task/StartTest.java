@@ -19,15 +19,15 @@ public class StartTest extends AbstractTest {
 
 	@Before
 	public void setUp() throws Exception {
-		new Stop(box).invoke();
+		new Stop(box).call();
 	}
 	@After public void tearDown() throws Exception {
 		Thread.sleep(100);
-		new Stop(box).invoke();
+		new Stop(box).call();
 	}
 
 	@Test
 	public void testInvoke() throws Exception {
-	 	new Start(box).invoke();
+	 	new Start(box).call();
 	}
 }

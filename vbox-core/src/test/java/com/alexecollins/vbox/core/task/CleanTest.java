@@ -26,11 +26,11 @@ public class CleanTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		sut.invoke();
+		sut.call();
 		assertFalse("vbox exists", target.exists());
-		new Create(work,box).invoke();
-		sut.invoke();
+		new Create(work,box).call();
+		sut.call();
 		assertFalse("vbox exists", target.exists());
-		sut.invoke();
+		sut.call();
 	}
 }

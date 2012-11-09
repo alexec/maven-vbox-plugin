@@ -1,16 +1,16 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.util.Invokable;
 import com.alexecollins.vbox.core.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class Stop implements Invokable {
+public class Stop implements Callable<Void> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Stop.class);
 	private final VBox box;
 
@@ -18,7 +18,7 @@ public class Stop implements Invokable {
 		this.box = box;
 	}
 
-	public void invoke() throws Exception {
+	public Void call() throws Exception {
 		LOGGER.info("stopping " + box.getName());
 		if (box.getProperties().getProperty("VMState").equals("running")) {
 			box.pressPowerButton();
@@ -32,5 +32,6 @@ public class Stop implements Invokable {
 		} else {
 			LOGGER.info("not stopping, already off");
 		}
+		return null;
 	}
 }

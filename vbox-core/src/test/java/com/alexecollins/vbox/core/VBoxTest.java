@@ -4,8 +4,9 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Properties;
+import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author alex.e.c@gmail.com
@@ -112,5 +113,224 @@ public class VBoxTest {
 	@Test
 	public void testParseVms() throws Exception {
 		assertEquals(Collections.singleton("oeuaoeuaoe"), VBox.parseVms("\"oeuaoeuaoe\" {78c15dce-cac4-4b61-96b1-4f85e1cbadab}"));
+	}
+
+	@Test
+	public void testParseOSTypes() throws Exception {
+		String s ="ID:          Other\n" +
+				"Description: Other/Unknown\n" +
+				"\n" +
+				"ID:          Windows31\n" +
+				"Description: Windows 3.1\n" +
+				"\n" +
+				"ID:          Windows95\n" +
+				"Description: Windows 95\n" +
+				"\n" +
+				"ID:          Windows98\n" +
+				"Description: Windows 98\n" +
+				"\n" +
+				"ID:          WindowsMe\n" +
+				"Description: Windows Me\n" +
+				"\n" +
+				"ID:          WindowsNT4\n" +
+				"Description: Windows NT 4\n" +
+				"\n" +
+				"ID:          Windows2000\n" +
+				"Description: Windows 2000\n" +
+				"\n" +
+				"ID:          WindowsXP\n" +
+				"Description: Windows XP\n" +
+				"\n" +
+				"ID:          WindowsXP_64\n" +
+				"Description: Windows XP (64 bit)\n" +
+				"\n" +
+				"ID:          Windows2003\n" +
+				"Description: Windows 2003\n" +
+				"\n" +
+				"ID:          Windows2003_64\n" +
+				"Description: Windows 2003 (64 bit)\n" +
+				"\n" +
+				"ID:          WindowsVista\n" +
+				"Description: Windows Vista\n" +
+				"\n" +
+				"ID:          WindowsVista_64\n" +
+				"Description: Windows Vista (64 bit)\n" +
+				"\n" +
+				"ID:          Windows2008\n" +
+				"Description: Windows 2008\n" +
+				"\n" +
+				"ID:          Windows2008_64\n" +
+				"Description: Windows 2008 (64 bit)\n" +
+				"\n" +
+				"ID:          Windows7\n" +
+				"Description: Windows 7\n" +
+				"\n" +
+				"ID:          Windows7_64\n" +
+				"Description: Windows 7 (64 bit)\n" +
+				"\n" +
+				"ID:          Windows8\n" +
+				"Description: Windows 8\n" +
+				"\n" +
+				"ID:          Windows8_64\n" +
+				"Description: Windows 8 (64 bit)\n" +
+				"\n" +
+				"ID:          WindowsNT\n" +
+				"Description: Other Windows\n" +
+				"\n" +
+				"ID:          Linux22\n" +
+				"Description: Linux 2.2\n" +
+				"\n" +
+				"ID:          Linux24\n" +
+				"Description: Linux 2.4\n" +
+				"\n" +
+				"ID:          Linux24_64\n" +
+				"Description: Linux 2.4 (64 bit)\n" +
+				"\n" +
+				"ID:          Linux26\n" +
+				"Description: Linux 2.6\n" +
+				"\n" +
+				"ID:          Linux26_64\n" +
+				"Description: Linux 2.6 (64 bit)\n" +
+				"\n" +
+				"ID:          ArchLinux\n" +
+				"Description: Arch Linux\n" +
+				"\n" +
+				"ID:          ArchLinux_64\n" +
+				"Description: Arch Linux (64 bit)\n" +
+				"\n" +
+				"ID:          Debian\n" +
+				"Description: Debian\n" +
+				"\n" +
+				"ID:          Debian_64\n" +
+				"Description: Debian (64 bit)\n" +
+				"\n" +
+				"ID:          OpenSUSE\n" +
+				"Description: openSUSE\n" +
+				"\n" +
+				"ID:          OpenSUSE_64\n" +
+				"Description: openSUSE (64 bit)\n" +
+				"\n" +
+				"ID:          Fedora\n" +
+				"Description: Fedora\n" +
+				"\n" +
+				"ID:          Fedora_64\n" +
+				"Description: Fedora (64 bit)\n" +
+				"\n" +
+				"ID:          Gentoo\n" +
+				"Description: Gentoo\n" +
+				"\n" +
+				"ID:          Gentoo_64\n" +
+				"Description: Gentoo (64 bit)\n" +
+				"\n" +
+				"ID:          Mandriva\n" +
+				"Description: Mandriva\n" +
+				"\n" +
+				"ID:          Mandriva_64\n" +
+				"Description: Mandriva (64 bit)\n" +
+				"\n" +
+				"ID:          RedHat\n" +
+				"Description: Red Hat\n" +
+				"\n" +
+				"ID:          RedHat_64\n" +
+				"Description: Red Hat (64 bit)\n" +
+				"\n" +
+				"ID:          Turbolinux\n" +
+				"Description: Turbolinux\n" +
+				"\n" +
+				"ID:          Turbolinux\n" +
+				"Description: Turbolinux (64 bit)\n" +
+				"\n" +
+				"ID:          Ubuntu\n" +
+				"Description: Ubuntu\n" +
+				"\n" +
+				"ID:          Ubuntu_64\n" +
+				"Description: Ubuntu (64 bit)\n" +
+				"\n" +
+				"ID:          Xandros\n" +
+				"Description: Xandros\n" +
+				"\n" +
+				"ID:          Xandros_64\n" +
+				"Description: Xandros (64 bit)\n" +
+				"\n" +
+				"ID:          Oracle\n" +
+				"Description: Oracle\n" +
+				"\n" +
+				"ID:          Oracle_64\n" +
+				"Description: Oracle (64 bit)\n" +
+				"\n" +
+				"ID:          Linux\n" +
+				"Description: Other Linux\n" +
+				"\n" +
+				"ID:          Solaris\n" +
+				"Description: Oracle Solaris 10 5/09 and earlier\n" +
+				"\n" +
+				"ID:          Solaris_64\n" +
+				"Description: Oracle Solaris 10 5/09 and earlier (64 bit)\n" +
+				"\n" +
+				"ID:          OpenSolaris\n" +
+				"Description: Oracle Solaris 10 10/09 and later\n" +
+				"\n" +
+				"ID:          OpenSolaris_64\n" +
+				"Description: Oracle Solaris 10 10/09 and later (64 bit)\n" +
+				"\n" +
+				"ID:          FreeBSD\n" +
+				"Description: FreeBSD\n" +
+				"\n" +
+				"ID:          FreeBSD_64\n" +
+				"Description: FreeBSD (64 bit)\n" +
+				"\n" +
+				"ID:          OpenBSD\n" +
+				"Description: OpenBSD\n" +
+				"\n" +
+				"ID:          OpenBSD_64\n" +
+				"Description: OpenBSD (64 bit)\n" +
+				"\n" +
+				"ID:          NetBSD\n" +
+				"Description: NetBSD\n" +
+				"\n" +
+				"ID:          NetBSD_64\n" +
+				"Description: NetBSD (64 bit)\n" +
+				"\n" +
+				"ID:          OS2Warp3\n" +
+				"Description: OS/2 Warp 3\n" +
+				"\n" +
+				"ID:          OS2Warp4\n" +
+				"Description: OS/2 Warp 4\n" +
+				"\n" +
+				"ID:          OS2Warp45\n" +
+				"Description: OS/2 Warp 4.5\n" +
+				"\n" +
+				"ID:          OS2eCS\n" +
+				"Description: eComStation\n" +
+				"\n" +
+				"ID:          OS2\n" +
+				"Description: Other OS/2\n" +
+				"\n" +
+				"ID:          MacOS\n" +
+				"Description: Mac OS X Server\n" +
+				"\n" +
+				"ID:          MacOS_64\n" +
+				"Description: Mac OS X Server (64 bit)\n" +
+				"\n" +
+				"ID:          DOS\n" +
+				"Description: DOS\n" +
+				"\n" +
+				"ID:          Netware\n" +
+				"Description: Netware\n" +
+				"\n" +
+				"ID:          L4\n" +
+				"Description: L4\n" +
+				"\n" +
+				"ID:          QNX\n" +
+				"Description: QNX\n" +
+				"\n" +
+				"ID:          JRockitVE\n" +
+				"Description: JRockitVE\n";
+
+
+		final Set<VBox.OSType> osTypes = VBox.parseOSTypes(s);
+		assertTrue(osTypes.size() > 10);
+		assertTrue(osTypes.contains(new VBox.OSType("Windows2008")));
+		assertFalse(osTypes.contains(new VBox.OSType("Windows 2008")));
 	}
 }

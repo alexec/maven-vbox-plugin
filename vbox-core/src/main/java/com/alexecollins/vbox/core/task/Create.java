@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class Create extends AbstractInvokable  {
+public class Create extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
 	private final VBox box;
 
@@ -33,13 +33,13 @@ public class Create extends AbstractInvokable  {
 		this.box = box;
 	}
 
-	public void invoke() throws Exception {
+	public Void call() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_CREATION;
 		if (box.exists()) {
 			if (box.getSnapshots().contains(snapshot)) {
 				box.restoreSnapshot(snapshot);
-				return;
+				return null;
 			}
 			// the box may have been created, but this was incomplete,
 			// hence the lack of snapshot, delete and try again
@@ -56,7 +56,13 @@ public class Create extends AbstractInvokable  {
 		final File t = getTarget(box);
 		if (!t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
-		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", machine.getOSType().value(), "--register", "--basefolder", t.getParentFile().getCanonicalPath());
+		final String osType = machine.getOSType().value();
+		final Set<VBox.OSType> osTypes = VBox.getOSTypes();
+		if (!osTypes.contains(new VBox.OSType(osType))) {
+			throw new IllegalStateException("invalid OS " +osType +",  must be one of " + osTypes);
+		}
+
+		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", osType, "--register", "--basefolder", t.getParentFile().getCanonicalPath());
 
 		// set-up media
 		final Map<Object, File> idToFile = createMedia(box, t, box.getMediaRegistry());
@@ -66,6 +72,7 @@ public class Create extends AbstractInvokable  {
 		setupStorage(box, machine.getStorageControllers(), idToFile);
 
 		box.takeSnapshot(snapshot);
+		return null;
 	}
 
 	private void setupStorage(final VBox box, final VirtualBox.Machine.StorageControllers controllers, final Map<Object, File> idToFile) throws IOException, InterruptedException, ExecutionException {
@@ -136,8 +143,9 @@ public class Create extends AbstractInvokable  {
 		modifyVm.addAll(Arrays.asList("--memory", String.valueOf(hardware.getMemory().getRAMSize())));
 
 		final VirtualBox.Machine.Hardware.CPU c = hardware.getCPU();
+		final int cpus = c != null ? c.getCount() : 1;
 		modifyVm.add("--cpus");
-		modifyVm.add(String.valueOf(c != null ? c.getCount() : 1));
+		modifyVm.add(String.valueOf(cpus));
 
 		if (hardware.getBoot() != null) {
 			LOGGER.info("setting boot order");
@@ -155,6 +163,7 @@ public class Create extends AbstractInvokable  {
 
 		// http://askubuntu.com/questions/82015/shutting-down-ubuntu-server-running-in-headless-virtualbox
 		final VirtualBox.Machine.Hardware.BIOS b = hardware.getBIOS();
+		boolean ioAcpi = false;
 		if (b != null) {
 			final VirtualBox.Machine.Hardware.BIOS.ACPI a = b.getACPI();
 			if (a != null) {
@@ -165,8 +174,14 @@ public class Create extends AbstractInvokable  {
 			if (i != null) {
 				modifyVm.add("--ioapic");
 				modifyVm.add(i.isEnabled() ? "on" : "off");
+				ioAcpi = i.isEnabled();
 			}
 		}
+
+		if (cpus > 1 && !ioAcpi)
+			LOGGER.warn("multiple CPUs require IOACPI enabled, you probably want to enable this");
+
+
 
 		final Set<Integer> usedSlots = new HashSet<Integer>();
 		for (VirtualBox.Machine.Hardware.Network.Adapter a : hardware.getNetwork().getAdapter()) {

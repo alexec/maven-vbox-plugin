@@ -12,7 +12,7 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>VBox</name>
+    <name>VBox Java API</name>
 
     <url>http://www.alexecollins.com/?q=content/maven-vbox-plugin</url>
 

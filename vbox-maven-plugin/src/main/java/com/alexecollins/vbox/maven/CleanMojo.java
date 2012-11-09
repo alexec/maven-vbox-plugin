@@ -10,7 +10,7 @@ import com.alexecollins.vbox.core.task.Clean;
 public class CleanMojo extends AbstractVBoxesMojo {
 
 	protected void execute(VBox box) throws Exception {
-		new Clean(work,box).invoke();
+		new Clean(work,box).call();
 	}
 
 }

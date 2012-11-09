@@ -206,4 +206,44 @@ public class VBox {
 		}
 		return names;
 	}
+
+	public static class OSType {
+		private final String name;
+
+		public OSType(final String name) {
+			this.name = name;
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			OSType osType = (OSType) o;
+
+			if (name != null ? !name.equals(osType.name) : osType.name != null) return false;
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			return name != null ? name.hashCode() : 0;
+		}
+	}
+
+	public static Set<OSType> getOSTypes() throws IOException, ExecutionException, InterruptedException {
+		return parseOSTypes(ExecUtils.exec(new String[]{"vboxmanage", "list", "ostypes"}));
+	}
+
+	@VisibleForTesting static Set<OSType> parseOSTypes(final String exec) {
+		final Set<OSType> x = new HashSet<OSType>();
+		final Matcher m = Pattern.compile("ID:  *(.*)$", Pattern.MULTILINE).matcher(exec);
+		while (m.find()) {
+			x.add(new OSType(m.group(1)));
+		}
+
+		return x;
+	}
+
 }

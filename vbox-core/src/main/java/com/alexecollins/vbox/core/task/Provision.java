@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-public class Provision extends AbstractInvokable{
+public class Provision extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Provision.class);
 	private final Server server;
 	private final VBox box;
@@ -38,17 +38,17 @@ public class Provision extends AbstractInvokable{
 		server = new Server(Provision.findFreePort());
 	}
 
-	public void invoke() throws Exception {
+	public Void call() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
 		if (box.exists() && box.getSnapshots().contains(snapshot.toString())) {
 			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
-			return;
+			return null;
 		}
 
 		// if the box doesn't exist, create it
 		if (!box.exists()) {
-			new Create(work, box).invoke();
+			new Create(work, box).call();
 		}
 
 		LOGGER.info("provisioning '" + box.getName() + "'");
@@ -84,6 +84,7 @@ public class Provision extends AbstractInvokable{
 		} finally {
 			stopServer();
 		}
+		return null;
 	}
 
 	private void executeTarget(final VBox box, final Provisioning.Target target) throws IOException, InterruptedException, TimeoutException, ExecutionException {

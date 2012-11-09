@@ -23,7 +23,7 @@ public class CreateDefinitionTask extends AbstractTask {
 			throw new BuildException("dir is null");
 		}
 		try {
-			new CreateDefinition(name, dir).invoke();
+			new CreateDefinition(name, dir).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

@@ -1,6 +1,5 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.util.Invokable;
 import com.alexecollins.vbox.core.VBox;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.FileUtils;
@@ -9,11 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class CreateDefinition implements Invokable {
+public class CreateDefinition implements Callable<Void> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreateDefinition.class);
 	private final String name;
 	private final File target;
@@ -23,7 +23,7 @@ public class CreateDefinition implements Invokable {
 		this.target = target;
 	}
 
-	public void invoke() throws Exception {
+	public Void call() throws Exception {
 
 		if (!target.exists() && !target.mkdirs())
 			throw new IllegalStateException(target + " does not exit and cannot create");
@@ -37,5 +37,6 @@ public class CreateDefinition implements Invokable {
 		}
 
 		LOGGER.info("created " + target);
+		return null;
 	}
 }

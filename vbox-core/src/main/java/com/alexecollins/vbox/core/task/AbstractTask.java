@@ -1,17 +1,17 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.util.Invokable;
 import com.alexecollins.vbox.core.VBox;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public abstract class AbstractInvokable implements Invokable{
+public abstract class AbstractTask implements Callable<Void> {
 	final File work;
 
-	protected AbstractInvokable(File work) {
+	protected AbstractTask(File work) {
 		this.work = work;
 	}
 

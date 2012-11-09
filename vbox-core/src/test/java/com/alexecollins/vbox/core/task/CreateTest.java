@@ -20,7 +20,7 @@ public class CreateTest extends AbstractTest {
 
 	@Before
 	public void setUp() throws Exception {
-		new Clean(work,box).invoke();
+		new Clean(work,box).call();
 		sut = new Create(work, box);
 	}
 
@@ -31,7 +31,7 @@ public class CreateTest extends AbstractTest {
 
 	@Test
 	public void test() throws Exception {
-		sut.invoke();
-		sut.invoke(); // snapshot
+		sut.call();
+		sut.call(); // snapshot
 	}
 }
