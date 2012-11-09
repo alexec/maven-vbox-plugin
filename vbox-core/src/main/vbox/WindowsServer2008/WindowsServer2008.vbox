@@ -122,7 +122,9 @@
       </LPT>
       <AudioAdapter controller="HDA" driver="DirectSound" enabled="true"/>
       <RTC localOrUTC="local"/>
-      <SharedFolders/>
+      <SharedFolders>
+        <SharedFolder name="target" hostPath="C:\Users\alex.collins\Documents\server-provisioning\server-provisioning\server-provisioning-dist\target" writable="false" autoMount="true"/>
+      </SharedFolders>
       <Clipboard mode="Disabled"/>
       <IO>
         <IoCache enabled="true" size="5"/>

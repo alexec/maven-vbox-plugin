@@ -79,6 +79,21 @@
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
+                                        <!-- TODO -->
+                                        <xs:element name="SharedFolders">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="SharedFolder">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required"/>
+                                                            <xs:attribute name="hostPath" type="xs:string" use="required"/>
+                                                            <xs:attribute name="writable" type="xs:boolean" use="required"/>
+                                                            <xs:attribute name="autoMount" type="xs:boolean" use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
                                         <xs:element name="IO" minOccurs="0">
                                             <xs:complexType>
                                                 <xs:sequence>
