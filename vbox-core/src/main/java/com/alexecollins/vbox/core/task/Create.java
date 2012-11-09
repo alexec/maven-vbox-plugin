@@ -168,7 +168,13 @@ public class Create extends AbstractInvokable  {
 			}
 		}
 
+		final Set<Integer> usedSlots = new HashSet<Integer>();
 		for (VirtualBox.Machine.Hardware.Network.Adapter a : hardware.getNetwork().getAdapter()) {
+
+			if (!usedSlots.add(a.getSlot())) {
+				throw new IllegalStateException("used slot "  +a.getSlot() + " twice");
+			}
+
 			final int n = a.getSlot() + 1;
 			if (a.getNAT() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + n, "nat"));

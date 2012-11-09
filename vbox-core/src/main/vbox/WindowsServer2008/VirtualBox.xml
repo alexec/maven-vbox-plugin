@@ -26,7 +26,7 @@
                 <IOAPIC enabled="false"/>
             </BIOS>
             <Network>
-                <Adapter>
+                <Adapter slot="0">
                     <NAT/>
                 </Adapter>
             </Network>
