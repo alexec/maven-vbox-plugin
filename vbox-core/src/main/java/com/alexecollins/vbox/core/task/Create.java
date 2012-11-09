@@ -203,7 +203,7 @@ public class Create extends AbstractTask {
 
 		final VirtualBox.Machine.Hardware.IO io = hardware.getIO();
 		if (io != null) {
-			final VirtualBox.Machine.Hardware.IO.IOCache ic = io.getIOCache();
+			final VirtualBox.Machine.Hardware.IO.IoCache ic = io.getIoCache();
 			if (ic != null) {
 				// TODO nop
 			}

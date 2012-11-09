@@ -9,10 +9,16 @@ import com.google.common.annotations.VisibleForTesting;
 import de.innotek.virtualbox_settings.VirtualBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXB;
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -97,20 +103,26 @@ public class VBox {
 		LOGGER.info("in state " + state);
 	}
 
-	public VirtualBox getVirtualBox() throws IOException, URISyntaxException {
-		return JAXB.unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
+	public VirtualBox getVirtualBox() throws IOException, URISyntaxException, JAXBException, SAXException {
+		return unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
 	}
 
-	public MediaRegistry getMediaRegistry() throws IOException, URISyntaxException {
-		return JAXB.unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
+	public MediaRegistry getMediaRegistry() throws IOException, URISyntaxException, JAXBException, SAXException {
+		return unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
 	}
 
-	public Manifest getManifest() throws IOException, URISyntaxException {
-		return JAXB.unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
+	public Manifest getManifest() throws IOException, URISyntaxException, JAXBException, SAXException {
+		return unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
 	}
 
-	public Provisioning getProvisioning() throws IOException, URISyntaxException {
-		return JAXB.unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
+	private <T> T unmarshal(final InputStream in, final Class<T> type) throws JAXBException, SAXException {
+		final Unmarshaller u = JAXBContext.newInstance(type).createUnmarshaller();
+		u.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(getClass().getResource("/" + type.getSimpleName() + ".xsd")));
+		return (T) u.unmarshal(in);
+	}
+
+	public Provisioning getProvisioning() throws IOException, URISyntaxException, JAXBException, SAXException {
+		return unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
 	}
 
 

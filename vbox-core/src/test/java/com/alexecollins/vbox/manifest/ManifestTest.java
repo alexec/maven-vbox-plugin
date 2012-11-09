@@ -1,11 +1,10 @@
 package com.alexecollins.vbox.manifest;
 
+import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import javax.xml.bind.JAXB;
 
 /**
  * @author alex.e.c@gmail.com
@@ -19,7 +18,7 @@ public class ManifestTest extends AbstractTest {
 	@Test
 	public void testGetFile() throws Exception {
 
-		final Manifest sut = JAXB.unmarshal(Manifest.class.getResource("/" + name + "/VirtualBox.xml"), Manifest.class);
+		final Manifest sut = new VBox(src.toURI()).getManifest();
 
 		assert sut.getFile().size() >= 0;
 	}

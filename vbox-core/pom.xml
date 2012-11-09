@@ -19,6 +19,9 @@
             <resource>
                 <directory>src/main/vbox</directory>
             </resource>
+            <resource>
+                <directory>src/main/xsd</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>

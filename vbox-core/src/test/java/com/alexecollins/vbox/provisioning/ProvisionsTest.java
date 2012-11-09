@@ -1,11 +1,10 @@
 package com.alexecollins.vbox.provisioning;
 
+import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import javax.xml.bind.JAXB;
 
 /**
  * @author alex.e.c@gmail.com
@@ -18,7 +17,7 @@ public class ProvisionsTest extends AbstractTest {
 
 	@Test
 	public void testGetPortForwardOrKeyboardPutScanCodesOrSleep() throws Exception {
-		final Provisioning sut = JAXB.unmarshal(Provisioning.class.getResource("/" + name + "/Provisioning.xml"), Provisioning.class);
+		final Provisioning sut = new VBox(src.toURI()).getProvisioning();
 
 		assert sut.getTarget().size() > 0;
 		for (Provisioning.Target target : sut.getTarget()) {

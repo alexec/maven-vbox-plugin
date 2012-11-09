@@ -2,17 +2,40 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
            xmlns="http://www.innotek.de/VirtualBox-settings"
            targetNamespace="http://www.innotek.de/VirtualBox-settings"
-           xmlns:mr="http://www.alexecollins.com/vbox/mediaregistry"
-           elementFormDefault="unqualified">
-    <xs:import namespace="http://www.alexecollins.com/vbox/mediaregistry"
-               schemaLocation="MediaRegistry.xsd"/>
+           elementFormDefault="qualified">
     <xs:element name="VirtualBox">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Machine">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="MediaRegistry" type="mr:MediaRegistry"/>
+                            <xs:element name="MediaRegistry">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="HardDisks">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="HardDisk" type="HardDiskImage"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="DVDImages">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="DVDImage" type="DVDImage"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="FloppyImages">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="FloppyImage" type="FloppyImage"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
                             <xs:element name="Hardware">
                                 <xs:complexType>
                                     <xs:sequence>
@@ -47,7 +70,7 @@
                                                             <xs:attribute name="enabled" type="xs:boolean" use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>
-                                                    <xs:element name="IOACPI" minOccurs="0">
+                                                    <xs:element name="IOACPI" minOccurs="0" >
                                                         <xs:complexType>
                                                             <xs:attribute name="enabled" type="xs:boolean" use="required"/>
                                                         </xs:complexType>
@@ -80,7 +103,7 @@
                                             </xs:complexType>
                                         </xs:element>
                                         <!-- TODO -->
-                                        <xs:element name="SharedFolders">
+                                        <xs:element name="SharedFolders" minOccurs="0">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="SharedFolder">
@@ -97,7 +120,7 @@
                                         <xs:element name="IO" minOccurs="0">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="IOCache" minOccurs="0">
+                                                    <xs:element name="IoCache" minOccurs="0">
                                                         <xs:complexType>
                                                             <xs:attribute name="enabled" type="xs:boolean" use="required"/>
                                                         </xs:complexType>
@@ -172,4 +195,26 @@
             <xs:enumeration value="None"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <!-- TODO remove duplication -->
+    <xs:complexType name="Image" abstract="true">
+        <xs:attribute name="uuid" type="xs:ID" use="required"/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="location" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="HardDiskImage">
+        <xs:complexContent>
+            <xs:extension base="Image"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DVDImage">
+        <xs:complexContent>
+            <xs:extension base="Image"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FloppyImage">
+        <xs:complexContent>
+            <xs:extension base="Image"/>
+        </xs:complexContent>
+    </xs:complexType>
 </xs:schema>

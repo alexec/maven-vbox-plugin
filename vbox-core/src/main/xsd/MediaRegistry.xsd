@@ -2,8 +2,9 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
            xmlns="http://www.alexecollins.com/vbox/mediaregistry"
            targetNamespace="http://www.alexecollins.com/vbox/mediaregistry"
-           elementFormDefault="unqualified">
-    <xs:complexType name="MediaRegistry">
+           elementFormDefault="qualified">
+    <xs:element name="MediaRegistry">
+        <xs:complexType>
         <xs:sequence>
             <xs:element name="HardDisks">
                 <xs:complexType>
@@ -27,7 +28,8 @@
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-    </xs:complexType>
+        </xs:complexType>
+    </xs:element>
 
     <xs:complexType name="Image" abstract="true">
         <xs:attribute name="uuid" type="xs:ID" use="required"/>

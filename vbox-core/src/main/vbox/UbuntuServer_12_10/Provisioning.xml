@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Provisioning>
+<Provisioning xmlns="http://www.alexecollins.com/vbox/provisioning">
     <Target name="install-os">
         <Sleep seconds="10"/>
         <KeyboardPutScanCodes keys="Esc,Esc,Enter"/>

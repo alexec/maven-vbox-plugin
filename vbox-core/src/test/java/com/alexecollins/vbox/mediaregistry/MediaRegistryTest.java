@@ -1,12 +1,11 @@
 package com.alexecollins.vbox.mediaregistry;
 
 
+import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import javax.xml.bind.JAXB;
 
 /**
  * @author alex.e.c@gmail.com
@@ -20,7 +19,7 @@ public class MediaRegistryTest extends AbstractTest {
 
 	@Test
 	public void testName() throws Exception {
-		final MediaRegistry sut = JAXB.unmarshal(MediaRegistry.class.getResource("/" + name + "/MediaRegistry.xml"), MediaRegistry.class);
+		final MediaRegistry sut = new VBox(src.toURI()).getMediaRegistry();
 
 		assert sut.getDVDImages().getDVDImage() != null;
 	}

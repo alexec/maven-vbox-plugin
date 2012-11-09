@@ -1,11 +1,10 @@
 package de.innotek.virtualbox_settings;
 
+import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import javax.xml.bind.JAXB;
 
 /**
  * @author alex.e.c@gmail.com
@@ -18,7 +17,7 @@ public class VirtualBoxTest extends AbstractTest {
 
 	@Test
 	public void testGetMachine() throws Exception {
-		final VirtualBox sut = JAXB.unmarshal(VirtualBox.class.getResource("/" + name + "/VirtualBox.xml"), VirtualBox.class);
+		final VirtualBox sut = new VBox(src.toURI()).getVirtualBox();
 
 		assert sut.getMachine() != null;
 

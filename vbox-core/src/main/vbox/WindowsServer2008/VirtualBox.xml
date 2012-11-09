@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<VirtualBox>
-    <Machine name="WindowsServer2008" OSType="Windows2008">
+<VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
+    <Machine OSType="Windows2008">
         <MediaRegistry>
             <HardDisks>
                 <HardDisk uuid="hd0" location="hd0.vdi"/>
@@ -23,7 +23,7 @@
             <BIOS>
                 <ACPI enabled="true"/>
                 <!-- single CPU -->
-                <IOAPIC enabled="false"/>
+                <IOACPI enabled="false"/>
             </BIOS>
             <Network>
                 <Adapter slot="0">

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<MediaRegistry>
+<MediaRegistry xmlns="http://www.alexecollins.com/vbox/mediaregistry">
     <HardDisks>
         <HardDisk uuid="hd0" size="10000"/>
     </HardDisks>

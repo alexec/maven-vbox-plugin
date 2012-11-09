@@ -11,6 +11,7 @@ import org.slf4j.helpers.MessageFormatter;
  * @author alex.e.c@gmail.com
  */
 public class MavenLogAdapter extends MarkerIgnoringBase {
+	// MS_CANNOT_BE_FINAL
 	public static Log LOG;
 	private static final int LOG_LEVEL_TRACE = 1;
 	private static final int LOG_LEVEL_DEBUG = 2;
