@@ -56,7 +56,7 @@ public class Create extends AbstractTask {
 		final File t = getTarget(box);
 		if (!t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
-		final String osType = machine.getOSType().value();
+		final String osType = machine.getOSType();
 		final Set<VBox.OSType> osTypes = VBox.getOSTypes();
 		if (!osTypes.contains(new VBox.OSType(osType))) {
 			throw new IllegalStateException("invalid OS " +osType +",  must be one of " + osTypes);

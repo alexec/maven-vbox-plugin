@@ -141,7 +141,7 @@
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="OSType" type="MachineOSType" default="Other"/>
+                        <xs:attribute name="OSType" type="xs:string" default="Other"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
@@ -162,12 +162,6 @@
             <xs:enumeration value="AHCI"/>
             <!-- Floppy -->
             <xs:enumeration value="I82078"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="MachineOSType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Ubuntu"/>
-            <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="OrderDevice">
