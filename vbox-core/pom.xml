@@ -33,11 +33,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <!--
-                    <packageName>com.alexecollins.maven.plugins.vbox.schema</packageName>
-                    -->
-                </configuration>
             </plugin>
         </plugins>
     </build>
