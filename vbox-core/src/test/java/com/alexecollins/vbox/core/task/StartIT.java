@@ -10,10 +10,10 @@ import org.junit.runners.Parameterized;
  * @author alexec (alex.e.c@gmail.com)
  */
 @RunWith(Parameterized.class)
-public class StartTest extends AbstractTest {
+public class StartIT extends AbstractTest {
 
 
-	public StartTest(final String name) {
+	public StartIT(final String name) {
 		super(name);
 	}
 

@@ -11,11 +11,11 @@ import static org.junit.Assert.assertFalse;
  * @author alexec (alex.e.c@gmail.com)
  */
 @RunWith(Parameterized.class)
-public class CleanTest extends AbstractTest {
+public class CleanIT extends AbstractTest {
 
 	private Clean sut;
 
-	public CleanTest(final String name) {
+	public CleanIT(final String name) {
 		super(name);
 	}
 

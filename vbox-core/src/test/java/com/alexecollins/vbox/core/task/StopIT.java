@@ -8,9 +8,9 @@ import org.junit.runners.Parameterized;
  * @author alexec (alex.e.c@gmail.com)
  */
 @RunWith(Parameterized.class)
-public class StopTest extends AbstractTest {
+public class StopIT extends AbstractTest {
 
-	public StopTest(final String name) {
+	public StopIT(final String name) {
 		super(name);
 	}
 

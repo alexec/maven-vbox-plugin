@@ -12,11 +12,11 @@ import java.util.Collections;
  * @author alexec (alex.e.c@gmail.com)
  */
 @RunWith(Parameterized.class)
-public class ProvisionTest extends AbstractTest {
+public class ProvisionIT extends AbstractTest {
 
 	private Provision sut;
 
-	public ProvisionTest(final String name) {
+	public ProvisionIT(final String name) {
 		super(name);
 	}
 

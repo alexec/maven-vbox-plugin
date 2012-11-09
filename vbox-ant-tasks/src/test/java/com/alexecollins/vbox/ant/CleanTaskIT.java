@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class CleanTaskTest extends AbstractTaskTest {
+public class CleanTaskIT extends AbstractTaskTest {
 
 
 	@Test

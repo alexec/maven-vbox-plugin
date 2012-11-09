@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class CreateTaskTest extends AbstractTaskTest {
+public class CreateTaskIT extends AbstractTaskTest {
 	@Test
 	public void testExecute() throws Exception {
 		final CreateTask sut = new CreateTask();
