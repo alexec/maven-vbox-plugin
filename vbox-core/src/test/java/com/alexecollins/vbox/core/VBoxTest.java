@@ -6,12 +6,23 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
 /**
  * @author alex.e.c@gmail.com
  */
 public class VBoxTest {
+
+	@Test
+	public void testVersion() throws Exception {
+		final VBox.Version v = new VBox.Version("4.1.22r80657");
+		assertThat(v.major, is(equalTo(4)));
+		assertThat(v.minor, is(equalTo(1)));
+		assertThat(v.build, is(equalTo(22)));
+		assertThat(v.revision, is(equalTo(80657)));
+	}
 
 	@Test
 	public void test() throws Exception {

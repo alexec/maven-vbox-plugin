@@ -9,7 +9,7 @@ import org.slf4j.impl.MavenLogAdapter;
  */
 public abstract class AbstractVBoxMojo extends AbstractMojo {
 
-	{
+	public AbstractVBoxMojo() {
 		// ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD
 		MavenLogAdapter.LOG = getLog();
 	}

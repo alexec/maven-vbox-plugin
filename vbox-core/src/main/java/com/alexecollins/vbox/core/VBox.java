@@ -40,13 +40,17 @@ public class VBox {
 
 	public VBox(final URI src) {
 
-		if (src == null) {throw new IllegalArgumentException("src is null");};
+		if (src == null) {
+			throw new IllegalArgumentException("src is null");
+		}
 
 		this.src = src;
 
 		final String p = src.toString();
 
-		if (p == null) {throw new IllegalStateException(src + " has null path");}
+		if (p == null) {
+			throw new IllegalStateException(src + " has null path");
+		}
 
 		final String q = p.endsWith("/") ? p.substring(0, p.length() - 1) : p;
 		name = q.substring(q.lastIndexOf('/') + 1);
@@ -81,7 +85,8 @@ public class VBox {
 		return getPropertiesFromString(ExecUtils.exec("vboxmanage", "showvminfo", name, "--machinereadable"));
 	}
 
-	@VisibleForTesting static Properties getPropertiesFromString(final String exec) {
+	@VisibleForTesting
+	static Properties getPropertiesFromString(final String exec) {
 		final Properties p = new Properties();
 		final Matcher m = Pattern.compile("([^=\n]*)=\"([^\"]*)\"").matcher(exec);
 		while (m.find()) {
@@ -115,6 +120,7 @@ public class VBox {
 		return unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> T unmarshal(final InputStream in, final Class<T> type) throws JAXBException, SAXException {
 		final Unmarshaller u = JAXBContext.newInstance(type).createUnmarshaller();
 		u.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(getClass().getResource("/" + type.getSimpleName() + ".xsd")));
@@ -165,10 +171,35 @@ public class VBox {
 
 		if (VBox.findGuestAdditions() != null) return;
 
-		final File file = new File(work, "vbox/downloads/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack");
-		FileUtils2.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/4.1.22/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-80657.vbox-extpack"), file);
+		final Version v = getVersion();
+
+		final String a = v.major + "." + v.minor + "." + v.build;
+		final int b = v.revision;
+
+		final File file = new File(work, "vbox/downloads/Oracle_VM_VirtualBox_Extension_Pack-" + a + "-" + b + ".vbox-extpack");
+		FileUtils2.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/" + a + "/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-" + b + ".vbox-extpack"), file);
 
 		ExecUtils.exec("vboxmanage", "extpack", "install", file.getCanonicalPath());
+	}
+
+	public static class Version {
+		final int major;
+		final int minor;
+		final int build;
+		final int revision;
+
+		Version(final String x) {
+			final Matcher m = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)r([0-9]+)$").matcher(x);
+			if (!m.find()) throw new IllegalArgumentException();
+			major = Integer.parseInt(m.group(1));
+			minor = Integer.parseInt(m.group(2));
+			build = Integer.parseInt(m.group(3));
+			revision = Integer.parseInt(m.group(4));
+		}
+	}
+
+	public static Version getVersion() throws IOException, ExecutionException, InterruptedException {
+		return new Version(ExecUtils.exec("vboxmanage", "-v").trim());
 	}
 
 	public URI getSrc() {
@@ -209,7 +240,8 @@ public class VBox {
 		return parseVms(ExecUtils.exec("vboxmanage", "list", "vms")).contains(name);
 	}
 
-	@VisibleForTesting static Set<String> parseVms(String exec) {
+	@VisibleForTesting
+	static Set<String> parseVms(String exec) {
 
 		final Matcher m = Pattern.compile("\"(.*)\"").matcher(exec);
 		final Set<String> names = new HashSet<String>();
@@ -245,10 +277,11 @@ public class VBox {
 	}
 
 	public static Set<OSType> getOSTypes() throws IOException, ExecutionException, InterruptedException {
-		return parseOSTypes(ExecUtils.exec(new String[]{"vboxmanage", "list", "ostypes"}));
+		return parseOSTypes(ExecUtils.exec("vboxmanage", "list", "ostypes"));
 	}
 
-	@VisibleForTesting static Set<OSType> parseOSTypes(final String exec) {
+	@VisibleForTesting
+	static Set<OSType> parseOSTypes(final String exec) {
 		final Set<OSType> x = new HashSet<OSType>();
 		final Matcher m = Pattern.compile("ID:  *(.*)$", Pattern.MULTILINE).matcher(exec);
 		while (m.find()) {

@@ -24,20 +24,23 @@ public class MavenLogAdapter extends MarkerIgnoringBase {
 	}
 
 	private void log(int level, String message, Throwable t) {
-
 		switch (level) {
 			case LOG_LEVEL_DEBUG:
 			case LOG_LEVEL_TRACE:
-				if (t != null)
-					LOG.debug(message, t);
-				else
-					LOG.debug(message);
+				if (LOG.isDebugEnabled()) {
+					if (t != null)
+						LOG.debug(message, t);
+					else
+						LOG.debug(message);
+				}
 				break;
 			case LOG_LEVEL_INFO:
-				if (t != null)
-					LOG.info(message, t);
-				else
-					LOG.info(message);
+				if (LOG.isInfoEnabled()) {
+					if (t != null)
+						LOG.info(message, t);
+					else
+						LOG.info(message);
+				}
 				break;
 			case LOG_LEVEL_ERROR:
 				if (t != null)
