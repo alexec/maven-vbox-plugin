@@ -201,6 +201,8 @@ public class Create extends AbstractTask {
 				modifyVm.addAll(Arrays.asList("--nic" + n, "bridged", "--bridgeadapter" + n, a.getBridgedInterface().getName()));
 			else if (a.getHostOnlyInterface() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + n, "hostonly", "--hostonlyadapter" + n, a.getHostOnlyInterface().getName()));
+			else if (a.getInternalNetwork() != null)
+				modifyVm.addAll(Arrays.asList("--nic" + n, "intnet", "--intnet" + n, a.getInternalNetwork().getName()));
 			else
 				throw new UnsupportedOperationException();
 		}

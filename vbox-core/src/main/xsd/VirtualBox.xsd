@@ -92,7 +92,12 @@
                                                                 </xs:element>
                                                                 <xs:element name="BridgedInterface">
                                                                     <xs:complexType>
-                                                                        <xs:attribute name="name" use="required"/>
+                                                                        <xs:attribute name="name" type="xs:string" use="required"/>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="InternalNetwork">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="name" type="xs:string" use="required"/>
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:choice>
