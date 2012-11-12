@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <Provisioning xmlns="http://www.alexecollins.com/vbox/provisioning">
     <Target name="install-os">
-        <Sleep seconds="30"/>
+        <Sleep seconds="45"/>
         <KeyboardPutScanCodes keys="Tab,Tab,Tab,Enter"/>
-        <AwaitState state="poweroff" timeout="20 minutes"/>
+        <AwaitState state="poweroff" timeout="30 minutes"/>
     </Target>
     <Target name="cleanup">
         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --medium none</Exec>
