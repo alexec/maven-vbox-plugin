@@ -16,7 +16,7 @@
             <xs:element name="DVDImages">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="DVDImage" type="DVDImage"/>
+                        <xs:element name="DVDImage" type="DVDImage" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

@@ -6,6 +6,7 @@
     <DVDImages>
         <DVDImage uuid="dvd0"
                   location="file:///C:/Users/alex.collins/Desktop/installer-dvd-1.iso"/>
+        <DVDImage uuid="dvd1" location="%VBOX_ADDITIONS%"/>
     </DVDImages>
     <FloppyImages>
         <FloppyImage uuid="floppy0" location="floppy0"/>

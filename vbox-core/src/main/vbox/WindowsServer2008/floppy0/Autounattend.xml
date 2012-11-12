@@ -80,8 +80,8 @@
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c shutdown /s /t 0</CommandLine>
-                    <Description>Shutdown</Description>
+                    <CommandLine>cmd.exe /c a:\post-install.bat</CommandLine>
+                    <Description>Post-Install</Description>
                     <Order>1</Order>
                 </SynchronousCommand>
             </FirstLogonCommands>

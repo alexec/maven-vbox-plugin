@@ -7,6 +7,7 @@
             </HardDisks>
             <DVDImages>
                 <DVDImage uuid="dvd0" location="dvd0.iso"/>
+                <DVDImage uuid="dvd1" location="%VBOX_ADDITIONS%"/>
             </DVDImages>
             <FloppyImages>
                 <FloppyImage uuid="floppy0" location="floppy0.img"/>
@@ -35,9 +36,12 @@
             </IO>
         </Hardware>
         <StorageControllers>
-            <StorageController name="IDE Controller" type="PIIX4" useHostIOCache="true" Bootable="true">
+            <StorageController name="IDE Controller" PortCount="2" type="PIIX4" useHostIOCache="true" Bootable="true">
                 <AttachedDevice type="DVD" port="0" device="0">
                     <Image uuid="dvd0"/>
+                </AttachedDevice>
+                <AttachedDevice type="DVD" port="0" device="1">
+                    <Image uuid="dvd1"/>
                 </AttachedDevice>
             </StorageController>
             <StorageController name="SATA Controller" type="AHCI" useHostIOCache="false" Bootable="true">

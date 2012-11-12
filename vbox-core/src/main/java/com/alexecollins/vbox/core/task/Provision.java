@@ -89,6 +89,7 @@ public class Provision extends AbstractTask {
 
 	private void executeTarget(final VBox box, final Provisioning.Target target) throws IOException, InterruptedException, TimeoutException, ExecutionException {
 		for (Object o : target.getPortForwardOrAwaitPortOrAwaitState()) {
+			LOGGER.debug("executing " + o);
 			if (o instanceof Provisioning.Target.PortForward)
 				portForward(box.getName(), (Provisioning.Target.PortForward) o);
 			else if (o instanceof Provisioning.Target.KeyboardPutScanCodes)
@@ -101,7 +102,7 @@ public class Provision extends AbstractTask {
 				Thread.sleep(seconds * 1000);
 			} else if (o instanceof Provisioning.Target.Exec) {
 				try {
-					ExecUtils.exec(new CSVReader(new StringReader(formatConfig(box.getName(), ((Provisioning.Target.Exec) o).getValue())), ' ').readNext());
+					ExecUtils.exec(new CSVReader(new StringReader(subst(box, ((Provisioning.Target.Exec) o).getValue())), ' ').readNext());
 				} catch (ExecutionException e) {
 					if (((Provisioning.Target.Exec) o).isFailonerror())
 						throw e;
@@ -115,7 +116,9 @@ public class Provision extends AbstractTask {
 			} else
 				throw new AssertionError("unexpected provision");
 		}
-		box.takeSnapshot(Snapshot.valueOf("post-provision-" + target.getName()));
+
+		// snapshots are expensive in terms of disk space
+		// box.takeSnapshot(Snapshot.valueOf("post-provision-" + target.getName()));
 	}
 
 	private void awaitPort(final Provisioning.Target.AwaitPort ap) throws IOException, TimeoutException, InterruptedException {
@@ -191,7 +194,7 @@ public class Provision extends AbstractTask {
 			String line;
 			line = ksc.getLine();
 			if (line != null) {
-				line = formatConfig(name, line);
+				line = subst(box, line);
 
 				LOGGER.info("typing line '" + line + "'");
 
@@ -202,7 +205,7 @@ public class Provision extends AbstractTask {
 		{
 			String text = ksc.getValue();
 			if (text != null && text.length() > 0) {
-				text = formatConfig(name, text);
+				text = subst(box, text);
 
 				LOGGER.info("typing text '" + text + "'");
 
@@ -211,12 +214,11 @@ public class Provision extends AbstractTask {
 		}
 	}
 
-	public String formatConfig(final String name, String line) throws IOException, InterruptedException, ExecutionException {
+	@Override
+	public String subst(final VBox box, String line) throws IOException, InterruptedException, ExecutionException {
 		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
 		line = line.replaceAll("%PORT%", String.valueOf(getServerPort()));
-		line = line.replaceAll("%VBOX_ADDITIONS%", VBox.findGuestAdditions().getPath().replaceAll("\\\\", "/"));
-		line = line.replaceAll("%NAME%", name);
-		return line;
+		return super.subst(box, line);
 	}
 
 	private void keyboardPutScanCodes(String name, int[] scancodes) throws IOException, InterruptedException, ExecutionException {

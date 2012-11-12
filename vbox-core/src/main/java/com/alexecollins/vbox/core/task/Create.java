@@ -5,6 +5,7 @@ import com.alexecollins.util.FileUtils2;
 import com.alexecollins.util.ImageUtils;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.mediaregistry.DVDImage;
 import com.alexecollins.vbox.mediaregistry.FloppyImage;
 import com.alexecollins.vbox.mediaregistry.Image;
 import com.alexecollins.vbox.mediaregistry.MediaRegistry;
@@ -93,7 +94,9 @@ public class Create extends AbstractTask {
 			LOGGER.debug("creating controller " + n);
 			ExecUtils.exec("vboxmanage", "storagectl", box.getName(), "--name", n, "--add", x.get(s.getType()),
 					"--bootable", s.isBootable() ? "on" : "off",
-					"--hostiocache", s.isUseHostIOCache() ? "on" : "off");
+					"--sataportcount", String.valueOf(s.getPortCount()),
+					"--hostiocache", s.isUseHostIOCache() ? "on" : "off"
+			);
 
 			for (VirtualBox.Machine.StorageControllers.StorageController.AttachedDevice a : s.getAttachedDevice()) {
 				final String u = a.getImage().getUuid();
@@ -125,8 +128,9 @@ public class Create extends AbstractTask {
 
 		idToFile.put(hd.getUuid(), hdImg);
 
-		final Image dvd = mr.getDVDImages().getDVDImage();
-		idToFile.put(dvd.getUuid(), acquireImage(box, dvd));
+		for (DVDImage dvd : mr.getDVDImages().getDVDImage()) {
+			idToFile.put(dvd.getUuid(), acquireImage(box, dvd));
+		}
 
 		final Image floppy = mr.getFloppyImages().getFloppyImage();
 		idToFile.put(floppy.getUuid(), acquireImage(box, floppy));
@@ -213,7 +217,7 @@ public class Create extends AbstractTask {
 	}
 
 	public File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
-		String location = image.getLocation();
+		String location = subst(box, image.getLocation());
 
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
 			final File dest = new File(work, "vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");

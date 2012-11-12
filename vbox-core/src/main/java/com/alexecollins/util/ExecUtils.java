@@ -1,6 +1,7 @@
 package com.alexecollins.util;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +19,14 @@ public class ExecUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExecUtils.class);
 
 	public static String exec(String... strings) throws IOException, InterruptedException, ExecutionException {
+		LOGGER.debug("executing: " + Joiner.on(" ").join(strings));
+
 		final Process p = new ProcessBuilder(strings).start();
-		// stdout
-		final String out = log(p.getInputStream());
+
 		// stderr
 		final String err = log(p.getErrorStream());
+		// stdout
+		final String out = log(p.getInputStream());
 
 		if (p.waitFor() != 0) {
 			final StringWriter w = new StringWriter();
