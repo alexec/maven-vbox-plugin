@@ -102,6 +102,7 @@
                                                                 </xs:element>
                                                             </xs:choice>
                                                             <xs:attribute name="slot" type="xs:int" use="required"/>
+                                                            <xs:attribute name="cable" type="xs:boolean" default="true"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>

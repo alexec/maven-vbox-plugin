@@ -195,6 +195,9 @@ public class Create extends AbstractTask {
 			}
 
 			final int n = a.getSlot() + 1;
+
+			modifyVm.addAll(Arrays.asList("--cableconnected", String.valueOf(a.isCable())));
+
 			if (a.getNAT() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + n, "nat"));
 			else if (a.getBridgedInterface() != null)
