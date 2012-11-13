@@ -36,6 +36,7 @@ The main mojos/tasks are:
 
 Additionally, a mojo for creating VM templates:
 
+* list-definitions - list available template definitions
 * create-definition - creates a VM template definition
 
 Maven
@@ -49,8 +50,8 @@ Execute this:
 Add this to your pom.xml:
 
     <plugin>
-        <groupId>com.alexecollins.maven.plugins.vbox</groupId>
-        <artifactId>maven-vbox-plugin</artifactId>
+        <groupId>com.alexecollins.vbox</groupId>
+        <artifactId>vbox-maven-plugin</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <executions>
             <execution>
@@ -78,13 +79,15 @@ Add this to your build.xml:
 
     <project name="vbox-ant-tasks" default="use">
         <target name="use">
+            <taskdef name="list-definitions" classname="com.alexecollins.vbox.ant.ListDefinitionsTask"/>
             <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
             <taskdef name="clean" classname="com.alexecollins.vbox.ant.CleanTask"/>
             <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
             <taskdef name="start" classname="com.alexecollins.vbox.ant.StartTask"/>
             <taskdef name="stop" classname="com.alexecollins.vbox.ant.StopTask"/>
 
-                <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
+            <list-definitions/>
+            <create-definition name="CentOS_6_3" dir="src/vbox/CentOS_6_3"/>
             <clean dir="src/vbox/CentOS_6_3" work="build"/>
             <provision dir="src/vbox/CentOS_6_3" work="build"/>
             <start dir="src/vbox/CentOS_6_3"/>
