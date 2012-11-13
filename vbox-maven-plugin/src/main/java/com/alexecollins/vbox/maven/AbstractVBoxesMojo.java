@@ -34,6 +34,7 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 			try {
 				final VBox box = new VBox(f.toURI());
 
+				// TODO
 				if (names.contains(box.getName()) || names.equals(Collections.singletonList("*"))) {
 					execute(box);
 				} else {

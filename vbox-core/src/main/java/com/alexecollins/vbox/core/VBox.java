@@ -35,10 +35,14 @@ import java.util.regex.Pattern;
  */
 public class VBox {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VBox.class);
+	private final VirtualBox virtualBox;
+	private final MediaRegistry mediaRegistry;
+	private final Manifest manifest;
+	private final Provisioning provisioning;
 	private final URI src;
 	private final String name;
 
-	public VBox(final URI src) {
+	public VBox(final URI src) throws URISyntaxException, IOException, JAXBException, SAXException {
 
 		if (src == null) {
 			throw new IllegalArgumentException("src is null");
@@ -54,6 +58,11 @@ public class VBox {
 
 		final String q = p.endsWith("/") ? p.substring(0, p.length() - 1) : p;
 		name = q.substring(q.lastIndexOf('/') + 1);
+
+		virtualBox =  unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
+		mediaRegistry = unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
+		manifest = unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
+		provisioning = unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
 	}
 
 	/**
@@ -108,16 +117,16 @@ public class VBox {
 		LOGGER.info("in state " + state);
 	}
 
-	public VirtualBox getVirtualBox() throws IOException, URISyntaxException, JAXBException, SAXException {
-		return unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
+	public VirtualBox getVirtualBox() {
+		return virtualBox;
 	}
 
-	public MediaRegistry getMediaRegistry() throws IOException, URISyntaxException, JAXBException, SAXException {
-		return unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
+	public MediaRegistry getMediaRegistry() {
+		return mediaRegistry;
 	}
 
-	public Manifest getManifest() throws IOException, URISyntaxException, JAXBException, SAXException {
-		return unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
+	public Manifest getManifest() {
+		return manifest;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -128,7 +137,7 @@ public class VBox {
 	}
 
 	public Provisioning getProvisioning() throws IOException, URISyntaxException, JAXBException, SAXException {
-		return unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
+		return provisioning;
 	}
 
 

@@ -5,7 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 
 /**
@@ -16,7 +20,7 @@ public class ProvisionIT extends AbstractTest {
 
 	private Provision sut;
 
-	public ProvisionIT(final String name) {
+	public ProvisionIT(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {
 		super(name);
 	}
 

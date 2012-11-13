@@ -5,6 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -13,7 +18,7 @@ import org.junit.runners.Parameterized;
 public class StartIT extends AbstractTest {
 
 
-	public StartIT(final String name) {
+	public StartIT(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {
 		super(name);
 	}
 

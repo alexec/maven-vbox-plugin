@@ -6,6 +6,11 @@ import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * @author alex.e.c@gmail.com
@@ -13,7 +18,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class MediaRegistryTest extends AbstractTest {
 
-	public MediaRegistryTest(final String name) {
+	public MediaRegistryTest(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {
 		super(name);
 	}
 

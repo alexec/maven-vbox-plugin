@@ -4,6 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertFalse;
 
@@ -15,7 +20,7 @@ public class CleanIT extends AbstractTest {
 
 	private Clean sut;
 
-	public CleanIT(final String name) {
+	public CleanIT(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {
 		super(name);
 	}
 
