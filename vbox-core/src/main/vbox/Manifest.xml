@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Manifest xmlns="http://www.alexecollins.com/vbox/manifest">
+    <File>CentOS_6_3</File>
+    <File>UbuntuServer_12_10</File>
+    <File>WindowsServer2008</File>
+</Manifest>
