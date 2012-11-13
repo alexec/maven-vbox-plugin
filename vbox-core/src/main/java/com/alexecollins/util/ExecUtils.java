@@ -1,13 +1,14 @@
 package com.alexecollins.util;
 
-import au.com.bytecode.opencsv.CSVWriter;
 import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.concurrent.*;
 
 /**
  * Util for executing programs.
@@ -23,21 +24,35 @@ public class ExecUtils {
 
 		final Process p = new ProcessBuilder(strings).start();
 
-		// stderr
-		final String err = log(p.getErrorStream());
-		// stdout
-		final String out = log(p.getInputStream());
+		final ExecutorService svc = Executors.newFixedThreadPool(2);
+		final Future<String> outFuture = svc.submit(new Callable<String>() {
+			public String call() throws Exception {
+				return log(p.getInputStream());
+			}
+		});
+		final Future<String> errFuture = svc.submit(new Callable<String>() {
+			public String call() throws Exception {
+				return log(p.getErrorStream());
+			}
+		});
 
-		if (p.waitFor() != 0) {
-			final StringWriter w = new StringWriter();
-			new CSVWriter(w, ' ').writeAll(Arrays.<String[]>asList(strings));
-			throw new ExecutionException("failed to execute " + w + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
+		p.waitFor();
+
+		final String out = outFuture.get();
+		final String err = errFuture.get();
+
+		svc.shutdown();
+
+		if (p.exitValue() != 0) {
+			throw new ExecutionException("failed to execute " + Joiner.on(" ").join(strings) + ", exitValue=" + p.exitValue() + ": " + (err != null ? err : out), null);
 		}
+
+		LOGGER.debug("complete ok");
 
 		return out;
 	}
 
-	public static String log(final InputStream inputStream) throws IOException {
+	private static String log(final InputStream inputStream) throws IOException {
 		final BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 		final StringBuffer out = new StringBuffer();
 		try {
