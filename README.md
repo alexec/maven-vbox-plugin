@@ -9,7 +9,7 @@ Some typical scenarios would be:
 * Provide a dev stack and a touch of a button.
 * Install all apps onto a VBox and test it.
 
- It provides:
+It provides:
 
  1. A Java API for programatic control of boxes.
  2. A set of Maven Mojos.
@@ -45,7 +45,7 @@ Quick Start
 ---
 Execute this:
 
-    mvn com.alexecollins.vbox:vbox-maven-plugins:create-definition -Dvbox.name=UbuntuServer_12_10
+    mvn com.alexecollins.vbox:vbox-maven-plugin:create-definition -Dvbox.name=UbuntuServer_12_10
 
 Add this to your pom.xml:
 

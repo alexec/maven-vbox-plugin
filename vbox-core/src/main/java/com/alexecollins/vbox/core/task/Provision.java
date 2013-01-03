@@ -63,7 +63,6 @@ public class Provision extends AbstractTask {
 			final List<Provisioning.Target> targets = box.getProvisioning().getTarget();
 			for (Provisioning.Target target : targets) {
 				if (this.targets.contains(target.getName()) || this.targets.equals(Collections.<String>singleton("*"))) {
-					LOGGER.info("executing target " + target.getName());
 					if (target.equals(targets.get(0)) && !box.getProperties().getProperty("VMState").equals("running")) {
 						LOGGER.info("starting box");
 						box.start();
@@ -88,6 +87,7 @@ public class Provision extends AbstractTask {
 	}
 
 	private void executeTarget(final VBox box, final Provisioning.Target target) throws IOException, InterruptedException, TimeoutException, ExecutionException {
+		LOGGER.info("executing target " + target.getName());
 		for (Object o : target.getPortForwardOrAwaitPortOrAwaitState()) {
 			LOGGER.debug("executing " + o);
 			if (o instanceof Provisioning.Target.PortForward)

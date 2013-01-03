@@ -43,7 +43,7 @@
             </IO>
         </Hardware>
         <StorageControllers>
-            <StorageController Bootable="true" type="PIIX4" useHostIOCache="true" name="IDE Controller">
+            <StorageController Bootable="true" type="PIIX4" PortCount="2" useHostIOCache="true" name="IDE Controller">
                 <AttachedDevice type="DVD" port="0" device="0">
                     <Image uuid="dvd0"/>
                 </AttachedDevice>
