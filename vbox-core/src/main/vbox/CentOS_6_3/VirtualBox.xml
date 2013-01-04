@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
     <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
-    <Machine OSType="Ubuntu">
+    <Machine OSType="RedHat">
         <MediaRegistry>
             <HardDisks>
                 <HardDisk uuid="hd0" location="hd0.vdi"/>
