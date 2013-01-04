@@ -19,6 +19,6 @@ public class ImageUtilsTestTest {
         final File dest = new File("src.iso");
         ImageUtils.createImage(new File("target"), new File("src"), dest);
         assertTrue(dest.exists());
-        assert dest.delete();
+        dest.deleteOnExit();
     }
 }
