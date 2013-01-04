@@ -7,7 +7,7 @@
                 <HardDisk uuid="hd0" location="hd0.vdi"/>
             </HardDisks>
             <DVDImages>
-                <DVDImage uuid="dvd0" location="../../downloads/CentOS_6_3/dvd0.iso"/>
+                <DVDImage uuid="dvd0" location="dvd0.iso"/>
             </DVDImages>
             <FloppyImages>
                 <FloppyImage uuid="floppy0" location="floppy0.img"/>
@@ -24,7 +24,7 @@
             </Boot>
             <BIOS>
                 <ACPI enabled="true"/>
-                <!-- single CPU -->
+                <!-- 32 bit AND 1 CPU -->
                 <IOACPI enabled="false"/>
             </BIOS>
             <Network>

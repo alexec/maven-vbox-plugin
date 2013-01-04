@@ -14,6 +14,7 @@ import de.innotek.virtualbox_settings.AttachedDeviceType;
 import de.innotek.virtualbox_settings.OrderDevice;
 import de.innotek.virtualbox_settings.StorageControllerType;
 import de.innotek.virtualbox_settings.VirtualBox;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -225,10 +227,21 @@ public class Create extends AbstractTask {
 		String location = subst(box, image.getLocation());
 
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
-			final File dest = new File(work, "vbox/downloads/" + box.getName() + "/" + image.getUuid() + ".iso");
-			if (!dest.getParentFile().exists() && !dest.getParentFile().mkdirs()) throw new IllegalStateException();
-			LOGGER.info("downloading " + location + " to " + dest);
-			FileUtils2.copyURLToFile(new URL(location), dest);
+            // 1. make sure the file is in the download cache, this means if we have multiple machines
+            // then we won't re-download the same file
+            final File cache = new File(work, "vbox/downloads/" + URLEncoder.encode(location, "UTF-8"));
+            if (!cache.exists()) {
+                if (!cache.getParentFile().exists() && !cache.getParentFile().mkdirs()) throw new IllegalStateException();
+                LOGGER.info("downloading " + location + " to " + cache);
+                FileUtils2.copyURLToFile(new URL(location), cache);
+            }
+            // 2. copy the cached version to the dest, if the dest might need freshening
+            final File dest = new File(getTarget(box), image.getUuid() + ".iso");
+            if (!dest.exists() || dest.lastModified() != cache.lastModified()) {
+                LOGGER.info("copying " + cache + " to " + dest);
+                FileUtils.copyFile(cache, dest);
+                dest.setLastModified(cache.lastModified()); // make sure they have the same changed date
+            }
 			location = dest.toString();
 		} else if (location.startsWith("file://")) {
 			location = new URI(location).getPath();
