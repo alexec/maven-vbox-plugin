@@ -107,17 +107,24 @@ public class VBox {
 	public void awaitState(final long millis, final String state) throws InterruptedException, IOException, TimeoutException, ExecutionException {
 		long s = System.currentTimeMillis();
 		do {
-			LOGGER.info("awaiting " + state);
-			if (System.currentTimeMillis() > s + millis) {
+            long remaining = s + millis - System.currentTimeMillis();
+            LOGGER.info("awaiting " + state + " for " + prettyDuration(remaining) );
+			if (remaining < 0) {
 				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");
 			}
-			Thread.sleep(Math.min(10000, millis / 2));
+			Thread.sleep(Math.min(10000, remaining));
 		} while (!getProperties().get("VMState").equals(state));
 
 		LOGGER.info("in state " + state);
 	}
 
-	public VirtualBox getVirtualBox() {
+    @VisibleForTesting static String prettyDuration(final long remaining) {
+        final long mins = remaining / 1000 / 60;
+        final long secs = (remaining / 1000) % 60;
+        return mins > 0 ? mins + " minute(s)" : secs + " second(s)";
+    }
+
+    public VirtualBox getVirtualBox() {
 		return virtualBox;
 	}
 
