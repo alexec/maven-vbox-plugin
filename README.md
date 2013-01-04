@@ -158,12 +158,12 @@ Currently the definitions are all 32 bit. I _think_ you'll want to use the same 
 If you want use 64 bit you typically need to:
 
 - Append "_64" to the OS type, e.g. "RedHat_64".
-- Enable IO ACPI (as a side-effect, it'll be much faster, if you're host OS is 64 bit).
+- Enable IO ACPI (as a side-effect, it'll be much faster, if your host OS is 64 bit).
 
 Known Issues
 ===
 * US keyboard layouts only.
-* Limit sub-set of vbox set-up supported, e.g. Internal Network no supported.
+* Limited sub-set of vbox set-up supported.
 
 Troubleshooting
 ===
