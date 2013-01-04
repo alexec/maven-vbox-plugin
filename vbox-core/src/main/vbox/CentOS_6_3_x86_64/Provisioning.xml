@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Provisioning xmlns="http://www.alexecollins.com/vbox/provisioning">
+    <Target name="install-os">
+        <Sleep seconds="10"/>
+        <KeyboardPutScanCodes keys="Esc"/>
+        <Sleep seconds="2"/>
+        <KeyboardPutScanCodes line="linux ks=floppy text"/>
+        <AwaitState state="poweroff" timeout="20 minutes"/>
+    </Target>
+    <Target name="run-post-install">
+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
+        <Exec failonerror="false">vboxmanage startvm %NAME%</Exec>
+        <Sleep minutes="1"/>
+        <KeyboardPutScanCodes>root
+keenbrick
+modprobe floppy
+mkdir /media/floppy
+mount /dev/fd0 /media/floppy
+/media/floppy/post-install.sh
+        </KeyboardPutScanCodes>
+        <AwaitState state="poweroff" timeout="20 minutes"/>
+    </Target>
+    <Target name="cleanup">
+        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
+        <PortForward hostport="10022" guestport="22"/>
+    </Target>
+</Provisioning>
