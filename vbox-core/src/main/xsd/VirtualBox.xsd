@@ -3,6 +3,10 @@
            xmlns="http://www.innotek.de/VirtualBox-settings"
            targetNamespace="http://www.innotek.de/VirtualBox-settings"
            elementFormDefault="qualified">
+    <!--
+        This meant to be as similar as possible to the .vbox format used by VirtualBox.
+        This has a whole bunch of benefits.
+    -->
     <xs:element name="VirtualBox">
         <xs:complexType>
             <xs:sequence>
@@ -72,6 +76,7 @@
                                                     </xs:element>
                                                     <xs:element name="IOACPI" minOccurs="0" >
                                                         <xs:complexType>
+                                                            <!-- mandatory for multiple CPUs or 64 bit machines -->
                                                             <xs:attribute name="enabled" type="xs:boolean" use="required"/>
                                                         </xs:complexType>
                                                     </xs:element>
