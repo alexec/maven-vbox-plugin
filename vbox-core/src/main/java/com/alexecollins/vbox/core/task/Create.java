@@ -249,14 +249,26 @@ public class Create extends AbstractTask {
 
 		final File src = new File("src/main/vbox/" + box.getName(), location);
 
-		if (src.isDirectory() && image instanceof FloppyImage) {
-			final File dest = new File(getTarget(box), image.getUuid() + ".img");
+		if (src.isDirectory())
+            if (image instanceof FloppyImage) {
+                final File dest = new File(getTarget(box), image.getUuid() + ".img");
 
-			LOGGER.info("creating floppy image for " + src + " as " + dest);
+                LOGGER.info("creating floppy image for " + src + " as " + dest);
 
-			ImageUtils.createFloppyImage(work, src, dest);
+                ImageUtils.createImage(work, src, dest);
 
-			location = dest.toString();
+			    location = dest.toString();
+            } else if (image instanceof DVDImage) {
+                final File dest = new File(getTarget(box), image.getUuid() + ".iso");
+
+                LOGGER.info("creating ISO image for " + src + " as " + dest);
+
+                ImageUtils.createImage(work, src, dest);
+
+                location = dest.toString();
+
+            } else {
+                throw new UnsupportedOperationException("do not know how to create image for " + src);
 		}
 
 		final File file = new File(location);

@@ -1,6 +1,14 @@
 package com.alexecollins.util;
 
 
+import de.tu_darmstadt.informatik.rbg.hatlak.eltorito.impl.ElToritoConfig;
+import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.ISO9660RootDirectory;
+import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.CreateISO;
+import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.ISO9660Config;
+import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.ISOImageFileHandler;
+import de.tu_darmstadt.informatik.rbg.hatlak.joliet.impl.JolietConfig;
+import de.tu_darmstadt.informatik.rbg.hatlak.rockridge.impl.RockRidgeConfig;
+import de.tu_darmstadt.informatik.rbg.mhartle.sabre.StreamHandler;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -17,11 +25,27 @@ import java.util.regex.Pattern;
  */
 public class ImageUtils {
 
-	public static void createFloppyImage(File work, final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
+    /**
+     * Create an image based on file extension.
+     */
+    public static void createImage(final File work, final File src, final File dest) throws InterruptedException, ExecutionException, IOException {
+        if (work == null || !work.isDirectory()) {throw new IllegalArgumentException("work is null or is not directory");}
+        if (src == null || !src.isDirectory()) {throw new IllegalArgumentException("src is null or is not directory");}
+        if (dest == null) {throw new IllegalArgumentException("dest must not be null and end in '.iso'");}
+
+        if (dest.getName().endsWith(".img")) {
+            createFloppyImage(work, src, dest);
+        } else if (dest.getName().endsWith(".iso")) {
+            createDVDImage(src, dest);
+        } else {
+            throw new UnsupportedOperationException("unknown file extension on " + dest);
+        }
+    }
+
+	private static void createFloppyImage(File work, final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
 
 		// http://wiki.osdev.org/Disk_Images
-
-		assert dest.getName().endsWith(".img");
+        if (dest == null || !dest.getName().endsWith(".img")) {throw new IllegalArgumentException("dest must not be null and end in '.iso'");}
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Windows")) {
@@ -59,6 +83,24 @@ public class ImageUtils {
 			throw new UnsupportedOperationException("unsupported OS " + os);
 		}
 	}
+
+    /**
+     * Create an ISO image for src.
+     */
+    private static void createDVDImage(final File src, final File dest) {
+
+        if (dest == null || !dest.getName().endsWith(".iso")) {throw new IllegalArgumentException("dest must not be null and end in '.iso'");}
+
+        final ISO9660RootDirectory root = new ISO9660RootDirectory();
+        try {
+            root.addContentsRecursively(src);
+            final StreamHandler streamHandler = new ISOImageFileHandler(dest);
+            CreateISO iso = new CreateISO(streamHandler, root);
+            iso.process(new ISO9660Config(), new RockRidgeConfig(), new JolietConfig(), null);
+        } catch (Exception e) {
+            throw new RuntimeException("failed to create image", e);
+        }
+    }
 
 	/*
 	private static void createFloppyImage1(final File source, final File dest) throws Exception {
