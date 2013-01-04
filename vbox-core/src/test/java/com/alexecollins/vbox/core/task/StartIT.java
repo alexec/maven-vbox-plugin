@@ -33,6 +33,6 @@ public class StartIT extends AbstractTest {
 
 	@Test
 	public void testInvoke() throws Exception {
-	 	new Start(box).call();
+	 	new Start(box, Start.Type.GUI).call();
 	}
 }
