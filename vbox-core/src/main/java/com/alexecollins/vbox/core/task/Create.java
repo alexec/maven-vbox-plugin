@@ -204,9 +204,13 @@ public class Create extends AbstractTask {
 				modifyVm.addAll(Arrays.asList("--nic" + n, "nat"));
 			else if (a.getBridgedInterface() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + n, "bridged", "--bridgeadapter" + n, a.getBridgedInterface().getName()));
-			else if (a.getHostOnlyInterface() != null)
-				modifyVm.addAll(Arrays.asList("--nic" + n, "hostonly", "--hostonlyadapter" + n, a.getHostOnlyInterface().getName()));
-			else if (a.getInternalNetwork() != null)
+			else if (a.getHostOnlyInterface() != null) {
+                final String adapter = a.getHostOnlyInterface().getName();
+                if (!VBox.findHostOnlyInterfaces().contains(adapter)) {
+                    throw new IllegalStateException("host-only interface '" + adapter + "' does not exist, you will need to create it in the VirtualBox settings");
+                }
+                modifyVm.addAll(Arrays.asList("--nic" + n, "hostonly", "--hostonlyadapter" + n, adapter));
+            } else if (a.getInternalNetwork() != null)
 				modifyVm.addAll(Arrays.asList("--nic" + n, "intnet", "--intnet" + n, a.getInternalNetwork().getName()));
 			else
 				throw new UnsupportedOperationException();

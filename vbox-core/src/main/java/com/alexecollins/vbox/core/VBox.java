@@ -180,6 +180,22 @@ public class VBox {
 		return null;
 	}
 
+    /**
+     * @return A set of all the host networks.
+     */
+    public static Set<String> findHostOnlyInterfaces() throws InterruptedException, ExecutionException, IOException {
+        return parseHostOnlyIfs(ExecUtils.exec("vboxmanage", "list", "hostonlyifs"));
+    }
+
+    @VisibleForTesting static Set<String> parseHostOnlyIfs(String s) {
+        final Matcher m = Pattern.compile("^Name: *(.*)").matcher(s);
+        final Set<String> names = new HashSet<String>();
+        while (m.find()) {
+            names.add(m.group(1));
+        }
+        return names;
+    }
+
 
 	public static void installAdditions(File work) throws IOException, InterruptedException, ExecutionException {
 

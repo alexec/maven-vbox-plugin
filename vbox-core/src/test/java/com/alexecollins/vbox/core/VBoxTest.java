@@ -24,7 +24,25 @@ public class VBoxTest {
 		assertThat(v.revision, is(equalTo(80657)));
 	}
 
-	@Test
+    @Test
+    public void testParseHostOnlyIfs() throws Exception {
+        final String s = "Name:            VirtualBox Host-Only Ethernet Adapter\n" +
+                "GUID:            acb259ef-12d1-4d83-b83d-a2b3e1d615fa\n" +
+                "Dhcp:            Disabled\n" +
+                "IPAddress:       192.168.190.1\n" +
+                "NetworkMask:     255.255.255.0\n" +
+                "IPV6Address:     fe80:0000:0000:0000:6dc3:d54a:cada:c4ca\n" +
+                "IPV6NetworkMaskPrefixLength: 64\n" +
+                "HardwareAddress: 08:00:27:00:f8:65\n" +
+                "MediumType:      Ethernet\n" +
+                "Status:          Up\n" +
+                "VBoxNetworkName: HostInterfaceNetworking-VirtualBox Host-Only Ethernet Adapter";
+
+        assertEquals(Collections.singleton("VirtualBox Host-Only Ethernet Adapter"), VBox.parseHostOnlyIfs(s));
+
+    }
+
+    @Test
 	public void test() throws Exception {
 		final Properties p = VBox.getPropertiesFromString("name=\"Ubuntu\"\n" +
 				"ostype=\"Ubuntu\"\n" +
