@@ -23,7 +23,7 @@
             </Boot>
             <BIOS>
                 <ACPI enabled="true"/>
-                <!-- single CPU -->
+                <!-- 32 bit AND 1 CPU -->
                 <IOACPI enabled="false"/>
             </BIOS>
             <Network>
