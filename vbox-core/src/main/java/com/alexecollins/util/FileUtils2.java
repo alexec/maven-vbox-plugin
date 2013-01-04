@@ -18,15 +18,18 @@ public class FileUtils2 {
 	 * @see org.apache.commons.io.FileUtils#copyURLToFile(java.net.URL, java.io.File)
 	 */
 	public static void copyURLToFile(URL url, File file) throws IOException {
-		final File ok = new File(file + ".ok");
-		if (ok.exists()) {return;}
+		final File marker = new File(file + ".marker");
+        final String markerMsg = "marker file that indicates " + url + " downloaded OK";
+
+		if (marker.exists() && FileUtils.readFileToString(marker).equals(markerMsg)) {return;}
+
 		URLConnection connection = url.openConnection();
 		if (connection instanceof HttpURLConnection) {
 			getHttpUrl(file, (HttpURLConnection)connection);
 		} else {
 			FileUtils.copyURLToFile(url, file);
 		}
-		FileUtils.writeStringToFile(ok, "marker file that indicates " + file + " downloaded OK");
+        FileUtils.writeStringToFile(marker, markerMsg);
 	}
 
 	private static void getHttpUrl(File file, HttpURLConnection connection) throws IOException {
