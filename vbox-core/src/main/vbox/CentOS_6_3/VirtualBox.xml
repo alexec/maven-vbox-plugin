@@ -39,6 +39,9 @@
                     <!--
                     <BridgedInterface name="en1: Wi-Fi (AirPort)"/>
                     -->
+                    <!--
+                    <InternalNetwork name="intnet0"/>
+                    -->
                 </Adapter>
             </Network>
             <IO>
