@@ -65,12 +65,12 @@ public class Create extends AbstractTask {
 			throw new IllegalStateException("invalid OS " +osType +",  must be one of " + osTypes);
 		}
 
-		ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", osType, "--register", "--basefolder", t.getParentFile().getCanonicalPath());
-
-		// set-up media
+		// set-up media before we create box, so any problems are easier to fix
 		final Map<Object, File> idToFile = createMedia(box, t, box.getMediaRegistry());
 
-		configureMachine(box, machine.getHardware());
+        ExecUtils.exec("vboxmanage", "createvm", "--name", box.getName(), "--ostype", osType, "--register", "--basefolder", t.getParentFile().getCanonicalPath());
+
+        configureMachine(box, machine.getHardware());
 
 		setupStorage(box, machine.getStorageControllers(), idToFile);
 
