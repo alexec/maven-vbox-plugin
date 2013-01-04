@@ -88,6 +88,7 @@
                                                 <xs:sequence>
                                                     <xs:element name="Adapter" maxOccurs="4">
                                                         <xs:complexType>
+                                                            <!-- https://blogs.oracle.com/fatbloke/entry/networking_in_virtualbox1 -->
                                                             <xs:choice>
                                                                 <xs:element name="NAT"/>
                                                                 <xs:element name="HostOnlyInterface">

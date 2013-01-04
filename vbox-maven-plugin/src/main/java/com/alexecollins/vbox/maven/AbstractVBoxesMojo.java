@@ -5,9 +5,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * A mojo that looks for multiple definition and executes on all of them.
@@ -17,6 +15,7 @@ import java.util.List;
 public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	/**
+     * Boxes to create, in order.
 	 * @parameter expression="${vbox.names}", default="*"
 	 */
 	protected String names = "*";
@@ -24,24 +23,25 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	public void execute() throws MojoExecutionException {
 
-		final List<String> names = Arrays.asList(this.names.split(","));
+        final File src = new File("src/main/vbox");
+        final List<String> names = new ArrayList<String>();
+        if (this.names.equals("*")) {
+            for (File f : src.listFiles(new FileFilter() {
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            })) {
+                names.add(f.getName());
+            }
+        } else {
+		    names.addAll(Arrays.asList(this.names.split(",")));
+        }
 
-		for (File f : new File("src/main/vbox").listFiles(new FileFilter() {
-			public boolean accept(File file) {
-				return file.isDirectory();
-			}
-		})) {
+		for (final String n : names) {
 			try {
-				final VBox box = new VBox(f.toURI());
-
-				// TODO
-				if (names.contains(box.getName()) || names.equals(Collections.singletonList("*"))) {
-					execute(box);
-				} else {
-					getLog().info("skipping " + box.getName());
-				}
+                execute(new VBox(new File(src, n).toURI()));
 			} catch (Exception e) {
-				throw new MojoExecutionException("failed to create " + f, e);
+				throw new MojoExecutionException("failed to create " + n, e);
 			}
 		}
 	}
