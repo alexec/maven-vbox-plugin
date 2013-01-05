@@ -1,7 +1,6 @@
 package com.alexecollins.util;
 
 
-import de.tu_darmstadt.informatik.rbg.hatlak.eltorito.impl.ElToritoConfig;
 import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.ISO9660RootDirectory;
 import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.CreateISO;
 import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.ISO9660Config;
@@ -10,6 +9,8 @@ import de.tu_darmstadt.informatik.rbg.hatlak.joliet.impl.JolietConfig;
 import de.tu_darmstadt.informatik.rbg.hatlak.rockridge.impl.RockRidgeConfig;
 import de.tu_darmstadt.informatik.rbg.mhartle.sabre.StreamHandler;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,10 @@ import java.util.regex.Pattern;
  */
 public class ImageUtils {
 
-    /**
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);
+
+
+	/**
      * Create an image based on file extension.
      */
     public static void createImage(final File work, final File src, final File dest) throws InterruptedException, ExecutionException, IOException {
@@ -80,7 +84,14 @@ public class ImageUtils {
 				ExecUtils.exec("hdiutil", "detach", device.getPath());
 			}
 		} else {
-			throw new UnsupportedOperationException("unsupported OS " + os);
+			LOGGER.warn("unsupported OS " + os + ", hoping it's *NIX and executing some un-tested code, email me at  alex.e.g@gmail.com if you see this message and you have any problems");
+
+			// http://stackoverflow.com/questions/11202706/create-a-virtual-floppy-image-without-mount
+			ExecUtils.exec("dd", "if=/dev/zero", "of=" + dest.getPath(), "count=1440","bs=1k");
+			ExecUtils.exec("mkfs.msdos", dest.getPath());
+			for (File f : source.listFiles()) {
+				ExecUtils.exec("mcopy", "-s", "-i", dest.getPath(), f.getPath(), "::/");
+			}
 		}
 	}
 

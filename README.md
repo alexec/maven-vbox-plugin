@@ -43,10 +43,6 @@ Maven
 ===
 Quick Start
 ---
-Execute this:
-
-    mvn com.alexecollins.vbox:vbox-maven-plugin:create-definition -Dvbox.name=UbuntuServer_12_10
-
 Add this to your pom.xml:
 
     <plugin>
@@ -64,6 +60,10 @@ Add this to your pom.xml:
             </execution>
         </executions>
     </plugin>
+
+Execute this:
+
+    mvn vbox:create-definition -Dvbox.name=CentOS_6_3
 
 Execute:
 
