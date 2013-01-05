@@ -23,6 +23,6 @@ mount /dev/fd0 /media/floppy
     </Target>
     <Target name="cleanup">
         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --medium none</Exec>
-        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" -port 0 --device 0 --medium none</Exec>
+        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
     </Target>
 </Provisioning>
