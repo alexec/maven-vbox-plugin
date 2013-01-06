@@ -23,13 +23,13 @@ public abstract class AbstractTest {
 		});
 	}
 
-	protected final String name;
+	final String name;
 	protected final File src;
-	protected final VBox box;
+	final VBox box;
 	final File target;
 	final File work = new File("target");
 
-	public AbstractTest(final String name) throws IOException, JAXBException, SAXException, URISyntaxException {
+	protected AbstractTest(final String name) throws IOException, JAXBException, SAXException, URISyntaxException {
 		this.name = name;
 		System.out.println("name=" + name);
 		src = new File("src/main/vbox/" + name);

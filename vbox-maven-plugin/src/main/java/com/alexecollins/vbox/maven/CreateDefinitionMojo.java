@@ -16,7 +16,7 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 	 * @parameter expression="${vbox.name}"
 	 * @required
 	 */
-	protected String name;
+	private String name;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {

@@ -12,13 +12,13 @@ import java.util.*;
  *
  * @author alexec (alex.e.c@gmail.com)
  */
-public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
+abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	/**
      * Boxes to create, in order.
 	 * @parameter expression="${vbox.names}", default="*"
 	 */
-	protected String names = "*";
+	private String names = "*";
 	final File work = new File("target");
 
 	public void execute() throws MojoExecutionException {

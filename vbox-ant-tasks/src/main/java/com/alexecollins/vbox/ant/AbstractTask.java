@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public abstract class AbstractTask extends Task {
+abstract class AbstractTask extends Task {
 	File dir;
 	File work;
 
