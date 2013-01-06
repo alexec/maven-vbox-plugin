@@ -1,5 +1,6 @@
 package com.alexecollins.util;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -8,8 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -49,8 +50,18 @@ public class FileUtils2Test {
 			assertEquals(s, f.length());
 		}
 
+	@Ignore
 	@Test
 	public void testSignature() throws Exception {
-		System.out.println(Arrays.toString(FileUtils2.getSignature(new File("src"))));
+		final File f = new File("test");
+		FileUtils.touch(f);
+		final byte[] x = FileUtils2.getSignature(f);
+		assertArrayEquals(x, FileUtils2.getSignature(f));
+		f.renameTo(new File("test1"));
+		final byte[] y = FileUtils2.getSignature(f);
+		System.out.println(Arrays.toString(x));
+		System.out.println(Arrays.toString(y));
+		assertFalse(Arrays.equals(x, y));
+		assert f.delete();
 	}
 }

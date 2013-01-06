@@ -2,30 +2,37 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
            targetNamespace="http://www.alexecollins.com/vbox/provisioning"
            elementFormDefault="qualified">
+    <!-- instructions on how to provision a box, similar to an Ant build -->
     <xs:element name="Provisioning">
         <xs:complexType>
             <xs:sequence>
+                <!-- a single target -->
                 <xs:element name="Target" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:choice maxOccurs="unbounded">
+                            <!-- create a port forward from the host to the guest, e.g. to set-up an SSH connection -->
                             <xs:element name="PortForward" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:attribute name="hostport" type="xs:int" use="required"/>
                                     <xs:attribute name="guestport" type="xs:int" use="required"/>
                                 </xs:complexType>
                             </xs:element>
+                            <!-- repeatedly ping this port until it's working -->
                             <xs:element name="AwaitPort">
                                 <xs:complexType>
-                                    <xs:attribute name="hostport" type="xs:int" use="required"/>
+                                    <xs:attribute name="host" type="xs:string" default="localhost"/>
+                                    <xs:attribute name="port" type="xs:int" use="required"/>
                                     <xs:attribute name="timeout" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
+                            <!-- wait for the machine to get into the correct state -->
                             <xs:element name="AwaitState">
                                 <xs:complexType>
                                     <xs:attribute name="state" type="xs:string" use="required"/>
                                     <xs:attribute name="timeout" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
+                            <!-- type these keys on the box's keyboard -->
                             <xs:element name="KeyboardPutScanCodes">
                                 <xs:complexType>
                                     <xs:simpleContent>
@@ -36,12 +43,14 @@
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
+                            <!-- sleep for this time -->
                             <xs:element name="Sleep">
                                 <xs:complexType>
                                     <xs:attribute name="minutes" type="xs:long" default="0"/>
                                     <xs:attribute name="seconds" type="xs:long" default="0"/>
                                 </xs:complexType>
                             </xs:element>
+                            <!-- execute this command on the host -->
                             <xs:element name="Exec">
                                 <xs:complexType>
                                     <xs:simpleContent>

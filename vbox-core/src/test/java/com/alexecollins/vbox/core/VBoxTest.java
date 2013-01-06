@@ -363,10 +363,4 @@ public class VBoxTest {
 		assertFalse(osTypes.contains(new VBox.OSType("Windows 2008")));
 	}
 
-    @Test
-    public void testPrettyDuration() throws Exception {
-        assertEquals("1 minute(s)", VBox.prettyDuration(60000));
-        assertEquals("30 second(s)", VBox.prettyDuration(30000));
-
-    }
 }

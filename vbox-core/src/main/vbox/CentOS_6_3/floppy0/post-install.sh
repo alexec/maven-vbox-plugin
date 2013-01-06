@@ -1,7 +1,7 @@
 #! /bin/sh
 set -ue
 
-yum -y install kernel-headers kernel-devel gcc gcc-c++ make kernel-devel-$(uname -r)
+yum -y install acpid kernel-headers kernel-devel gcc gcc-c++ make kernel-devel-$(uname -r)
 mkdir /media/cdrom
 mount /dev/sr0 /media/cdrom
 /media/cdrom/VBoxLinuxAdditions.run

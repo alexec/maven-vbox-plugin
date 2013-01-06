@@ -13,7 +13,7 @@ public class DurationUtils {
 	/**
 	 * @return The period, in seconds.
 	 */
-	public static long secondsForString(final String string) {
+	public static long millisForString(final String string) {
 
 		final Matcher m = Pattern.compile("([0-9]+) (minute|second)s?").matcher(string);
 		long t = 0;
@@ -22,6 +22,13 @@ public class DurationUtils {
 			t += (m.group(2).equals("minute") ? 60 : 1 ) * Long.parseLong(m.group(1));
 		}
 
-		return t;
+		return 1000 * t;
 	}
+
+	public static String prettyPrint(final long remaining) {
+		final long mins = remaining / 1000 / 60;
+		final long secs = (remaining / 1000) % 60;
+		return mins > 0 ? mins + " minute(s)" : secs + " second(s)";
+	}
+
 }

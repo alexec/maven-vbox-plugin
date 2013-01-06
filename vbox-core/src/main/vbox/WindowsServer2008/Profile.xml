@@ -1,6 +1,2 @@
 <?xml version="1.0"?>
-<Manifest xmlns="http://www.alexecollins.com/vbox/manifest">
-    <File>floppy0/Autounattend.xml</File>
-    <File>floppy0/oracle-cert.cer</File>
-    <File>floppy0/post-install.bat</File>
-</Manifest>
+<Profile xmlns="http://www.alexecollins.com/vbox/profile"/>

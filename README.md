@@ -110,6 +110,7 @@ Definitions can be found in src/test/vbox. Typically you'd create a series of de
             VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XML files.
             Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
             Provisioning.xml  - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
+            Profile.xml       - Information about the box, such as if it is headless, and how to determine if it's stared successfully.
 
 The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
 

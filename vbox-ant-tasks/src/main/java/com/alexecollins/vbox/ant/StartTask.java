@@ -9,18 +9,13 @@ import org.apache.tools.ant.BuildException;
  */
 public class StartTask extends AbstractTask {
 
-    String type;
-
 	@Override
 	public void execute() throws BuildException {
 		if (dir == null) {
 			throw new BuildException("dir is null");
 		}
-        if (type == null) {
-            throw new BuildException("type is null");
-        }
 		try {
-			new Start(new VBox(dir.toURI()), Start.Type.valueOf(type)).call();
+			new Start(new VBox(dir.toURI())).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

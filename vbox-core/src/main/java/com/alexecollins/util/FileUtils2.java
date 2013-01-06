@@ -6,7 +6,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -58,6 +57,9 @@ public class FileUtils2 {
 		}
 	}
 
+	/**
+	 * Generate a cheap signature for the directory using the file names and modification time.
+	 */
 	public static byte[] getSignature(final File f) throws NoSuchAlgorithmException, IOException {
 		final MessageDigest digest = MessageDigest.getInstance("MD5");
 		calcSignature(f, digest);
@@ -65,14 +67,9 @@ public class FileUtils2 {
 	}
 
 	private static void calcSignature(final File f, final MessageDigest d) throws IOException {
-		if (f.isFile()) {
-			final DigestInputStream in = new DigestInputStream(new FileInputStream(f), d);
-			try {
-				while (in.read() != -1) {}
-			} finally {
-				in.close();
-			}
-		} else {
+		d.update(f.getName().getBytes());
+		d.update(String.valueOf(f.lastModified()).getBytes());
+		if (f.isDirectory()) {
 			for (File c : f.listFiles()) {
 				calcSignature(c, d) ;
 			}

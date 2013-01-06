@@ -3,6 +3,7 @@
            xmlns="http://www.alexecollins.com/vbox/mediaregistry"
            targetNamespace="http://www.alexecollins.com/vbox/mediaregistry"
            elementFormDefault="qualified">
+    <!-- a list of media for the box and where to get if from -->
     <xs:element name="MediaRegistry">
         <xs:complexType>
         <xs:sequence>
@@ -32,8 +33,17 @@
     </xs:element>
 
     <xs:complexType name="Image" abstract="true">
+        <!-- the ID for the image, e.g. "dvd0" -->
         <xs:attribute name="uuid" type="xs:ID" use="required"/>
+        <!-- the size, if it is to bea created, e.g. for a hard disk -->
         <xs:attribute name="size" type="xs:int"/>
+        <!--
+            the location of the image, e.g.
+
+                floppy0 - create an image from this directory
+                http://../..iso - download from this URL
+                file:// - copy this file
+        -->
         <xs:attribute name="location" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="HardDiskImage">

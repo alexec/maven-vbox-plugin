@@ -18,14 +18,13 @@ import java.util.regex.Pattern;
  */
 public class Clean extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Clean.class);
-	private final VBox box;
 
 	public Clean(File work, VBox box) {
-		super(work);
-		this.box = box;
+		super(work, box);
 	}
 
 	public Void call() throws Exception {
+
 		LOGGER.info("cleaning '" + box.getName() + "'");
 
 		box.unregister();
@@ -33,7 +32,7 @@ public class Clean extends AbstractTask {
 		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		final List<String> disks = new ArrayList<String>();
 		while (m.find()) {
-			if (m.group().contains(getTarget(box).getPath())) {
+			if (m.group().contains(getTarget().getPath())) {
 				disks.add(m.group(1).trim());
 			}
 		}
@@ -46,8 +45,8 @@ public class Clean extends AbstractTask {
 		}
 
 
-		LOGGER.debug("deleting " + getTarget(box));
-		FileUtils.deleteDirectory(getTarget(box));
+		LOGGER.debug("deleting " + getTarget());
+		FileUtils.deleteDirectory(getTarget());
 		return null;
 	}
 }

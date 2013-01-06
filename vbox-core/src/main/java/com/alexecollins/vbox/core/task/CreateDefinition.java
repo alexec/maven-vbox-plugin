@@ -31,7 +31,7 @@ public class CreateDefinition implements Callable<Void> {
 		final VBox box = new VBox(getClass().getResource("/" + name).toURI());
 
 		for (String f : ImmutableSet.<String>builder()
-				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml"))
+				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml", "Profile.xml"))
 				.addAll(box.getManifest().getFile()).build()) {
 			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(target, f));
 		}

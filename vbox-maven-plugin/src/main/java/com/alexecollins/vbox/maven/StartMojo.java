@@ -9,12 +9,7 @@ import com.alexecollins.vbox.core.task.Start;
  */
 public class StartMojo extends AbstractVBoxesMojo {
 
-    /**
-     * @parameter expression="${vbox.type}", default-value="gui"
-     */
-    protected String type = Start.Type.GUI.toString().toLowerCase();
-
 	protected void execute(VBox box) throws Exception {
-		new Start(box, Start.Type.valueOf(type.toUpperCase())).call();
+		new Start(box).call();
 	}
 }

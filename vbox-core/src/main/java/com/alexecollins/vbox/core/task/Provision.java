@@ -7,7 +7,6 @@ import com.alexecollins.vbox.core.ScanCodes;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.provisioning.Provisioning;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ResourceHandler;
@@ -26,13 +25,10 @@ import java.util.concurrent.TimeoutException;
 public class Provision extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Provision.class);
 	private final Server server;
-	private final VBox box;
 	private final Set<String> targets;
 
-
 	public Provision(File work, VBox box, Set<String> targets) throws IOException {
-		super(work);
-		this.box = box;
+		super(work, box);
 		this.targets = targets;
 
 		server = new Server(Provision.findFreePort());
@@ -40,8 +36,15 @@ public class Provision extends AbstractTask {
 
 	public Void call() throws Exception {
 
+		if (box.exists()) {
+			new Stop(box).call();
+		}
+
+		verifySignature();
+
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
 		if (box.exists() && box.getSnapshots().contains(snapshot)) {
+			LOGGER.info("restoring '" + box.getName() + "' from snapshot " + snapshot);
 			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
 			return null;
 		}
@@ -52,11 +55,6 @@ public class Provision extends AbstractTask {
 		}
 
 		LOGGER.info("provisioning '" + box.getName() + "'");
-		for (String f : box.getManifest().getFile()) {
-			final File d = new File(getTarget(box), f);
-			if (!d.exists())
-				FileUtils.copyURLToFile(new URL(box.getSrc() + "/" + f), d);
-		}
 
 		startServer();
 		try {
@@ -102,7 +100,7 @@ public class Provision extends AbstractTask {
 				Thread.sleep(seconds * 1000);
 			} else if (o instanceof Provisioning.Target.Exec) {
 				try {
-					ExecUtils.exec(new CSVReader(new StringReader(subst(box, ((Provisioning.Target.Exec) o).getValue())), ' ').readNext());
+					ExecUtils.exec(new CSVReader(new StringReader(subst(((Provisioning.Target.Exec) o).getValue())), ' ').readNext());
 				} catch (ExecutionException e) {
 					if (((Provisioning.Target.Exec) o).isFailonerror())
 						throw e;
@@ -112,7 +110,7 @@ public class Provision extends AbstractTask {
 			} else if (o instanceof Provisioning.Target.AwaitPort) {
 				awaitPort((Provisioning.Target.AwaitPort) o);
 			} else if (o instanceof Provisioning.Target.AwaitState) {
-				box.awaitState(1000 * DurationUtils.secondsForString(((Provisioning.Target.AwaitState) o).getTimeout()), ((Provisioning.Target.AwaitState) o).getState());
+				box.awaitState( DurationUtils.millisForString(((Provisioning.Target.AwaitState) o).getTimeout()), ((Provisioning.Target.AwaitState) o).getState());
 			} else
 				throw new AssertionError("unexpected provision");
 		}
@@ -122,22 +120,28 @@ public class Provision extends AbstractTask {
 	}
 
 	private void awaitPort(final Provisioning.Target.AwaitPort ap) throws IOException, TimeoutException, InterruptedException {
-		final long start = System.currentTimeMillis();
+		awaitPort(ap.getHost(), ap.getPort(), ap.getTimeout());
+	}
 
+	public static void awaitPort(String host, int port, String timeout) throws IOException, TimeoutException, InterruptedException {
+		final long start = System.currentTimeMillis();
+		final String desc = host + ":" + port;
 		while (true) {
-			LOGGER.info("awaiting port localhost:" + ap.getHostport());
+			final long remaining = start + DurationUtils.millisForString(timeout) - System.currentTimeMillis();
+			LOGGER.info("awaiting " + desc + " for " + DurationUtils.prettyPrint(remaining));
 			try {
-				new Socket("localhost", ap.getHostport()).close();
+				new Socket(host, port).close();
+				LOGGER.info("port available");
 				return;
 			} catch (ConnectException e) {
 				// nop
 			}
 
-			if (System.currentTimeMillis() > start + DurationUtils.secondsForString(ap.getTimeout())) {
-				throw new TimeoutException("timed out waiting for port localhost:" + ap.getHostport());
+			if (remaining < 0) {
+				throw new TimeoutException("timed out waiting for " + desc);
 			}
 
-			Thread.sleep(30000);
+			Thread.sleep(Math.min(10000l, remaining));
 		}
 	}
 
@@ -194,7 +198,7 @@ public class Provision extends AbstractTask {
 			String line;
 			line = ksc.getLine();
 			if (line != null) {
-				line = subst(box, line);
+				line = subst(line);
 
 				LOGGER.info("typing line '" + line + "'");
 
@@ -205,7 +209,7 @@ public class Provision extends AbstractTask {
 		{
 			String text = ksc.getValue();
 			if (text != null && text.length() > 0) {
-				text = subst(box, text);
+				text = subst(text);
 
 				LOGGER.info("typing text '" + text + "'");
 
@@ -215,10 +219,10 @@ public class Provision extends AbstractTask {
 	}
 
 	@Override
-	public String subst(final VBox box, String line) throws IOException, InterruptedException, ExecutionException {
+	public String subst(String line) throws IOException, InterruptedException, ExecutionException {
 		line = line.replaceAll("%IP%", InetAddress.getLocalHost().getHostAddress());
 		line = line.replaceAll("%PORT%", String.valueOf(getServerPort()));
-		return super.subst(box, line);
+		return super.subst(line);
 	}
 
 	private void keyboardPutScanCodes(String name, int[] scancodes) throws IOException, InterruptedException, ExecutionException {

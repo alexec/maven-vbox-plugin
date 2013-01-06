@@ -1,9 +1,12 @@
 package com.alexecollins.vbox.core;
 
+import com.alexecollins.util.DurationUtils;
 import com.alexecollins.util.ExecUtils;
 import com.alexecollins.util.FileUtils2;
+import com.alexecollins.vbox.core.task.Provision;
 import com.alexecollins.vbox.manifest.Manifest;
 import com.alexecollins.vbox.mediaregistry.MediaRegistry;
+import com.alexecollins.vbox.profile.Profile;
 import com.alexecollins.vbox.provisioning.Provisioning;
 import com.google.common.annotations.VisibleForTesting;
 import de.innotek.virtualbox_settings.VirtualBox;
@@ -22,7 +25,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
@@ -39,6 +44,7 @@ public class VBox {
 	private final Provisioning provisioning;
 	private final URI src;
 	private final String name;
+	private final Profile profile;
 
 	public VBox(final URI src) throws URISyntaxException, IOException, JAXBException, SAXException {
 
@@ -61,6 +67,7 @@ public class VBox {
 		mediaRegistry = unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);
 		manifest = unmarshal(new URI(src.toString() + "/Manifest.xml").toURL().openStream(), Manifest.class);
 		provisioning = unmarshal(new URI(src.toString() + "/Provisioning.xml").toURL().openStream(), Provisioning.class);
+		profile = unmarshal(new URI(src.toString() + "/Profile.xml").toURL().openStream(), Profile.class);
 	}
 
 	/**
@@ -106,21 +113,15 @@ public class VBox {
 		long s = System.currentTimeMillis();
 		do {
             long remaining = s + millis - System.currentTimeMillis();
-            LOGGER.info("awaiting " + state + " for " + prettyDuration(remaining) );
+            LOGGER.info("awaiting " + state + " for " + DurationUtils.prettyPrint(remaining) );
 			if (remaining < 0) {
 				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");
 			}
-			Thread.sleep(Math.min(10000, remaining));
+			Thread.sleep(Math.min(10000l, remaining));
 		} while (!getProperties().get("VMState").equals(state));
 
 		LOGGER.info("in state " + state);
 	}
-
-    @VisibleForTesting static String prettyDuration(final long remaining) {
-        final long mins = remaining / 1000 / 60;
-        final long secs = (remaining / 1000) % 60;
-        return mins > 0 ? mins + " minute(s)" : secs + " second(s)";
-    }
 
     public VirtualBox getVirtualBox() {
 		return virtualBox;
@@ -132,6 +133,10 @@ public class VBox {
 
 	public Manifest getManifest() {
 		return manifest;
+	}
+
+	public Profile getProfile() {
+		return profile;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -212,6 +217,23 @@ public class VBox {
 		ExecUtils.exec("vboxmanage", "extpack", "install", file.getCanonicalPath());
 	}
 
+	public void stop() throws InterruptedException, ExecutionException, IOException {
+		if (getProperties().getProperty("VMState").equals("running")) {
+			LOGGER.info("stopping '" + getName() + "'");
+			pressPowerButton();
+			try {
+				awaitState(30000l, "poweroff");
+			} catch (TimeoutException e) {
+				LOGGER.warn("failed to power down in 30 second(s) forcing power off");
+				powerOff();
+			}
+			LOGGER.info("stopped '" + getName() + "'");
+		} else {
+			LOGGER.info("not stopping '\" + getName() +\"'\", already off");
+		}
+	}
+
+
 	public static class Version {
 		final int major;
 		final int minor;
@@ -254,8 +276,14 @@ public class VBox {
 		ExecUtils.exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
 	}
 
-	public void start() throws IOException, InterruptedException, ExecutionException {
-		ExecUtils.exec("vboxmanage", "startvm", name);
+	public void start() throws IOException, InterruptedException, ExecutionException, TimeoutException, URISyntaxException {
+		ExecUtils.exec("vboxmanage", "startvm", getName(), "--type", String.valueOf(getProfile().getType()));
+		awaitState(30000l, "running");
+
+		for (Profile.Ping p : getProfile().getPing()) {
+			final URI u = new URI(p.getUrl());
+			Provision.awaitPort(u.getHost(), u.getPort(), p.getTimeout());
+		}
 	}
 
 	public void takeSnapshot(final Snapshot snapshot) throws IOException, InterruptedException, ExecutionException {

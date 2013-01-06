@@ -1,16 +1,27 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
-           targetNamespace="http://www.alexecollins.com/vbox/manifest"
+           xmlns="http://www.alexecollins.com/vbox/profile"
+           targetNamespace="http://www.alexecollins.com/vbox/profile"
            elementFormDefault="qualified">
-    <xs:element name="Manifest">
+    <xs:element name="Profile">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="File" maxOccurs="unbounded">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string"/>
-                    </xs:simpleType>
+                <!-- a list of URLs to ping to make sure that the server is working -->
+                <xs:element name="ping" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="url" type="xs:string" use="required"/>
+                        <xs:attribute name="timeout" type="xs:string" default="1 minute"/>
+                    </xs:complexType>
                 </xs:element>
             </xs:sequence>
+            <!-- if we should start it with a head -->
+            <xs:attribute name="type" type="Type" default="gui"/>
         </xs:complexType>
     </xs:element>
+    <xs:simpleType name="Type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="gui"/>
+            <xs:enumeration value="headless"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>

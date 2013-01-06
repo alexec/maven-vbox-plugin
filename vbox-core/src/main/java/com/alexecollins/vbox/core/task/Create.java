@@ -29,18 +29,19 @@ import java.util.concurrent.ExecutionException;
 
 public class Create extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
-	private final VBox box;
 
 	public Create(final File work, final VBox box) {
-		super(work);
-		this.box = box;
+		super(work, box);
 	}
 
 	public Void call() throws Exception {
 
+		verifySignature();
+
 		final Snapshot snapshot = Snapshot.POST_CREATION;
 		if (box.exists()) {
 			if (box.getSnapshots().contains(snapshot)) {
+				LOGGER.info("restoring '" + box.getName() + "' from snapshot " + snapshot);
 				box.restoreSnapshot(snapshot);
 				return null;
 			}
@@ -56,8 +57,10 @@ public class Create extends AbstractTask {
 
 		assert machine != null;
 
-		final File t = getTarget(box);
+		final File t = getTarget();
 		if (!t.mkdirs()) throw new IllegalStateException("failed to create " + t);
+
+		FileUtils.writeByteArrayToFile(getSignatureFile(), getSignature());
 
 		final String osType = machine.getOSType();
 		final Set<VBox.OSType> osTypes = VBox.getOSTypes();
@@ -228,7 +231,7 @@ public class Create extends AbstractTask {
 	}
 
 	File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
-		String location = subst(box, image.getLocation());
+		String location = subst(image.getLocation());
 
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
             // 1. make sure the file is in the download cache, this means if we have multiple machines
@@ -240,7 +243,7 @@ public class Create extends AbstractTask {
                 FileUtils2.copyURLToFile(new URL(location), cache);
             }
             // 2. copy the cached version to the dest, if the dest might need freshening
-            final File dest = new File(getTarget(box), image.getUuid() + ".iso");
+            final File dest = new File(getTarget(), image.getUuid() + ".iso");
             if (!dest.exists() || dest.lastModified() != cache.lastModified()) {
                 LOGGER.info("copying " + cache + " to " + dest);
                 FileUtils.copyFile(cache, dest);
@@ -255,7 +258,7 @@ public class Create extends AbstractTask {
 
 		if (src.isDirectory())
             if (image instanceof FloppyImage) {
-                final File dest = new File(getTarget(box), image.getUuid() + ".img");
+                final File dest = new File(getTarget(), image.getUuid() + ".img");
 
                 LOGGER.info("creating floppy image for " + src + " as " + dest);
 
@@ -263,7 +266,7 @@ public class Create extends AbstractTask {
 
 			    location = dest.toString();
             } else if (image instanceof DVDImage) {
-                final File dest = new File(getTarget(box), image.getUuid() + ".iso");
+                final File dest = new File(getTarget(), image.getUuid() + ".iso");
 
                 LOGGER.info("creating ISO image for " + src + " as " + dest);
 
