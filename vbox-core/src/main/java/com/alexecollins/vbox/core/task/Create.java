@@ -227,7 +227,7 @@ public class Create extends AbstractTask {
 		ExecUtils.exec(modifyVm.toArray(new String[modifyVm.size()]));
 	}
 
-	public File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
+	File acquireImage(VBox box, Image image) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		String location = subst(box, image.getLocation());
 
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
