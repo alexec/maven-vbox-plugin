@@ -141,7 +141,7 @@ public class VBox {
 		return (T) u.unmarshal(in);
 	}
 
-	public Provisioning getProvisioning() throws IOException, URISyntaxException, JAXBException, SAXException {
+	public Provisioning getProvisioning()  {
 		return provisioning;
 	}
 
