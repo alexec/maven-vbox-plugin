@@ -23,7 +23,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	@Override
 	protected void execute(VBox box) throws Exception {
 
-		new Provision(work, box, new HashSet<String>(Arrays.asList(this.targets.split(",")))).call();;
+		new Provision(work, box, new HashSet<String>(Arrays.asList(this.targets.split(",")))).call();
 	}
 
 
