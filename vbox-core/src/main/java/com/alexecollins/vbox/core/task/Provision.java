@@ -41,7 +41,7 @@ public class Provision extends AbstractTask {
 	public Void call() throws Exception {
 
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
-		if (box.exists() && box.getSnapshots().contains(snapshot.toString())) {
+		if (box.exists() && box.getSnapshots().contains(snapshot)) {
 			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
 			return null;
 		}
