@@ -40,6 +40,9 @@ public class Create extends AbstractTask {
 
 		final Snapshot snapshot = Snapshot.POST_CREATION;
 		if (box.exists()) {
+
+			box.powerOff();
+
 			if (box.getSnapshots().contains(snapshot)) {
 				LOGGER.info("restoring '" + box.getName() + "' from snapshot " + snapshot);
 				box.restoreSnapshot(snapshot);

@@ -3,7 +3,6 @@ package com.alexecollins.vbox.core;
 import com.alexecollins.util.DurationUtils;
 import com.alexecollins.util.ExecUtils;
 import com.alexecollins.util.FileUtils2;
-import com.alexecollins.vbox.core.task.Provision;
 import com.alexecollins.vbox.manifest.Manifest;
 import com.alexecollins.vbox.mediaregistry.MediaRegistry;
 import com.alexecollins.vbox.profile.Profile;
@@ -217,23 +216,6 @@ public class VBox {
 		ExecUtils.exec("vboxmanage", "extpack", "install", file.getCanonicalPath());
 	}
 
-	public void stop() throws InterruptedException, ExecutionException, IOException {
-		if (getProperties().getProperty("VMState").equals("running")) {
-			LOGGER.info("stopping '" + getName() + "'");
-			pressPowerButton();
-			try {
-				awaitState(30000l, "poweroff");
-			} catch (TimeoutException e) {
-				LOGGER.warn("failed to power down in 30 second(s) forcing power off");
-				powerOff();
-			}
-			LOGGER.info("stopped '" + getName() + "'");
-		} else {
-			LOGGER.info("not stopping '\" + getName() +\"'\", already off");
-		}
-	}
-
-
 	public static class Version {
 		final int major;
 		final int minor;
@@ -259,7 +241,9 @@ public class VBox {
 	}
 
 	public void powerOff() throws IOException, InterruptedException, ExecutionException {
-		ExecUtils.exec("vboxmanage", "controlvm", name, "poweroff");
+		if (!getProperties().getProperty("VMState").equals("poweroff")) {
+			ExecUtils.exec("vboxmanage", "controlvm", name, "poweroff");
+		}
 	}
 
 	public void unregister() throws IOException, InterruptedException, ExecutionException, TimeoutException {
@@ -276,14 +260,11 @@ public class VBox {
 		ExecUtils.exec("vboxmanage", "snapshot", name, "restore", snapshot.toString());
 	}
 
+	/**
+	 * Start the box, but do not wait for it to complete start-up.
+	 */
 	public void start() throws IOException, InterruptedException, ExecutionException, TimeoutException, URISyntaxException {
 		ExecUtils.exec("vboxmanage", "startvm", getName(), "--type", String.valueOf(getProfile().getType()));
-		awaitState(30000l, "running");
-
-		for (Profile.Ping p : getProfile().getPing()) {
-			final URI u = new URI(p.getUrl());
-			Provision.awaitPort(u.getHost(), u.getPort(), p.getTimeout());
-		}
 	}
 
 	public void takeSnapshot(final Snapshot snapshot) throws IOException, InterruptedException, ExecutionException {

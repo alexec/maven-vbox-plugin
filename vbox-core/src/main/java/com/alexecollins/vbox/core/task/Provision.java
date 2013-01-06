@@ -43,10 +43,13 @@ public class Provision extends AbstractTask {
 		verifySignature();
 
 		final Snapshot snapshot = Snapshot.POST_PROVISIONING;
-		if (box.exists() && box.getSnapshots().contains(snapshot)) {
-			LOGGER.info("restoring '" + box.getName() + "' from snapshot " + snapshot);
-			box.restoreSnapshot(Snapshot.POST_PROVISIONING);
-			return null;
+		if (box.exists()) {
+			box.powerOff();
+			if (box.getSnapshots().contains(snapshot)) {
+				LOGGER.info("restoring '" + box.getName() + "' from snapshot " + snapshot);
+				box.restoreSnapshot(Snapshot.POST_PROVISIONING);
+				return null;
+			}
 		}
 
 		// if the box doesn't exist, create it
