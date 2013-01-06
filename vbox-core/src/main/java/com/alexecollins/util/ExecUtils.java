@@ -54,7 +54,7 @@ public class ExecUtils {
 
 	private static String log(final InputStream inputStream) throws IOException {
 		final BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-		final StringBuffer out = new StringBuffer();
+		final StringBuilder out = new StringBuilder();
 		try {
 			String l;
 			while ((l = r.readLine()) != null) {
