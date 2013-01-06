@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -47,4 +48,9 @@ public class FileUtils2Test {
 
 			assertEquals(s, f.length());
 		}
+
+	@Test
+	public void testSignature() throws Exception {
+		System.out.println(Arrays.toString(FileUtils2.getSignature(new File("src"))));
 	}
+}

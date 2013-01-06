@@ -6,6 +6,9 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -52,6 +55,27 @@ public class FileUtils2 {
 			}
 		} finally {
 			in.close();
+		}
+	}
+
+	public static byte[] getSignature(final File f) throws NoSuchAlgorithmException, IOException {
+		final MessageDigest digest = MessageDigest.getInstance("MD5");
+		calcSignature(f, digest);
+		return digest.digest();
+	}
+
+	private static void calcSignature(final File f, final MessageDigest d) throws IOException {
+		if (f.isFile()) {
+			final DigestInputStream in = new DigestInputStream(new FileInputStream(f), d);
+			try {
+				while (in.read() != -1) {}
+			} finally {
+				in.close();
+			}
+		} else {
+			for (File c : f.listFiles()) {
+				calcSignature(c, d) ;
+			}
 		}
 	}
 }
