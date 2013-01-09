@@ -32,7 +32,7 @@ public class Stop implements Callable<Void> {
 			}
 			LOGGER.info("stopped '" + box.getName() + "'");
 		} else {
-			LOGGER.info("not stopping '" + getName() + "', already off");
+			LOGGER.info("not stopping '" + box.getName() + "', already off");
 		}
 		return null;
 	}
