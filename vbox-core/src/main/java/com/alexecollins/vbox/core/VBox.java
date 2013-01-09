@@ -9,6 +9,7 @@ import com.alexecollins.vbox.profile.Profile;
 import com.alexecollins.vbox.provisioning.Provisioning;
 import com.google.common.annotations.VisibleForTesting;
 import de.innotek.virtualbox_settings.VirtualBox;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -212,6 +213,13 @@ public class VBox {
 
         final String f = "Oracle_VM_VirtualBox_Extension_Pack-" + b + ".vbox-extpack";
         final File file = new File(work, "vbox/downloads/" + f);
+
+        if (!file.getParentFile().exists()) {
+            if (!file.getParentFile().mkdirs()) {
+                throw new IllegalStateException("failed to created " + file.getParentFile());
+            }
+        }
+
         // http://download.virtualbox.org/virtualbox/4.2.6/Oracle_VM_VirtualBox_Extension_Pack-4.2.6-82870.vbox-extpack
 		FileUtils2.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/" + a + "/" + f), file);
 
