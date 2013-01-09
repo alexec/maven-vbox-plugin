@@ -208,10 +208,12 @@ public class VBox {
 		final Version v = getVersion();
 
 		final String a = v.major + "." + v.minor + "." + v.build;
-		final int b = v.revision;
+		final String b = a + "-" + v.revision;
 
-		final File file = new File(work, "vbox/downloads/Oracle_VM_VirtualBox_Extension_Pack-" + a + "-" + b + ".vbox-extpack");
-		FileUtils2.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/" + a + "/Oracle_VM_VirtualBox_Extension_Pack-4.1.22-" + b + ".vbox-extpack"), file);
+        final String f = "Oracle_VM_VirtualBox_Extension_Pack-" + b + ".vbox-extpack";
+        final File file = new File(work, "vbox/downloads/" + f);
+        // http://download.virtualbox.org/virtualbox/4.2.6/Oracle_VM_VirtualBox_Extension_Pack-4.2.6-82870.vbox-extpack
+		FileUtils2.copyURLToFile(new URL("http://download.virtualbox.org/virtualbox/" + a + "/" + f), file);
 
 		ExecUtils.exec("vboxmanage", "extpack", "install", file.getCanonicalPath());
 	}
@@ -230,8 +232,16 @@ public class VBox {
 			build = Integer.parseInt(m.group(3));
 			revision = Integer.parseInt(m.group(4));
 		}
-	}
 
+        @Override
+        public String toString() {
+            return major + "." + minor + "." + build + "r" + revision;
+        }
+    }
+
+    /**
+     * @return  The version.
+     */
 	public static Version getVersion() throws IOException, ExecutionException, InterruptedException {
 		return new Version(ExecUtils.exec("vboxmanage", "-v").trim());
 	}
