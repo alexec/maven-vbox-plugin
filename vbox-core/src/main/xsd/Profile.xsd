@@ -3,6 +3,7 @@
            xmlns="http://www.alexecollins.com/vbox/profile"
            targetNamespace="http://www.alexecollins.com/vbox/profile"
            elementFormDefault="qualified">
+    <!-- profile of the box, such as what constitutes "running" and if it has a GUI -->
     <xs:element name="Profile">
         <xs:complexType>
             <xs:sequence>

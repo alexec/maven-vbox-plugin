@@ -4,6 +4,7 @@
         <HardDisk uuid="hd0" size="10000"/>
     </HardDisks>
     <DVDImages>
+        <!-- if this image doesn't work, try here: http://www.centos.org/modules/tinycontent/index.php?id=30 -->
         <DVDImage uuid="dvd0"
                   location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
     </DVDImages>
