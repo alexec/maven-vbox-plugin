@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
+ * Create and provision each of the boxes defined in src/main/vbox.
+ *
  * @author alexec (alex.e.c@gmail.com)
  * @goal provision
  * @phase pre-integration-test
@@ -14,7 +16,7 @@ import java.util.HashSet;
 public class ProvisionMojo extends AbstractVBoxesMojo {
 
 	/**
-	 * Which targets to do, or all if "*".
+	 * Which targets in the Provision.xml to execute, or all if "*".
 	 *
 	 * @parameter expression="${vbox.provision.targets}", default="*"
 	 */

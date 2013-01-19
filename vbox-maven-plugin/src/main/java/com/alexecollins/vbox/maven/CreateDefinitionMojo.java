@@ -7,12 +7,17 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 
 /**
+ * Create a new definition from a template. These are created in src/main/vbox.
+ *
  * @author alexec (alex.e.c@gmail.com)
  * @goal create-definition
+ * @see ListDefinitionsMojo
  */
 public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 	/**
+	 * The name of the template to use, e.g. "CentOS_6_3".
+	 *
 	 * @parameter expression="${vbox.name}"
 	 * @required
 	 */

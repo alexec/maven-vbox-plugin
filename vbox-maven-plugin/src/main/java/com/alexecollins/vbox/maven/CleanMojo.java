@@ -4,6 +4,8 @@ import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.Clean;
 
 /**
+ * Shuts down and clean boxes.
+ *
  * @goal clean
  * @phase clean
  */

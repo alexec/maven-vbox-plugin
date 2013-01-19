@@ -7,8 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * List the available template definitions for use with the create-definitions mojo.
+ *
  * @author alexec (alex.e.c@gmail.com)
  * @goal list-definitions
+ * @see CreateDefinitionMojo
  */
 public class ListDefinitionsMojo extends AbstractVBoxMojo {
 
