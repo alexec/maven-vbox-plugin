@@ -11,7 +11,7 @@ Some typical scenarios would be:
 
 It provides:
 
- 1. A Java API for programatic control of boxes.
+ 1. A Java API for programmatic control of boxes.
  2. A set of Maven Mojos.
  3. A set of matching Ant tasks.
 
@@ -70,6 +70,9 @@ Execute:
     mvn verify
 
 Maven searches for VM definitions (see below) under src/main/vbox.
+
+* [Five minute demo](http://www.youtube.com/watch?v=Y4ZXD7psIuM)
+* [Example](https://github.com/alexec/maven-vbox-plugin-example)
 
 Ant
 ===

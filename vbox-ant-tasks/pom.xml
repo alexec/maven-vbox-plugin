@@ -13,6 +13,8 @@
 
     <name>VBox Ant Tasks</name>
 
+    <description>A set of Ant tasks for staring and stopping VirtualBoxes</description>
+
     <build>
         <plugins>
             <plugin>

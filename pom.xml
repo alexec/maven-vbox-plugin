@@ -14,7 +14,9 @@
 
     <name>VBox Java API</name>
 
-    <url>http://www.alexecollins.com/?q=content/maven-vbox-plugin</url>
+    <description>A set of modules for controlling VirtualBoxes.</description>
+
+    <url>https://github.com/alexec/maven-vbox-plugin</url>
 
     <licenses>
         <license>
@@ -36,9 +38,16 @@
     </scm>
 
     <issueManagement>
-        <url>https://github.com/alexec/maven-vbox-plugin/issues</url>
+        <system>GitHub</system>
+        <url>https://github.com/alexec/maven-vbox-plugin/issues/</url>
     </issueManagement>
 
+    <distributionManagement>
+        <site>
+            <id>github.pages</id>
+            <url>scm:git:ssh://git@github.com/alexec/maven-vbox-plugin.git</url>
+        </site>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,9 +91,59 @@
                 <configuration>
                     <inputEncoding>UTF-8</inputEncoding>
                     <outputEncoding>UTF-8</outputEncoding>
+                    <reportPlugins>
+                        <reportPlugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-changes-plugin</artifactId>
+                            <version>2.8</version>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>changes-report</report>
+                                        <report>github-report</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </reportPlugin>
+                    </reportPlugins>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.7</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <message>Building site for ${project.version}</message>
+                    <server>github.pages</server>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-scm</artifactId>
+                <version>2.2</version>
+            </extension>
+            <extension>
+                <groupId>org.apache.maven.scm</groupId>
+                <artifactId>maven-scm-manager-plexus</artifactId>
+                <version>1.8</version>
+            </extension>
+            <extension>
+                <groupId>org.apache.maven.scm</groupId>
+                <artifactId>maven-scm-provider-gitexe</artifactId>
+                <version>1.8</version>
+            </extension>
+        </extensions>
     </build>
 
 </project>
