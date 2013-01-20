@@ -250,7 +250,9 @@ public class Create extends AbstractTask {
             if (!dest.exists() || dest.lastModified() != cache.lastModified()) {
                 LOGGER.info("copying " + cache + " to " + dest);
                 FileUtils.copyFile(cache, dest);
-                dest.setLastModified(cache.lastModified()); // make sure they have the same changed date
+                if (!dest.setLastModified(cache.lastModified())) {
+	                throw new IllegalStateException("failed to set last modified of " + dest);
+                }
             }
 			location = dest.toString();
 		} else if (location.startsWith("file://")) {

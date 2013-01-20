@@ -12,6 +12,8 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static junit.framework.Assert.assertTrue;
+
 /**
  * @author alex.e.c@gmail.com
  */
@@ -26,6 +28,6 @@ public class MediaRegistryTest extends AbstractTest {
 	public void testName() throws Exception {
 		final MediaRegistry sut = new VBox(src.toURI()).getMediaRegistry();
 
-		assert sut.getDVDImages().getDVDImage() != null;
+		assertTrue(sut.getDVDImages().getDVDImage() != null);
 	}
 }

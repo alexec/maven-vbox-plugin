@@ -11,6 +11,8 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static junit.framework.Assert.assertTrue;
+
 /**
  * @author alex.e.c@gmail.com
  */
@@ -24,7 +26,7 @@ public class ProvisionsTest extends AbstractTest {
 	public void testGetPortForwardOrKeyboardPutScanCodesOrSleep() throws Exception {
 		final Provisioning sut = new VBox(src.toURI()).getProvisioning();
 
-		assert sut.getTarget().size() > 0;
+		assertTrue(sut.getTarget().size() > 0);
 		for (Provisioning.Target target : sut.getTarget()) {
 			assert target.getName() != null;
 		}

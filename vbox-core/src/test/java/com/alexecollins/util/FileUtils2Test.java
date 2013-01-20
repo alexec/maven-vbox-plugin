@@ -23,7 +23,7 @@ public class FileUtils2Test {
 			final int s = 117741;
 			final File f = File.createTempFile("alex", "jpg");
 
-			f.delete();
+			assert f.delete();
 
 			System.out.println(f.getCanonicalPath());
 
@@ -57,7 +57,7 @@ public class FileUtils2Test {
 		FileUtils.touch(f);
 		final byte[] x = FileUtils2.getSignature(f);
 		assertArrayEquals(x, FileUtils2.getSignature(f));
-		f.renameTo(new File("test1"));
+		assert f.renameTo(new File("test1"));
 		final byte[] y = FileUtils2.getSignature(f);
 		System.out.println(Arrays.toString(x));
 		System.out.println(Arrays.toString(y));

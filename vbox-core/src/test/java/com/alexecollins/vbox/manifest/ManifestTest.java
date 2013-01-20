@@ -11,6 +11,8 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static junit.framework.Assert.assertTrue;
+
 /**
  * @author alex.e.c@gmail.com
  */
@@ -25,6 +27,6 @@ public class ManifestTest extends AbstractTest {
 
 		final Manifest sut = new VBox(src.toURI()).getManifest();
 
-		assert sut.getFile().size() >= 0;
+		assertTrue(sut.getFile().size() >= 0);
 	}
 }
