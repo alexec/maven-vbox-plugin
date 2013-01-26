@@ -43,10 +43,12 @@
     </issueManagement>
 
     <distributionManagement>
+        <!--
         <site>
             <id>github.pages</id>
             <url>scm:git:ssh://git@github.com/alexec/maven-vbox-plugin.git</url>
         </site>
+        -->
         <repository>
             <id>localhost</id>
             <url>file://localhost/${user.home}/.m2/repository</url>
