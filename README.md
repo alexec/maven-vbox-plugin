@@ -1,5 +1,6 @@
-Virtual Box Java API
+VirtualBox Java API
 ===
+
 Overview
 ===
 This project provides support for creating, starting and stopping VirtualBox VMs. This is aimed at development and integration testing of projects by allowing you to package a complete software stack onto a single machine, install your code and perform your tests.
@@ -39,6 +40,14 @@ Additionally, a mojo for creating VM templates:
 * list-definitions - list available template definitions
 * create-definition - creates a VM template definition
 
+Examples
+===
+
+<iframe width="640" height="360" src="http://www.youtube.com/embed/Y4ZXD7psIuM" frameborder="0" allowfullscreen="true"></iframe>
+
+* [Five minute demo](http://www.youtube.com/watch?v=Y4ZXD7psIuM)
+* [Example Maven project](https://github.com/alexec/maven-vbox-plugin-example)
+
 Maven
 ===
 Quick Start
@@ -70,9 +79,6 @@ Execute:
     mvn verify
 
 Maven searches for VM definitions (see below) under src/main/vbox.
-
-* [Five minute demo](http://www.youtube.com/watch?v=Y4ZXD7psIuM)
-* [Example](https://github.com/alexec/maven-vbox-plugin-example)
 
 Ant
 ===
@@ -107,13 +113,13 @@ Definitions
 ===
 Definitions can be found in src/test/vbox. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be named "UbuntuServer":
 
-    src/main/vbox/
-        UbuntuServer/         - The name of the server.
-            MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
-            VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XML files.
-            Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
-            Provisioning.xml  - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
-            Profile.xml       - Information about the box, such as if it is headless, and how to determine if it's stared successfully.
+* src/main/vbox/
+    * UbuntuServer/         - The name of the server.
+        * MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
+            * VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XML files.
+            * Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
+            * Provisioning.xml  - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
+            * Profile.xml       - Information about the box, such as if it is headless, and how to determine if it's stared successfully.
 
 The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.
 
@@ -180,3 +186,4 @@ References
 * [Ubuntu/Debian preseed.cfg](https://help.ubuntu.com/12.10/installation-guide/i386/preseed-using.html)
 * [VeeWee](https://github.com/jedi4ever/veewee)
 * [Oracle blog on VirtualBox networking](https://blogs.oracle.com/fatbloke/entry/networking_in_virtualbox1)
+

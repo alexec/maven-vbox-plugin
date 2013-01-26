@@ -12,6 +12,18 @@
         </fluidoSkin>
     </custom>
     <body>
+        <menu name="Reference">
+            <item name="Overview" href="overview.html"/>
+            <item name="Goals" href="goals.html"/>
+            <item name="Usage" href="usage.html"/>
+            <item name="Examples" href="examples.html"/>
+            <item name="Maven" href="maven.html"/>
+            <item name="Ant" href="ant.html"/>
+            <item name="Definitions" href="definitions.html"/>
+            <item name="Known Issues" href="known-issues.html"/>
+            <item name="Troubleshooting" href="troubleshooting.html"/>
+            <item name="References" href="references.html"/>
+        </menu>
         <menu ref="reports"/>
     </body>
 

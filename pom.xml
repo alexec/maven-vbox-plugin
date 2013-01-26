@@ -62,6 +62,27 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <!-- create README.md from site pages -->
+                        <id>generate-readme</id>
+                        <phase>generate-sources</phase>
+                        <goals><goal>run</goal></goals>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <target>
+                                <concat destfile="README.md">
+                                    <filelist dir="src/site/markdown"
+                                              files="header.md,overview.md,goals.md,usage.md,examples.md,maven.md,ant.md,definitions.md,known-issues.md,troubleshooting.md,references.md"/>
+                                </concat>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
