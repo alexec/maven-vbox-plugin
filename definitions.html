@@ -160,14 +160,21 @@
         <div id="bodyColumn"  class="span9" >
                                   
             <h1>Definitions</h1><p>Definitions can be found in src/test/vbox. Typically youd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be named UbuntuServer:</p>
-<div class="source"><pre class="prettyprint">src/main/vbox/
-    UbuntuServer/         - The name of the server.
-        MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
-        VirtualBox.xml    - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Box's .vbox XML files.
-        Manifest.xml      - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.
-        Provisioning.xml  - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.
-        Profile.xml       - Information about the box, such as if it is headless, and how to determine if it's stared successfully.
-</pre></div><p>The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.</p><p>Youll want to include an additional files, either a preseed.cfg for an Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS. To expose them to the VM you can either:</p>
+<ul>
+  <li>src/main/vbox/
+  <ul>
+    <li>UbuntuServer/ - The name of the server.
+    <ul>
+      <li>MediaRegistry.xml - A list of media to get (e.g. from a URL or fileshare). Similar to a fragment of VirtualBox.xml file.
+      <ul>
+        <li>VirtualBox.xml - The configuration of the server (e.g. disk etc.). Intentionally similar to one of Virtual Boxs .vbox XML files.</li>
+        <li>Manifest.xml - A list of all files used by the server (e.g. preseed.cfg, AutoUnattend.xml etc.). Optional.</li>
+        <li>Provisioning.xml - The steps required to get the box ready (e.g. install Apache, set-up DNS etc.). Intentionally similar to an Ant script.</li>
+        <li>Profile.xml - Information about the box, such as if it is headless, and how to determine if its stared successfully.</li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+</ul><p>The Ubuntu example downloads (by setting the DVDImage location to the URL) and attaches it. It then uses a preseed.cfg to create the VM.</p><p>Youll want to include an additional files, either a preseed.cfg for an Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS. To expose them to the VM you can either:</p>
 <ul>
   <li>Mount a floppy (esp. for Windows).</li>
   <li>Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on <a class="externalLink" href="http://%IP%:%PORT%/">http://%IP%:%PORT%/</a>.</li>
