@@ -1,0 +1,9 @@
+.idea/
+*.iml
+target/
+vbox-ant-tasks/build/
+vbox-ant-tasks/target/
+vbox-ant-tasks/*.iml
+vbox-core/target/
+vbox-core/*.iml
+vbox-maven-plugin/target/
