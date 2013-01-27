@@ -9,7 +9,6 @@ import com.alexecollins.vbox.profile.Profile;
 import com.alexecollins.vbox.provisioning.Provisioning;
 import com.google.common.annotations.VisibleForTesting;
 import de.innotek.virtualbox_settings.VirtualBox;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -201,8 +200,7 @@ public class VBox {
         return names;
     }
 
-
-	public static void installAdditions(File work) throws IOException, InterruptedException, ExecutionException {
+	public static void installAdditions(final Work work) throws IOException, InterruptedException, ExecutionException {
 
 		if (VBox.findGuestAdditions() != null) return;
 
@@ -212,7 +210,7 @@ public class VBox {
 		final String b = a + "-" + v.revision;
 
         final String f = "Oracle_VM_VirtualBox_Extension_Pack-" + b + ".vbox-extpack";
-        final File file = new File(work, "vbox/downloads/" + f);
+        final File file = new File(work.getCacheDir(),  f);
 
         if (!file.getParentFile().exists()) {
             if (!file.getParentFile().mkdirs()) {

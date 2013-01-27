@@ -18,7 +18,7 @@ public class ProvisionTask extends AbstractTask{
 		}
 		if (work == null) {throw new BuildException("work is null");}
 		try {
-			new Provision(work, new VBox(dir.toURI()), Collections.<String>singleton("*")).call();
+			new Provision(getWork(), new VBox(dir.toURI()), Collections.<String>singleton("*")).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

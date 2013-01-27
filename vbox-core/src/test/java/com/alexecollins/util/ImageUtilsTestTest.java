@@ -1,5 +1,6 @@
 package com.alexecollins.util;
 
+import com.alexecollins.vbox.core.Work;
 import org.junit.Test;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class ImageUtilsTestTest {
     @Test
     public void testCreateImage() throws Exception {
         final File dest = new File("src.iso");
-        ImageUtils.createImage(new File("target"), new File("src"), dest);
+        ImageUtils.createImage(new Work(new File("target")), new File("src"), dest);
         assertTrue(dest.exists());
         dest.deleteOnExit();
     }

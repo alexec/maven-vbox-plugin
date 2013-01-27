@@ -6,6 +6,7 @@ import com.alexecollins.util.ExecUtils;
 import com.alexecollins.vbox.core.ScanCodes;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.Work;
 import com.alexecollins.vbox.provisioning.Provisioning;
 import org.apache.commons.lang.ArrayUtils;
 import org.mortbay.jetty.Server;
@@ -27,7 +28,7 @@ public class Provision extends AbstractTask {
 	private final Server server;
 	private final Set<String> targets;
 
-	public Provision(File work, VBox box, Set<String> targets) throws IOException {
+	public Provision(Work work, VBox box, Set<String> targets) throws IOException {
 		super(work, box);
 		this.targets = targets;
 
@@ -159,7 +160,7 @@ public class Provision extends AbstractTask {
 		LOGGER.info("starting local web server on port " + getServerPort());
 
 		final ResourceHandler rh = new ResourceHandler();
-		final File resource = new File(work, "vbox/boxes/" + box.getName());
+		final File resource = new File(work.getBaseDir(), "vbox/boxes/" + box.getName());
 		LOGGER.debug("resource " + resource);
 		assert resource.exists();
 		rh.setBaseResource(Resource.newResource(resource.toURI().toURL()));

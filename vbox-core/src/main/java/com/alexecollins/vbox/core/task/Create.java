@@ -5,6 +5,7 @@ import com.alexecollins.util.FileUtils2;
 import com.alexecollins.util.ImageUtils;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.Work;
 import com.alexecollins.vbox.mediaregistry.DVDImage;
 import com.alexecollins.vbox.mediaregistry.FloppyImage;
 import com.alexecollins.vbox.mediaregistry.Image;
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 public class Create extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
 
-	public Create(final File work, final VBox box) {
+	public Create(final Work work, final VBox box) {
 		super(work, box);
 	}
 
@@ -239,7 +240,7 @@ public class Create extends AbstractTask {
 		if (location.startsWith("http://") || location.startsWith("ftp://")) {
             // 1. make sure the file is in the download cache, this means if we have multiple machines
             // then we won't re-download the same file
-            final File cache = new File(work, "vbox/downloads/" + URLEncoder.encode(location, "UTF-8"));
+            final File cache = new File(work.getCacheDir(), URLEncoder.encode(location, "UTF-8"));
             if (!cache.exists()) {
                 if (!cache.getParentFile().exists() && !cache.getParentFile().mkdirs()) throw new IllegalStateException();
                 LOGGER.info("downloading " + location + " to " + cache);

@@ -1,7 +1,7 @@
 package com.alexecollins.vbox.maven;
 
-import com.alexecollins.vbox.core.task.Create;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.task.Create;
 
 /**
  * Create all the boxes based on the definitions.
@@ -15,7 +15,7 @@ import com.alexecollins.vbox.core.VBox;
 public class CreateMojo extends AbstractVBoxesMojo {
 
 	protected void execute(final VBox box) throws Exception {
-		new Create(work, box).call();
+		new Create(getWork(), box).call();
 	}
 
 }

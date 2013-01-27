@@ -1,6 +1,7 @@
 package com.alexecollins.vbox.core.task;
 
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.Work;
 import org.junit.runners.Parameterized;
 import org.xml.sax.SAXException;
 
@@ -27,13 +28,13 @@ public abstract class AbstractTest {
 	protected final File src;
 	final VBox box;
 	final File target;
-	final File work = new File("target");
+	final Work work = new Work(new File("target"));
 
 	protected AbstractTest(final String name) throws IOException, JAXBException, SAXException, URISyntaxException {
 		this.name = name;
 		System.out.println("name=" + name);
 		src = new File("src/main/vbox/" + name);
-		target = new File(work, "vbox/boxes/" + name);
+		target = new File(work.getBaseDir(), "vbox/boxes/" + name);
 		box = new VBox(src.toURI());
 	}
 }

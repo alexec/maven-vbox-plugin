@@ -1,6 +1,7 @@
 package com.alexecollins.vbox.maven;
 
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.Work;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
@@ -19,7 +20,12 @@ abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 	 * @parameter property="vbox.names", default="*"
 	 */
 	private String names = "*";
-	final File work = new File("target");
+
+	/**
+	 * Where to cache large files
+	 * @parameter property="vbox.cacheDir"
+	 */
+	protected File cacheDir = Work.getDefaultCache(new File("target"));
 
 	public void execute() throws MojoExecutionException {
 
@@ -47,4 +53,8 @@ abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 	}
 
 	protected abstract void execute(VBox box) throws Exception;
+
+	Work getWork() {
+		return new Work(new File("target"), cacheDir);
+	}
 }

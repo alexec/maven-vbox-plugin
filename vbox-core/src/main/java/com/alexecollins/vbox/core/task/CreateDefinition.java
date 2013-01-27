@@ -7,8 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Create a definition from a named template.
@@ -21,10 +24,17 @@ public class CreateDefinition implements Callable<Void> {
 	private final String templateName;
 	/** Where to create the definition. */
 	private final File target;
+	private final URL resource;
 
 	public CreateDefinition(String templateName, File target) {
+		checkNotNull(templateName);
+		checkNotNull(target);
 		this.templateName = templateName;
 		this.target = target;
+		resource = getClass().getResource("/" + templateName);
+		if (resource == null) {
+			throw new IllegalArgumentException("cannot find template " + templateName);
+		}
 	}
 
 	public Void call() throws Exception {
@@ -32,7 +42,7 @@ public class CreateDefinition implements Callable<Void> {
 		if (!target.exists() && !target.mkdirs())
 			throw new IllegalStateException(target + " does not exit and cannot create");
 
-		final VBox box = new VBox(getClass().getResource("/" + templateName).toURI());
+		final VBox box = new VBox(resource.toURI());
 
 		for (String f : ImmutableSet.<String>builder()
 				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml", "Profile.xml"))

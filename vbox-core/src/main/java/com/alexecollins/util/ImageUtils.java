@@ -1,6 +1,7 @@
 package com.alexecollins.util;
 
 
+import com.alexecollins.vbox.core.Work;
 import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.ISO9660RootDirectory;
 import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.CreateISO;
 import de.tu_darmstadt.informatik.rbg.hatlak.iso9660.impl.ISO9660Config;
@@ -32,8 +33,8 @@ public class ImageUtils {
 	/**
      * Create an image based on file extension.
      */
-    public static void createImage(final File work, final File src, final File dest) throws InterruptedException, ExecutionException, IOException {
-        if (work == null || !work.isDirectory()) {throw new IllegalArgumentException("work is null or is not directory");}
+    public static void createImage(final Work work, final File src, final File dest) throws InterruptedException, ExecutionException, IOException {
+        if (work == null) {throw new IllegalArgumentException("work is null or is not directory");}
         if (src == null || !src.isDirectory()) {throw new IllegalArgumentException("src is null or is not directory");}
         if (dest == null) {throw new IllegalArgumentException("dest must not be null and end in '.iso'");}
 
@@ -46,14 +47,14 @@ public class ImageUtils {
         }
     }
 
-	private static void createFloppyImage(File work, final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
+	private static void createFloppyImage(Work work, final File source, final File dest) throws IOException, InterruptedException, ExecutionException {
 
 		// http://wiki.osdev.org/Disk_Images
         if (dest == null || !dest.getName().endsWith(".img")) {throw new IllegalArgumentException("dest must not be null and end in '.iso'");}
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Windows")) {
-			final File f = new File(work, "vbox/downloads/bfi10.zip");
+			final File f = new File(work.getCacheDir(), "bfi10.zip");
 
 			if (!f.exists())
 				FileUtils.copyURLToFile(new URL("ftp://dl.xs4all.nl/pub/mirror/nu2files/bfi10.zip"), f);

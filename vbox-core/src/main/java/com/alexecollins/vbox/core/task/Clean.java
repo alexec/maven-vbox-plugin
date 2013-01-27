@@ -2,11 +2,11 @@ package com.alexecollins.vbox.core.task;
 
 import com.alexecollins.util.ExecUtils;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.Work;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class Clean extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Clean.class);
 
-	public Clean(File work, VBox box) {
+	public Clean(Work work, VBox box) {
 		super(work, box);
 	}
 

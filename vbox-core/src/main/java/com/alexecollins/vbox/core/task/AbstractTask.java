@@ -2,6 +2,7 @@ package com.alexecollins.vbox.core.task;
 
 import com.alexecollins.util.FileUtils2;
 import com.alexecollins.vbox.core.VBox;
+import com.alexecollins.vbox.core.Work;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,10 @@ import java.util.concurrent.ExecutionException;
  */
 public abstract class AbstractTask implements Callable<Void> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
-	final File work;
+	final Work work;
 	final VBox box;
 
-	protected AbstractTask(File work, VBox box) {
+	protected AbstractTask(Work work, VBox box) {
 		this.work = work;
 		this.box = box;
 	}
@@ -31,7 +32,7 @@ public abstract class AbstractTask implements Callable<Void> {
 	 * @return The target (aka work) directory for the box.
 	 */
 	File getTarget() {
-		return new File(work, "vbox/boxes/" + box.getName());
+		return new File(work.getBaseDir(), "vbox/boxes/" + box.getName());
 	}
 
 	void verifySignature() throws Exception {
@@ -42,7 +43,7 @@ public abstract class AbstractTask implements Callable<Void> {
 			if (!sigFile.exists() || !Arrays.equals(FileUtils.readFileToByteArray(sigFile), sig)) {
 				LOGGER.info(box.getName() + " signature has changed, and therefore the source files have probably changed");
 
-				new Clean(work,box).call();
+				new Clean(work ,box).call();
 			}
 		}
 	}
