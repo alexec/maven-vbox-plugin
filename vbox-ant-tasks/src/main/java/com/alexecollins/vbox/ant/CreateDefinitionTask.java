@@ -4,6 +4,8 @@ import com.alexecollins.vbox.core.task.CreateDefinition;
 import org.apache.tools.ant.BuildException;
 
 /**
+ * Create a definition from the named template.
+ *
  * @author alexec (alex.e.c@gmail.com)
  */
 public class CreateDefinitionTask extends AbstractTask {

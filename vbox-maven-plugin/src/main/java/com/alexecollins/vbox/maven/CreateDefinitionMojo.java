@@ -16,7 +16,14 @@ import java.io.File;
 public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 	/**
-	 * The name of the template to use, e.g. "CentOS_6_3".
+	 * The name of the template to use, e.g. "CentOS_6_3". Defaults to the name for backwards compatibility.
+	 *
+	 * @parameter expression="${vbox.template}", default-value="${vbox.name}"
+	 */
+	private String templateName;
+
+	/**
+	 * The name of the template to use, e.g. "app1".
 	 *
 	 * @parameter expression="${vbox.name}"
 	 * @required
@@ -24,8 +31,9 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 	private String name;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
+
 		try {
-			new CreateDefinition(name, new File("src/main/vbox/" + name)).call();
+			new CreateDefinition(name, new File("src/main/vbox/" + (templateName != null ? templateName : name))).call();
 		} catch (Exception e) {
 			throw new MojoExecutionException("failed to create definition", e);
 		}

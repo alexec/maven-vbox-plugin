@@ -11,15 +11,19 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 /**
+ * Create a definition from a named template.
+ *
  * @author alexec (alex.e.c@gmail.com)
  */
 public class CreateDefinition implements Callable<Void> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreateDefinition.class);
-	private final String name;
+	/** The template to use. */
+	private final String templateName;
+	/** Where to create the definition. */
 	private final File target;
 
-	public CreateDefinition(String name, File target) {
-		this.name = name;
+	public CreateDefinition(String templateName, File target) {
+		this.templateName = templateName;
 		this.target = target;
 	}
 
@@ -28,12 +32,12 @@ public class CreateDefinition implements Callable<Void> {
 		if (!target.exists() && !target.mkdirs())
 			throw new IllegalStateException(target + " does not exit and cannot create");
 
-		final VBox box = new VBox(getClass().getResource("/" + name).toURI());
+		final VBox box = new VBox(getClass().getResource("/" + templateName).toURI());
 
 		for (String f : ImmutableSet.<String>builder()
 				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml", "Profile.xml"))
 				.addAll(box.getManifest().getFile()).build()) {
-			FileUtils.copyURLToFile(getClass().getResource("/" + name + "/" + f), new File(target, f));
+			FileUtils.copyURLToFile(getClass().getResource("/" + templateName + "/" + f), new File(target, f));
 		}
 
 		LOGGER.info("created " + target);
