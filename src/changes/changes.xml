@@ -2,6 +2,11 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <body>
+        <release version="2.0.0" description="Patches and estates">
+            <action dev="alex.collins" type="add">
+                Allow the user to specify the name of a template separately to the name of the target box.
+            </action>
+        </release>
         <release version="1.0.0" description="First release">
             <action dev="alex.collins" type="add" issue="1">
                 Create and update documentation.
