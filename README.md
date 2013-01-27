@@ -147,14 +147,14 @@ Authentication
 By default the username is "tallquark" and the default password "keenbrick".
 
 Supported Host OS Types
-===
+---
 * Mac OS-X
 * Windows 7
 
 Unlisted OSs should all work.
 
 Supported Guest OS Types/Supplied Definitions
-===
+---
 * CentOS_6_3
 * UbuntuServer_12_10
 * WindowsServer2008
