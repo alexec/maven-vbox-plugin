@@ -15,6 +15,10 @@ public class Work {
 	public Work(File baseDir, @Nullable File cacheDir) {
 		this.baseDir = baseDir;
 		this.cacheDir = cacheDir != null ? cacheDir : getDefaultCache(baseDir);
+
+		if (!cacheDir.exists() && !cacheDir.mkdirs()) {
+			throw new IllegalStateException("failed to create " + cacheDir);
+		}
 	}
 
 	public Work(File baseDir) {
