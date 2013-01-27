@@ -16,7 +16,7 @@ abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	/**
      * Boxes to create, in order.
-	 * @parameter expression="${vbox.names}", default="*"
+	 * @parameter property="vbox.names", default="*"
 	 */
 	private String names = "*";
 	final File work = new File("target");

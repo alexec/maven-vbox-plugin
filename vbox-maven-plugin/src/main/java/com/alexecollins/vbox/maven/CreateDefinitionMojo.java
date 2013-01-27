@@ -18,14 +18,14 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 	/**
 	 * The name of the template to use, e.g. "CentOS_6_3". Defaults to the name for backwards compatibility.
 	 *
-	 * @parameter expression="${vbox.template}", default-value="${vbox.name}"
+	 * @parameter property="vbox.template", default-value="${vbox.name}"
 	 */
 	private String templateName;
 
 	/**
 	 * The name of the template to use, e.g. "app1".
 	 *
-	 * @parameter expression="${vbox.name}"
+	 * @parameter property="vbox.name"
 	 * @required
 	 */
 	private String name;

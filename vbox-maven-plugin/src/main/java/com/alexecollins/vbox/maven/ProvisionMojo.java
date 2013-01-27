@@ -18,7 +18,7 @@ public class ProvisionMojo extends AbstractVBoxesMojo {
 	/**
 	 * Which targets in the Provision.xml to execute, or all if "*".
 	 *
-	 * @parameter expression="${vbox.provision.targets}", default="*"
+	 * @parameter property="vbox.provision.targets", default="*"
 	 */
 	protected String targets = "*";
 
