@@ -16,8 +16,8 @@ public class Work {
 		this.baseDir = baseDir;
 		this.cacheDir = cacheDir != null ? cacheDir : getDefaultCache(baseDir);
 
-		if (!cacheDir.exists() && !cacheDir.mkdirs()) {
-			throw new IllegalStateException("failed to create " + cacheDir);
+		if (!this.cacheDir.exists() && !this.cacheDir.mkdirs()) {
+			throw new IllegalStateException("failed to create " + this.cacheDir);
 		}
 	}
 
