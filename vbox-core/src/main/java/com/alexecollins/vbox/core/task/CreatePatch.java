@@ -5,9 +5,6 @@ import com.alexecollins.util.PatchUtils;
 import java.io.File;
 import java.util.concurrent.Callable;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Create a diff from the two files and write it to the third.
  *
@@ -20,9 +17,6 @@ public class CreatePatch implements Callable<Void> {
 		patch;
 
 	public CreatePatch(File a, File b, File patch) {
-		checkArgument(a != null && a.exists());
-		checkArgument(b != null && b.exists());
-		checkNotNull(patch);
 		this.a = a;
 		this.b = b;
 		this.patch = patch;

@@ -6,6 +6,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A facade/adapter.
  *
@@ -18,10 +21,33 @@ public class PatchUtils {
 	private PatchUtils() {}
 
 	public static void create(File a, File b, File patch) throws IOException {
-		FileUtils.writeStringToFile(patch, p.patch_toText(p.patch_make(FileUtils.readFileToString(a, "UTF-8"), FileUtils.readFileToString(b, "UTF-8"))), "UTF-8");
+		checkArgument(a != null && a.exists(), a + " exists");
+		checkArgument(b != null && b.exists(), b + " exists");
+		checkNotNull(patch, "patch is not null");
+		FileUtils.writeStringToFile(patch, create(a, b), "UTF-8");
+	}
+
+	private static String create(File a, File b) throws IOException {
+
+		if (a.isFile()) {
+			return p.patch_toText(p.patch_make(FileUtils.readFileToString(a, "UTF-8"), FileUtils.readFileToString(b, "UTF-8")));
+		}   else      {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	public static void apply(File a, File b, File patch) throws IOException {
+		checkArgument(a != null && a.exists(), b + " exists");
+		checkNotNull(b, "b exists");
+		checkArgument(patch != null && patch.isFile(), patch + " exists and is file");
+		FileUtils.writeStringToFile(b, apply(a, patch), "UTF-8");
+	}
+
+	private static String apply(File a, File patch) throws IOException {
+		if (!a.isFile()) {
+			throw new UnsupportedOperationException();
+		}
+
 		final Object[] objects = p.patch_apply(p.patch_fromText(FileUtils.readFileToString(patch, "UTF-8")),
 				FileUtils.readFileToString(a, "UTF-8"));
 
@@ -33,7 +59,6 @@ public class PatchUtils {
 			}
 		}
 
-
-		FileUtils.writeStringToFile(b, String.valueOf(objects[0]), "UTF-8");
+		return String.valueOf(objects[0]);
 	}
 }
