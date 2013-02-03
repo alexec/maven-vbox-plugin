@@ -13,7 +13,7 @@ import org.apache.maven.plugin.MojoFailureException;
  */
 public class ListPredefinedPatchesMojo extends AbstractVBoxMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		for (String patch : com.alexecollins.vbox.core.patch.PredefinedPatch.list()) {
+		for (String patch : com.alexecollins.vbox.core.patch.PredefinedPatch.list().keySet()) {
 			getLog().info(patch);
 		}
 	}

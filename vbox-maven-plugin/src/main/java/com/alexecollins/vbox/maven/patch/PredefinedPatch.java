@@ -3,6 +3,9 @@ package com.alexecollins.vbox.maven.patch;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.patch.Patch;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * A predefined patch.
  *
@@ -18,8 +21,13 @@ public class PredefinedPatch implements Patch {
 	 */
 	private String name;
 
+	/**
+	 * Thing that need to be mapped.
+	 */
+	private Map<String,String> properties = Collections.emptyMap();
+
 	public void apply(VBox box) throws Exception {
-		new com.alexecollins.vbox.core.patch.PredefinedPatch(name).apply(box);
+		new com.alexecollins.vbox.core.patch.PredefinedPatch(name, properties).apply(box);
 	}
 
 	public String getName() {
