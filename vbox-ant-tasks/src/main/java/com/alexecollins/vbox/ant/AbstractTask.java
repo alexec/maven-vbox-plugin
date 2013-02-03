@@ -9,24 +9,23 @@ import java.io.File;
  * @author alexec (alex.e.c@gmail.com)
  */
 abstract class AbstractTask extends Task {
-	File dir;
-	File work;
-	File cacheDir;
+	protected File dir;
+	protected File work;
+	protected File cacheDir;
 
-	public void setDir(String dir) {
-		this.dir = new File(dir);
+	public void setDir(File dir) {
+		this.dir = dir  ;
 	}
 
-	public void setWork(String work) {
-		this.work = new File(work);
+	public void setWork(File work) {
+		this.work = work;
 	}
 
-	public File getCacheDir() {
-		return cacheDir;
+	public void setCacheDir(File cacheDir) {
+		this.cacheDir = cacheDir;
 	}
 
-	protected Work getWork() {
+	protected Work work() {
 		return new Work(work,cacheDir);
-
 	}
 }

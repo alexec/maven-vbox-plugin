@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<antlib>
+    <taskdef name="list-definitions" classname="com.alexecollins.vbox.ant.ListDefinitionsTask"/>
+    <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
+    <taskdef name="clean" classname="com.alexecollins.vbox.ant.CleanTask"/>
+    <taskdef name="create" classname="com.alexecollins.vbox.ant.CreateTask"/>
+    <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
+    <taskdef name="start" classname="com.alexecollins.vbox.ant.StartTask"/>
+    <taskdef name="stop" classname="com.alexecollins.vbox.ant.StopTask"/>
+</antlib>

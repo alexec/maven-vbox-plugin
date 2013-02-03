@@ -16,7 +16,7 @@ public class CreateTask extends AbstractTask {
 		if (work == null) {throw new BuildException("work is null");}
 
 		try {
-			new Create(getWork(), new VBox(dir.toURI())).call();
+			new Create(work(), new VBox(dir.toURI())).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

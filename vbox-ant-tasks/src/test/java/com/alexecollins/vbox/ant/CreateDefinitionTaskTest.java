@@ -1,5 +1,7 @@
 package com.alexecollins.vbox.ant;
 
+import java.io.File;
+
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
@@ -8,7 +10,7 @@ public class CreateDefinitionTaskTest {
 	public void testExecute() throws Exception {
 		final CreateDefinitionTask sut = new CreateDefinitionTask();
 		sut.setName("CentOS_6_3");
-		sut.setDir("target/vbox/CentOS_6_3");
+		sut.setDir(new File("target/vbox/CentOS_6_3"));
 		sut.execute();
 	}
 }
