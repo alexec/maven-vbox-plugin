@@ -11,6 +11,7 @@ import java.io.File;
  *
  * @author alexec (alex.e.c@gmail.com)
  * @goal create-definition
+ * @phase generate-resources
  * @see ListDefinitionsMojo
  */
 public class CreateDefinitionMojo extends AbstractVBoxMojo {

@@ -18,10 +18,8 @@ public class ListDefinitionsMojo extends AbstractVBoxMojo {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListDefinitionsMojo.class);
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		try {
-			LOGGER.info(new ListDefinitions().call().toString());
-		} catch (Exception e) {
-			throw new MojoExecutionException("failed to create definition", e);
+		for (String d : new ListDefinitions().call()) {
+			LOGGER.info(d);
 		}
 	}
 }

@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
+ * List all the definitions available.
+ *
  * @author alexec (alex.e.c@gmail.com)
+ * @since 2.0.0
  */
 public class ListDefinitions implements Callable<List<String>> {
-	public List<String> call() throws Exception {
+	public List<String> call() {
 
 		return JAXB.unmarshal(getClass().getResource("/Manifest.xml"), Manifest.class).getFile();
 	}

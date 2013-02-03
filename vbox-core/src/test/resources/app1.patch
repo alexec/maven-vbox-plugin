@@ -1,6 +1,6 @@
-diff -ruN app0/MediaRegistry.xml app1/MediaRegistry.xml
---- app0/MediaRegistry.xml	2013-02-03 11:59:58.000000000 +0000
-+++ app1/MediaRegistry.xml	2013-01-26 11:21:29.000000000 +0000
+diff -ruN MediaRegistry.xml MediaRegistry.xml
+--- MediaRegistry.xml	2013-02-03 11:59:58.000000000 +0000
++++ MediaRegistry.xml	2013-01-26 11:21:29.000000000 +0000
 @@ -4,7 +4,6 @@
          <HardDisk uuid="hd0" size="10000"/>
      </HardDisks>
@@ -9,9 +9,9 @@ diff -ruN app0/MediaRegistry.xml app1/MediaRegistry.xml
          <DVDImage uuid="dvd0"
                    location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
      </DVDImages>
-diff -ruN app0/Profile.xml app1/Profile.xml
---- app0/Profile.xml	2013-02-03 11:59:58.000000000 +0000
-+++ app1/Profile.xml	2013-01-27 12:48:23.000000000 +0000
+diff -ruN Profile.xml Profile.xml
+--- Profile.xml	2013-02-03 11:59:58.000000000 +0000
++++ Profile.xml	2013-01-27 12:48:23.000000000 +0000
 @@ -1,4 +1,5 @@
  <?xml version="1.0"?>
 -<Profile xmlns="http://www.alexecollins.com/vbox/profile" type="headless">
@@ -20,9 +20,9 @@ diff -ruN app0/Profile.xml app1/Profile.xml
 +    <ping url="socket://192.168.56.2:22/" timeout="2 minutes"/>
 +    <ping url="socket://192.168.56.2:8080/"/>
  </Profile>
-diff -ruN app0/Provisioning.xml app1/Provisioning.xml
---- app0/Provisioning.xml	2013-02-03 11:59:58.000000000 +0000
-+++ app1/Provisioning.xml	2013-01-26 11:21:29.000000000 +0000
+diff -ruN Provisioning.xml Provisioning.xml
+--- Provisioning.xml	2013-02-03 11:59:58.000000000 +0000
++++ Provisioning.xml	2013-01-26 11:21:29.000000000 +0000
 @@ -5,7 +5,7 @@
          <KeyboardPutScanCodes keys="Esc"/>
          <Sleep seconds="2"/>
@@ -44,9 +44,9 @@ diff -ruN app0/Provisioning.xml app1/Provisioning.xml
 -        <PortForward hostport="10022" guestport="22"/>
      </Target>
  </Provisioning>
-diff -ruN app0/VirtualBox.xml app1/VirtualBox.xml
---- app0/VirtualBox.xml	2013-02-03 11:59:58.000000000 +0000
-+++ app1/VirtualBox.xml	2013-01-26 11:21:29.000000000 +0000
+diff -ruN VirtualBox.xml VirtualBox.xml
+--- VirtualBox.xml	2013-02-03 11:59:58.000000000 +0000
++++ VirtualBox.xml	2013-01-26 11:21:29.000000000 +0000
 @@ -29,7 +29,11 @@
              </BIOS>
              <Network>
@@ -67,9 +67,9 @@ diff -ruN app0/VirtualBox.xml app1/VirtualBox.xml
              </Network>
              <IO>
                  <IoCache enabled="true"/>
-diff -ruN app0/floppy0/ks.cfg app1/floppy0/ks.cfg
---- app0/floppy0/ks.cfg	2013-02-03 11:59:58.000000000 +0000
-+++ app1/floppy0/ks.cfg	2013-01-26 11:21:29.000000000 +0000
+diff -ruN floppy0/ks.cfg floppy0/ks.cfg
+--- floppy0/ks.cfg	2013-02-03 11:59:58.000000000 +0000
++++ floppy0/ks.cfg	2013-01-26 11:21:29.000000000 +0000
 @@ -2,9 +2,10 @@
  cdrom
  lang en_US.UTF-8
@@ -90,9 +90,9 @@ diff -ruN app0/floppy0/ks.cfg app1/floppy0/ks.cfg
 -%end
 \ No newline at end of file
 +%end
-diff -ruN app0/floppy0/post-install.sh app1/floppy0/post-install.sh
---- app0/floppy0/post-install.sh	2013-02-03 11:59:58.000000000 +0000
-+++ app1/floppy0/post-install.sh	2013-01-27 12:47:52.000000000 +0000
+diff -ruN floppy0/post-install.sh floppy0/post-install.sh
+--- floppy0/post-install.sh	2013-02-03 11:59:58.000000000 +0000
++++ floppy0/post-install.sh	2013-01-27 12:47:52.000000000 +0000
 @@ -7,4 +7,8 @@
  /media/cdrom/VBoxLinuxAdditions.run
  umount /dev/sr0

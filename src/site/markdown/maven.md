@@ -28,5 +28,5 @@ Execute:
 
     mvn verify
 
-Maven searches for VM definitions (see below) under src/main/vbox.
+Maven searches for VM definitions under src/main/vbox.
 

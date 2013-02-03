@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author alexec (alex.e.c@gmail.com)
  */
-abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
+public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	/**
      * Boxes to create, in order.

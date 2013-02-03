@@ -4,10 +4,7 @@ import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.concurrent.*;
 
 /**
@@ -19,10 +16,33 @@ public class ExecUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExecUtils.class);
 
+	/**
+	 * @see {@link #exec(byte[], File, String...)}
+	 */
 	public static String exec(String... strings) throws IOException, InterruptedException, ExecutionException {
-		LOGGER.debug("executing: " + Joiner.on(" ").join(strings));
+		return exec(new byte[0], new File("."), strings);
+	}
 
-		final Process p = new ProcessBuilder(strings).start();
+	/**
+	 * Execute the command, but write the contents of stdin into it's input stream.
+	 *
+	 * NOT suitable for large files.
+	 *
+	 * E.g.
+	 * <code>
+	 *     patch -f -p1 < a.patch
+	 * </code>
+	 * Would be
+	 * <code>
+	 *     exec("a.patch", "patch", "-f", "-p1");
+	 * </code>
+	 *
+	 * @since 2.0.0
+	 */
+	public static String exec(final byte[] stdin, File wd, String... strings) throws IOException, InterruptedException, ExecutionException {
+		LOGGER.debug("executing: " + Joiner.on(" ").join(strings) + " in " + wd);
+
+		final Process p = new ProcessBuilder().directory(wd).command(strings).start();
 
 		final ExecutorService svc = Executors.newFixedThreadPool(2);
 		final Future<String> outFuture = svc.submit(new Callable<String>() {
@@ -36,6 +56,8 @@ public class ExecUtils {
 			}
 		});
 
+		p.getOutputStream().write(stdin);
+		p.getOutputStream().close();
 		p.waitFor();
 
 		final String out = outFuture.get();
