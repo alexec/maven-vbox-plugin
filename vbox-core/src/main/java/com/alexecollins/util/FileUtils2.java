@@ -62,16 +62,19 @@ public class FileUtils2 {
 	 */
 	public static byte[] getSignature(final File f) throws NoSuchAlgorithmException, IOException {
 		final MessageDigest digest = MessageDigest.getInstance("MD5");
-		calcSignature(f, digest);
+		calcSignature(f, f, digest);
 		return digest.digest();
 	}
 
-	private static void calcSignature(final File f, final MessageDigest d) throws IOException {
-		d.update(f.getName().getBytes());
-		d.update(String.valueOf(f.lastModified()).getBytes());
+	private static void calcSignature(final File root, final File f, final MessageDigest d) throws IOException {
+		final String v = root.toURI().relativize(f.toURI()).toString();
+		d.update(v.getBytes());
+		final long l = f.lastModified();
+		System.out.println(v + "  "  +l);
+		d.update(String.valueOf(l).getBytes());
 		if (f.isDirectory()) {
 			for (File c : f.listFiles()) {
-				calcSignature(c, d) ;
+				calcSignature(root, c, d) ;
 			}
 		}
 	}
