@@ -1,12 +1,13 @@
 <project name="vbox-ant-tasks" default="build" xmlns:vbox="antlib:com.alexecollins.vbox.ant">
     <target name="build">
+        <property name="vbox.definitions" location="vbox"/>
         <vbox:list-definitions/>
-        <vbox:create-definition name="CentOS_6_3" dir="src/vbox/app1"/>
-        <vbox:clean dir="src/vbox/app1" work="build"/>
-        <vbox:create dir="src/vbox/app1" work="build" cacheDir="${user.home}/.vbox"/>
-        <vbox:provision dir="src/vbox/app1" work="build"/>
-        <vbox:start dir="src/vbox/app1"/>
+        <vbox:create-definition name="CentOS_6_3" dir="${vbox.definitions}/app1"/>
+        <vbox:clean dir="${vbox.definitions}/app1" work="build"/>
+        <vbox:create dir="${vbox.definitions}/app1" work="build" cacheDir="${user.home}/.vbox"/>
+        <vbox:provision dir="${vbox.definitions}/app1" work="build"/>
+        <vbox:start dir="${vbox.definitions}/app1"/>
         <!-- ... -->
-        <vbox:stop dir="src/vbox/app1"/>
+        <vbox:stop dir="${vbox.definitions}/app1"/>
     </target>
 </project>

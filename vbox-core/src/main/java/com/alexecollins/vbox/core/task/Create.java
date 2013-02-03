@@ -260,7 +260,7 @@ public class Create extends AbstractTask {
 			location = new URI(location).getPath();
 		}
 
-		final File src = new File("src/main/vbox/" + box.getName(), location);
+		final File src = new File(box.getSrc().toURL().getFile(), location);
 
 		if (src.isDirectory())
             if (image instanceof FloppyImage) {

@@ -43,6 +43,12 @@
             <id>it</id>
             <build>
                 <plugins>
+                    <!--
+                        This test only works _after_ the jar has been deployed (should be an example project maybe.
+                        So run
+
+                            mvn install && mvn integration-test -Pit
+                    -->
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>1.7</version>
