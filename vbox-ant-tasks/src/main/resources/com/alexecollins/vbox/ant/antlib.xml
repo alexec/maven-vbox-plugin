@@ -2,6 +2,7 @@
 <antlib>
     <taskdef name="list-definitions" classname="com.alexecollins.vbox.ant.ListDefinitionsTask"/>
     <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
+    <taskdef name="patch-definition" classname="com.alexecollins.vbox.ant.patch.PatchDefinitionTask"/>
     <taskdef name="clean" classname="com.alexecollins.vbox.ant.CleanTask"/>
     <taskdef name="create" classname="com.alexecollins.vbox.ant.CreateTask"/>
     <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>

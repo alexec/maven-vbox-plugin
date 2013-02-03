@@ -2,6 +2,7 @@ package com.alexecollins.vbox.maven.patch;
 
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.patch.Patch;
+import com.alexecollins.vbox.core.task.PatchDefinition;
 import com.alexecollins.vbox.maven.AbstractVBoxesMojo;
 
 import java.util.Collections;
@@ -27,9 +28,6 @@ public class PatchDefinitionMojo extends AbstractVBoxesMojo {
 
 	@Override
 	protected void execute(VBox box) throws Exception {
-		for (Patch patch : patches) {
-			getLog().info("applying " + patch.getName() + " to " + box.getName());
-			patch.apply(box);
-		}
+		new PatchDefinition(getWork(), box,  patches).call();
 	}
 }

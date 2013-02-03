@@ -54,7 +54,7 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	protected abstract void execute(VBox box) throws Exception;
 
-	Work getWork() {
+	public Work getWork() {
 		return new Work(new File("target"), cacheDir);
 	}
 }

@@ -8,6 +8,9 @@ Add this to your build.xml:
         <target name="build">
             <vbox:list-definitions/>
             <vbox:create-definition name="CentOS_6_3" dir="src/vbox/app1"/>
+            <vbox:patch-definition dir="${vbox.definitions}/app1">
+                <predefinedPatch name="CentOS_6_3--tomcat6" properties="hostname=localhost"/>
+            </vbox:patch-definition>
             <vbox:clean dir="src/vbox/app1" work="build"/>
             <vbox:create dir="src/vbox/app1" work="build" cacheDir="${user.home}/.vbox"/>
             <vbox:provision dir="src/vbox/app1" work="build"/>
