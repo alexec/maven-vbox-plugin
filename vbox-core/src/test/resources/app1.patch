@@ -1,189 +1,104 @@
-diff -ruN app0/Manifest.xml app1/Manifest.xml
---- app0/Manifest.xml	1970-01-01 01:00:00.000000000 +0100
-+++ app1/Manifest.xml	2013-01-26 11:21:29.000000000 +0000
-@@ -0,0 +1,5 @@
-+<?xml version="1.0"?>
-+<Manifest xmlns="http://www.alexecollins.com/vbox/manifest">
-+    <File>floppy0/ks.cfg</File>
-+    <File>floppy0/post-install.sh</File>
-+</Manifest>
 diff -ruN app0/MediaRegistry.xml app1/MediaRegistry.xml
---- app0/MediaRegistry.xml	1970-01-01 01:00:00.000000000 +0100
+--- app0/MediaRegistry.xml	2013-02-03 11:59:58.000000000 +0000
 +++ app1/MediaRegistry.xml	2013-01-26 11:21:29.000000000 +0000
-@@ -0,0 +1,13 @@
-+<?xml version="1.0"?>
-+<MediaRegistry xmlns="http://www.alexecollins.com/vbox/mediaregistry">
-+    <HardDisks>
-+        <HardDisk uuid="hd0" size="10000"/>
-+    </HardDisks>
-+    <DVDImages>
-+        <DVDImage uuid="dvd0"
-+                  location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
-+    </DVDImages>
-+    <FloppyImages>
-+        <FloppyImage uuid="floppy0" location="floppy0"/>
-+    </FloppyImages>
-+</MediaRegistry>
+@@ -4,7 +4,6 @@
+         <HardDisk uuid="hd0" size="10000"/>
+     </HardDisks>
+     <DVDImages>
+-        <!-- if this image doesn't work, try here: http://www.centos.org/modules/tinycontent/index.php?id=30 -->
+         <DVDImage uuid="dvd0"
+                   location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
+     </DVDImages>
 diff -ruN app0/Profile.xml app1/Profile.xml
---- app0/Profile.xml	1970-01-01 01:00:00.000000000 +0100
+--- app0/Profile.xml	2013-02-03 11:59:58.000000000 +0000
 +++ app1/Profile.xml	2013-01-27 12:48:23.000000000 +0000
-@@ -0,0 +1,5 @@
-+<?xml version="1.0"?>
+@@ -1,4 +1,5 @@
+ <?xml version="1.0"?>
+-<Profile xmlns="http://www.alexecollins.com/vbox/profile" type="headless">
+-    <ping url="socket://localhost:10022/"/>
 +<Profile xmlns="http://www.alexecollins.com/vbox/profile" type="gui">
 +    <ping url="socket://192.168.56.2:22/" timeout="2 minutes"/>
 +    <ping url="socket://192.168.56.2:8080/"/>
-+</Profile>
+ </Profile>
 diff -ruN app0/Provisioning.xml app1/Provisioning.xml
---- app0/Provisioning.xml	1970-01-01 01:00:00.000000000 +0100
+--- app0/Provisioning.xml	2013-02-03 11:59:58.000000000 +0000
 +++ app1/Provisioning.xml	2013-01-26 11:21:29.000000000 +0000
-@@ -0,0 +1,26 @@
-+<?xml version="1.0"?>
-+<Provisioning xmlns="http://www.alexecollins.com/vbox/provisioning">
-+    <Target name="install-os">
-+        <Sleep seconds="10"/>
-+        <KeyboardPutScanCodes keys="Esc"/>
-+        <Sleep seconds="2"/>
-+        <KeyboardPutScanCodes line="linux ks=floppy text"/>
+@@ -5,7 +5,7 @@
+         <KeyboardPutScanCodes keys="Esc"/>
+         <Sleep seconds="2"/>
+         <KeyboardPutScanCodes line="linux ks=floppy text"/>
+-        <AwaitState state="poweroff" timeout="20 minutes"/>
 +        <AwaitState state="poweroff" timeout="30 minutes"/>
-+    </Target>
-+    <Target name="run-post-install">
-+        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
-+        <Exec failonerror="false">vboxmanage startvm %NAME%</Exec>
-+        <Sleep minutes="1"/>
-+        <KeyboardPutScanCodes>root
-+keenbrick
-+modprobe floppy
-+mkdir /media/floppy
-+mount /dev/fd0 /media/floppy
-+/media/floppy/post-install.sh
-+        </KeyboardPutScanCodes>
+     </Target>
+     <Target name="run-post-install">
+         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
+@@ -18,10 +18,9 @@
+ mount /dev/fd0 /media/floppy
+ /media/floppy/post-install.sh
+         </KeyboardPutScanCodes>
+-        <AwaitState state="poweroff" timeout="20 minutes"/>
 +        <AwaitState state="poweroff" timeout="30 minutes"/>
-+    </Target>
-+    <Target name="cleanup">
-+        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
-+    </Target>
-+</Provisioning>
+     </Target>
+     <Target name="cleanup">
+         <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
+-        <PortForward hostport="10022" guestport="22"/>
+     </Target>
+ </Provisioning>
 diff -ruN app0/VirtualBox.xml app1/VirtualBox.xml
---- app0/VirtualBox.xml	1970-01-01 01:00:00.000000000 +0100
+--- app0/VirtualBox.xml	2013-02-03 11:59:58.000000000 +0000
 +++ app1/VirtualBox.xml	2013-01-26 11:21:29.000000000 +0000
-@@ -0,0 +1,72 @@
-+<?xml version="1.0"?>
-+<VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
-+    <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
-+    <Machine OSType="RedHat">
-+        <MediaRegistry>
-+            <HardDisks>
-+                <HardDisk uuid="hd0" location="hd0.vdi"/>
-+            </HardDisks>
-+            <DVDImages>
-+                <DVDImage uuid="dvd0" location="dvd0.iso"/>
-+            </DVDImages>
-+            <FloppyImages>
-+                <FloppyImage uuid="floppy0" location="floppy0.img"/>
-+            </FloppyImages>
-+        </MediaRegistry>
-+        <Hardware>
-+            <CPU count="1"/>
-+            <Memory RAMSize="512"/>
-+            <Boot>
-+                <Order position="1" device="DVD"/>
-+                <Order position="2" device="HardDisk"/>
-+                <Order position="3" device="Floppy"/>
-+                <Order position="4" device="None"/>
-+            </Boot>
-+            <BIOS>
-+                <ACPI enabled="true"/>
-+                <!-- 32 bit AND 1 CPU -->
-+                <IOACPI enabled="false"/>
-+            </BIOS>
-+            <Network>
-+                <Adapter slot="0">
+@@ -29,7 +29,11 @@
+             </BIOS>
+             <Network>
+                 <Adapter slot="0">
 +                    <HostOnlyInterface name="vboxnet0"/>
 +                </Adapter>
 +                <Adapter slot="1">
-+                    <NAT/>
+                     <NAT/>
 +                </Adapter>
-+                    <!--
-+                    <HostOnlyInterface name="vboxnet0"/>
-+                    -->
-+                    <!--
-+                    <BridgedInterface name="Intel(R) 82579LM Gigabit Network Connection"/>
-+                    -->
-+                    <!--
-+                    <BridgedInterface name="en1: Wi-Fi (AirPort)"/>
-+                    -->
-+                    <!--
-+                    <InternalNetwork name="intnet0"/>
-+                    -->
-+            </Network>
-+            <IO>
-+                <IoCache enabled="true"/>
-+            </IO>
-+        </Hardware>
-+        <StorageControllers>
-+            <StorageController Bootable="true" type="PIIX4" PortCount="2" useHostIOCache="true" name="IDE Controller">
-+                <AttachedDevice type="DVD" port="0" device="0">
-+                    <Image uuid="dvd0"/>
-+                </AttachedDevice>
-+            </StorageController>
-+            <StorageController Bootable="true" type="AHCI" useHostIOCache="false" name="SATA Controller">
-+                <AttachedDevice type="HardDisk" port="0" device="0">
-+                    <Image uuid="hd0"/>
-+                </AttachedDevice>
-+            </StorageController>
-+            <StorageController name="Floppy Controller" type="I82078" useHostIOCache="true" Bootable="false">
-+                <AttachedDevice type="Floppy" port="0" device="0">
-+                    <Image uuid="floppy0"/>
-+                </AttachedDevice>
-+            </StorageController>
-+        </StorageControllers>
-+    </Machine>
-+</VirtualBox>
+                     <!--
+                     <HostOnlyInterface name="vboxnet0"/>
+                     -->
+@@ -42,7 +46,6 @@
+                     <!--
+                     <InternalNetwork name="intnet0"/>
+                     -->
+-                </Adapter>
+             </Network>
+             <IO>
+                 <IoCache enabled="true"/>
 diff -ruN app0/floppy0/ks.cfg app1/floppy0/ks.cfg
---- app0/floppy0/ks.cfg	1970-01-01 01:00:00.000000000 +0100
+--- app0/floppy0/ks.cfg	2013-02-03 11:59:58.000000000 +0000
 +++ app1/floppy0/ks.cfg	2013-01-26 11:21:29.000000000 +0000
-@@ -0,0 +1,26 @@
-+install
-+cdrom
-+lang en_US.UTF-8
-+keyboard us
+@@ -2,9 +2,10 @@
+ cdrom
+ lang en_US.UTF-8
+ keyboard us
+-network --onboot yes --bootproto dhcp --noipv6
 +network --device eth0 --onboot yes --bootproto static --ip 192.168.56.2 --noipv6
 +network --device eth1 --onboot yes --bootproto dhcp --noipv6
-+rootpw  --iscrypted $6$1EkdaY5asXuyqswK$gHoFAUdMMorGOLGdmZOIcoUunSedZJOCUhlR/88j/4JEIuy5Y9zLVriK6d5LBJpR7BY4yzI2jjeJbZg.7TXOX0
+ rootpw  --iscrypted $6$1EkdaY5asXuyqswK$gHoFAUdMMorGOLGdmZOIcoUunSedZJOCUhlR/88j/4JEIuy5Y9zLVriK6d5LBJpR7BY4yzI2jjeJbZg.7TXOX0
+-firewall --service=ssh
 +firewall --disabled
-+authconfig --enableshadow --passalgo=sha512
-+selinux --disabled
-+timezone UTC
-+bootloader --location=mbr
-+
-+text
-+skipx
-+zerombr
-+
-+clearpart --all --initlabel
-+autopart
-+
-+firstboot --disabled
-+poweroff
-+
-+%packages --nobase
-+@core
+ authconfig --enableshadow --passalgo=sha512
+ selinux --disabled
+ timezone UTC
+@@ -22,4 +23,4 @@
+ 
+ %packages --nobase
+ @core
+-%end
+\ No newline at end of file
 +%end
 diff -ruN app0/floppy0/post-install.sh app1/floppy0/post-install.sh
---- app0/floppy0/post-install.sh	1970-01-01 01:00:00.000000000 +0100
+--- app0/floppy0/post-install.sh	2013-02-03 11:59:58.000000000 +0000
 +++ app1/floppy0/post-install.sh	2013-01-27 12:47:52.000000000 +0000
-@@ -0,0 +1,14 @@
-+#! /bin/sh
-+set -ue
-+
-+yum -y install acpid kernel-headers kernel-devel gcc gcc-c++ make kernel-devel-$(uname -r)
-+mkdir /media/cdrom
-+mount /dev/sr0 /media/cdrom
-+/media/cdrom/VBoxLinuxAdditions.run
-+umount /dev/sr0
-+rm -R /media/cdrom
+@@ -7,4 +7,8 @@
+ /media/cdrom/VBoxLinuxAdditions.run
+ umount /dev/sr0
+ rm -R /media/cdrom
 +
 +yum -y install tomcat6
 +chkconfig tomcat6 on
 +
-+poweroff now
+ poweroff now

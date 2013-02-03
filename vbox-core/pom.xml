@@ -20,10 +20,6 @@
         <license>
             <name>GNU General Public License, version 3 (GPL-3.0)</name>
         </license>
-        <license>
-            <comments>Includes code from http://code.google.com/p/google-diff-match-patch/</comments>
-            <name>Apache License, Version 2.0 </name>
-        </license>
     </licenses>
 
     <build>

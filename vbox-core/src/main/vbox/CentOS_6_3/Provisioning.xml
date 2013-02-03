@@ -5,7 +5,7 @@
         <KeyboardPutScanCodes keys="Esc"/>
         <Sleep seconds="2"/>
         <KeyboardPutScanCodes line="linux ks=floppy text"/>
-        <AwaitState state="poweroff" timeout="20 minutes"/>
+        <AwaitState state="poweroff" timeout="30 minutes"/>
     </Target>
     <Target name="run-post-install">
         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
@@ -18,7 +18,7 @@ mkdir /media/floppy
 mount /dev/fd0 /media/floppy
 /media/floppy/post-install.sh
         </KeyboardPutScanCodes>
-        <AwaitState state="poweroff" timeout="20 minutes"/>
+        <AwaitState state="poweroff" timeout="30 minutes"/>
     </Target>
     <Target name="cleanup">
         <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
