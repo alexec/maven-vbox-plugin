@@ -6,7 +6,7 @@
     <xs:element name="Manifest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="File" maxOccurs="unbounded">
+                <xs:element name="File" minOccurs="0" maxOccurs="unbounded">
                     <xs:simpleType>
                         <xs:restriction base="xs:string"/>
                     </xs:simpleType>

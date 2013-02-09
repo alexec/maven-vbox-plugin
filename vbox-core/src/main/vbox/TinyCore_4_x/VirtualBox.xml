@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
+    <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
+    <Machine OSType="RedHat">
+        <MediaRegistry>
+            <HardDisks>
+                <HardDisk uuid="hd0" location="hd0.vdi"/>
+            </HardDisks>
+            <DVDImages>
+                <DVDImage uuid="dvd0" location="dvd0.iso"/>
+            </DVDImages>
+            <FloppyImages>
+                <FloppyImage uuid="floppy0" location="floppy0.img"/>
+            </FloppyImages>
+        </MediaRegistry>
+        <Hardware>
+            <CPU count="1"/>
+            <Memory RAMSize="512"/>
+            <Boot>
+                <Order position="1" device="DVD"/>
+                <Order position="2" device="HardDisk"/>
+                <Order position="3" device="Floppy"/>
+                <Order position="4" device="None"/>
+            </Boot>
+            <BIOS>
+                <ACPI enabled="true"/>
+                <!-- 32 bit AND 1 CPU -->
+                <IOACPI enabled="false"/>
+            </BIOS>
+            <Network>
+                <Adapter slot="0">
+                    <NAT/>
+                    <!--
+                    <HostOnlyInterface name="vboxnet0"/>
+                    -->
+                    <!--
+                    <BridgedInterface name="Intel(R) 82579LM Gigabit Network Connection"/>
+                    -->
+                    <!--
+                    <BridgedInterface name="en1: Wi-Fi (AirPort)"/>
+                    -->
+                    <!--
+                    <InternalNetwork name="intnet0"/>
+                    -->
+                </Adapter>
+            </Network>
+            <IO>
+                <IoCache enabled="true"/>
+            </IO>
+        </Hardware>
+        <StorageControllers>
+            <StorageController Bootable="true" type="PIIX4" PortCount="2" useHostIOCache="true" name="IDE Controller">
+                <AttachedDevice type="DVD" port="0" device="0">
+                    <Image uuid="dvd0"/>
+                </AttachedDevice>
+            </StorageController>
+            <StorageController Bootable="true" type="AHCI" useHostIOCache="false" name="SATA Controller">
+                <AttachedDevice type="HardDisk" port="0" device="0">
+                    <Image uuid="hd0"/>
+                </AttachedDevice>
+            </StorageController>
+            <StorageController name="Floppy Controller" type="I82078" useHostIOCache="true" Bootable="false">
+                <AttachedDevice type="Floppy" port="0" device="0">
+                    <Image uuid="floppy0"/>
+                </AttachedDevice>
+            </StorageController>
+        </StorageControllers>
+    </Machine>
+</VirtualBox>
