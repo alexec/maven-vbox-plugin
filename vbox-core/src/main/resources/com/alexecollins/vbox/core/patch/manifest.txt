@@ -1,1 +1,2 @@
-CentOS_6_3--tomcat6(hostname)
+CentOS_6_3--tomcat6()
+CentOS_6_3--64bit()

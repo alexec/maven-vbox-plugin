@@ -1,0 +1,33 @@
+diff -ruN app3/MediaRegistry.xml app4/MediaRegistry.xml
+--- app3/MediaRegistry.xml	2013-02-09 21:12:41.000000000 +0000
++++ app4/MediaRegistry.xml	2013-02-09 21:18:30.000000000 +0000
+@@ -6,7 +6,7 @@
+     <DVDImages>
+         <!-- if this image doesn't work, try here: http://www.centos.org/modules/tinycontent/index.php?id=30 -->
+         <DVDImage uuid="dvd0"
+-                  location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
++                  location="http://mirror.ox.ac.uk/sites/mirror.centos.org/6.3/isos/x86_64/CentOS-6.3-x86_64-minimal.iso"/>
+     </DVDImages>
+     <FloppyImages>
+         <FloppyImage uuid="floppy0" location="floppy0"/>
+diff -ruN app3/VirtualBox.xml app4/VirtualBox.xml
+--- app3/VirtualBox.xml	2013-02-09 21:12:41.000000000 +0000
++++ app4/VirtualBox.xml	2013-02-09 21:17:36.000000000 +0000
+@@ -1,7 +1,7 @@
+ <?xml version="1.0"?>
+ <VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
+     <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
+-    <Machine OSType="RedHat">
++    <Machine OSType="RedHat_64">
+         <MediaRegistry>
+             <HardDisks>
+                 <HardDisk uuid="hd0" location="hd0.vdi"/>
+@@ -25,7 +25,7 @@
+             <BIOS>
+                 <ACPI enabled="true"/>
+                 <!-- 32 bit AND 1 CPU -->
+-                <IOACPI enabled="false"/>
++                <IOACPI enabled="true"/>
+             </BIOS>
+             <Network>
+                 <Adapter slot="0">

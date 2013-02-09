@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,10 +24,7 @@ public class PredefinedPatch implements Patch {
 			for (String l : Resources.readLines(PredefinedPatch.class.getResource("manifest.txt"), Charset.forName("UTF-8"))) {
 					final Matcher m = Pattern.compile("([^()]*)\\(([^()]*)\\)").matcher(l);
 					if (!m.find()) {throw new IllegalStateException(l + " invalid");}
-					nameToArgs.put(
-							m.group(1),
-							Arrays.asList(m.group(2).split(","))
-					);
+				nameToArgs.put(m.group(1), (m.group(2).length() > 0 ? Arrays.<String>asList(m.group(2).split(",")) : Collections.<String>emptyList()));
 				}
 		} catch (IOException e) {
 			throw new AssertionError(e);
@@ -46,7 +40,7 @@ public class PredefinedPatch implements Patch {
 		if (properties == null) {throw new IllegalArgumentException(properties + " is null");}
 		for (String arg : nameToArgs.get(name)) {
 			if (!properties.containsKey(arg)) {
-				throw new IllegalArgumentException("properties " + properties + " missing " + arg + " (contains " + properties + ")");
+				throw new IllegalArgumentException("properties " + properties.keySet() + " missing '" + arg + "' (requires " + nameToArgs.get(name) + ")");
 			}
 		}
 

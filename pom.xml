@@ -8,6 +8,7 @@
         <module>vbox-core</module>
         <module>vbox-maven-plugin</module>
         <module>vbox-ant-tasks</module>
+        <module>vbox-examples</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -4,8 +4,8 @@ diff -ruN app0/Profile.xml app1/Profile.xml
 @@ -1,4 +1,5 @@
  <?xml version="1.0"?>
  <Profile xmlns="http://www.alexecollins.com/vbox/profile" type="headless">
-     <ping url="socket://${hostname}:10022/"/>
-+    <ping url="socket://${hostname}:18080/"/>
+     <ping url="socket://localhost:10022/"/>
++    <ping url="socket://localhost:18080/"/>
  </Profile>
 diff -ruN app0/Provisioning.xml app1/Provisioning.xml
 --- app0/Provisioning.xml	2013-02-03 15:24:58.000000000 +0000

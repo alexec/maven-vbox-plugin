@@ -27,8 +27,8 @@ public class CreateDefinition implements Callable<Void> {
 	private final URL resource;
 
 	public CreateDefinition(String templateName, File target) {
-		checkNotNull(templateName);
-		checkNotNull(target);
+		checkNotNull(templateName, "templateName");
+		checkNotNull(target, "target");
 		this.templateName = templateName;
 		this.target = target;
 		resource = getClass().getResource("/" + templateName);

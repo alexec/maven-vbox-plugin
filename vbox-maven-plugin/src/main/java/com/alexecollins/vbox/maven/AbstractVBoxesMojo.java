@@ -32,13 +32,16 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
         final File src = new File("src/main/vbox");
         final List<String> names = new ArrayList<String>();
         if (this.names.equals("*")) {
-            for (File f : src.listFiles(new FileFilter() {
-                public boolean accept(File file) {
-                    return file.isDirectory();
-                }
-            })) {
-                names.add(f.getName());
-            }
+	        final File[] boxes = src.listFiles(new FileFilter() {
+		        public boolean accept(File file) {
+			        return file.isDirectory();
+		        }
+	        });
+	        if (boxes != null) {
+		        for (File f : boxes) {
+	                names.add(f.getName());
+	            }
+	        }
         } else {
 		    names.addAll(Arrays.asList(this.names.split(",")));
         }
