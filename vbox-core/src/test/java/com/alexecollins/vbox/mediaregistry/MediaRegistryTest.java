@@ -1,16 +1,10 @@
 package com.alexecollins.vbox.mediaregistry;
 
 
-import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.xml.sax.SAXException;
-
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -20,13 +14,13 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class MediaRegistryTest extends AbstractTest {
 
-	public MediaRegistryTest(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {
+	public MediaRegistryTest(final String name) throws Exception {
 		super(name);
 	}
 
 	@Test
 	public void testName() throws Exception {
-		final MediaRegistry sut = new VBox(src.toURI()).getMediaRegistry();
+		final MediaRegistry sut = getBox().getMediaRegistry();
 
 		assertTrue(sut.getDVDImages().getDVDImage() != null);
 	}

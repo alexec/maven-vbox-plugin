@@ -1,15 +1,9 @@
 package com.alexecollins.vbox.provisioning;
 
-import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.AbstractTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.xml.sax.SAXException;
-
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -18,13 +12,13 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(Parameterized.class)
 public class ProvisionsTest extends AbstractTest {
-	public ProvisionsTest(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {
+	public ProvisionsTest(final String name) throws Exception {
 		super(name);
 	}
 
 	@Test
 	public void testGetPortForwardOrKeyboardPutScanCodesOrSleep() throws Exception {
-		final Provisioning sut = new VBox(src.toURI()).getProvisioning();
+		final Provisioning sut = getBox().getProvisioning();
 
 		assertTrue(sut.getTarget().size() > 0);
 		for (Provisioning.Target target : sut.getTarget()) {

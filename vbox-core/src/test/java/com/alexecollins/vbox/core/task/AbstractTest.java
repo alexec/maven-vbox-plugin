@@ -4,12 +4,8 @@ import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -27,21 +23,39 @@ public abstract class AbstractTest {
 		});
 	}
 
-	final String name;
-	protected final File src;
-	final VBox box;
-	final File target;
-	final Work work = new Work(new File("target"), new File(System.getProperty("user.home"), ".vbox"));
+	private final String name;
+	private final File src;
+	private final VBox box;
+	private final File target;
+	private final Work work = new Work(new File("target"), new File(System.getProperty("user.home"), ".vbox"));
 
-	public AbstractTest(final String name) throws IOException, JAXBException, SAXException, URISyntaxException {
+	public AbstractTest(final String name) throws Exception {
 		this.name = name;
 		System.out.println("name=" + name);
-		src = new File("src/main/vbox/" + name);
 		target = new File(work.getBaseDir(), "vbox/boxes/" + name);
-		box = newVBox();
+		src = new File(System.getProperty("java.io.tmpdir"), getName());
+		final CreateDefinition definition = new CreateDefinition(getName(), src);
+		definition.call();
+		box = new VBox(src.toURI());
 	}
 
-	public VBox newVBox() throws URISyntaxException, IOException, JAXBException, SAXException {
-		return new VBox(src.toURI());
+	public String getName() {
+		return name;
+	}
+
+	public VBox getBox() {
+		return box;
+	}
+
+	public File getTarget() {
+		return target;
+	}
+
+	public Work getWork() {
+		return work;
+	}
+
+	public File getSrc() {
+		return src;
 	}
 }
