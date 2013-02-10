@@ -11,6 +11,6 @@ import static org.junit.Assert.assertThat;
 public class ListDefinitionsTest {
 	@Test
 	public void testCall() throws Exception {
-		assertThat(new ListDefinitions().call().size(), equalTo(3));
+		assertThat(new ListDefinitions().call().size(), equalTo(4));
 	}
 }

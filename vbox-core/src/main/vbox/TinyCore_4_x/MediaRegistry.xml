@@ -7,7 +7,5 @@
         <DVDImage uuid="dvd0"
                   location="http://www.tinycorelinux.net/4.x/x86/release/Core-current.iso"/>
     </DVDImages>
-    <FloppyImages>
-        <FloppyImage uuid="floppy0" location="floppy0"/>
-    </FloppyImages>
+    <FloppyImages/>
 </MediaRegistry>

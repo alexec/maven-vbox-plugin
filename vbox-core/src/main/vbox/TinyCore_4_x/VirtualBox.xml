@@ -9,13 +9,11 @@
             <DVDImages>
                 <DVDImage uuid="dvd0" location="dvd0.iso"/>
             </DVDImages>
-            <FloppyImages>
-                <FloppyImage uuid="floppy0" location="floppy0.img"/>
-            </FloppyImages>
+            <FloppyImages/>
         </MediaRegistry>
         <Hardware>
             <CPU count="1"/>
-            <Memory RAMSize="512"/>
+            <Memory RAMSize="64"/>
             <Boot>
                 <Order position="1" device="DVD"/>
                 <Order position="2" device="HardDisk"/>
@@ -57,11 +55,6 @@
             <StorageController Bootable="true" type="AHCI" useHostIOCache="false" name="SATA Controller">
                 <AttachedDevice type="HardDisk" port="0" device="0">
                     <Image uuid="hd0"/>
-                </AttachedDevice>
-            </StorageController>
-            <StorageController name="Floppy Controller" type="I82078" useHostIOCache="true" Bootable="false">
-                <AttachedDevice type="Floppy" port="0" device="0">
-                    <Image uuid="floppy0"/>
                 </AttachedDevice>
             </StorageController>
         </StorageControllers>

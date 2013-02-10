@@ -10,7 +10,7 @@
             <xs:element name="HardDisks">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="HardDisk" type="HardDiskImage"/>
+                        <xs:element name="HardDisk" type="HardDiskImage" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -24,7 +24,7 @@
             <xs:element name="FloppyImages">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="FloppyImage" type="FloppyImage"/>
+                        <xs:element name="FloppyImage" type="FloppyImage" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

@@ -29,6 +29,7 @@ public class Stop implements Callable<Void> {
 			} catch (TimeoutException e) {
 				LOGGER.warn("failed to power down in 30 second(s) forcing power off");
 				box.powerOff();
+				box.awaitState(2000, "poweroff");
 			}
 			LOGGER.info("stopped '" + box.getName() + "'");
 		} else {

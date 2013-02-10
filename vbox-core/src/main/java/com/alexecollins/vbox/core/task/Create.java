@@ -125,24 +125,24 @@ public class Create extends AbstractTask {
 
 		VBox.installAdditions(work);
 
-		final Image hd = mr.getHardDisks().getHardDisk();
-
-		LOGGER.debug("creating HD " + hd.getUuid());
-		final File hdImg = new File(target, hd.getUuid() + ".vdi");
-		if (hdImg.exists() && !hdImg.delete()) throw new IllegalStateException();
-		ExecUtils.exec("vboxmanage", "createhd", "--filename", hdImg.getCanonicalPath(),
-				"--size", String.valueOf(hd.getSize()));
-
 		final Map<Object, File> idToFile = new HashMap<Object, File>();
 
-		idToFile.put(hd.getUuid(), hdImg);
+		for (final Image hd : mr.getHardDisks().getHardDisk()) {
+			LOGGER.debug("creating HD " + hd.getUuid());
+			final File hdImg = new File(target, hd.getUuid() + ".vdi");
+			if (hdImg.exists() && !hdImg.delete()) throw new IllegalStateException();
+			ExecUtils.exec("vboxmanage", "createhd", "--filename", hdImg.getCanonicalPath(),
+					"--size", String.valueOf(hd.getSize()));
+			idToFile.put(hd.getUuid(), hdImg);
+		}
 
 		for (DVDImage dvd : mr.getDVDImages().getDVDImage()) {
 			idToFile.put(dvd.getUuid(), acquireImage(box, dvd));
 		}
 
-		final Image floppy = mr.getFloppyImages().getFloppyImage();
-		idToFile.put(floppy.getUuid(), acquireImage(box, floppy));
+		for (final Image floppy : mr.getFloppyImages().getFloppyImage()) {
+			idToFile.put(floppy.getUuid(), acquireImage(box, floppy));
+		}
 
 		LOGGER.debug("images " + idToFile);
 

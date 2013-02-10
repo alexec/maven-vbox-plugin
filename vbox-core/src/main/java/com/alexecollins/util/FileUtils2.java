@@ -70,7 +70,7 @@ public class FileUtils2 {
 		final String v = root.toURI().relativize(f.toURI()).toString();
 		d.update(v.getBytes());
 		final long l = f.lastModified();
-		System.out.println(v + "  "  +l);
+		// System.out.println(v + "  "  +l);
 		d.update(String.valueOf(l).getBytes());
 		if (f.isDirectory()) {
 			for (File c : f.listFiles()) {
