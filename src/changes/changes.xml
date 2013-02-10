@@ -3,11 +3,20 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <body>
         <release version="2.0.0" description="Patches and estates">
+            <action dev="alex.collins" type="add" issue="2">
+                Add support for unified patches.
+            </action>
             <action dev="alex.collins" type="add" issue="4">
                 Allow the user to specify a global cache directory.
             </action>
             <action dev="alex.collins" type="add">
                 Allow the user to specify the name of a template separately to the name of the target box.
+            </action>
+            <action dev="alex.collins" type="add" issue="6">
+                Added an example Ant project.
+            </action>
+            <action dev="alex.collins" type="add" issue="7">
+                Warn about mismatched guest/host arch, and provide support for patching boxes.
             </action>
         </release>
         <release version="1.0.0" description="First release">
