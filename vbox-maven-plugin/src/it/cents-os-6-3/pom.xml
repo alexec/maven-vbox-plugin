@@ -36,11 +36,9 @@
                         </goals>
                         <configuration>
                             <patches>
+                                <archPatch/>
                                 <predefinedPatch>
                                     <name>CentOS_6_3--tomcat6</name>
-                                </predefinedPatch>
-                                <predefinedPatch>
-                                    <name>CentOS_6_3--64bit</name>
                                 </predefinedPatch>
                             </patches>
                         </configuration>

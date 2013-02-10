@@ -6,7 +6,7 @@
     <DVDImages>
         <!-- if this image doesn't work, try here: http://www.centos.org/modules/tinycontent/index.php?id=30 -->
         <DVDImage uuid="dvd0"
-                  location="ftp://ftp.mirrorservice.org/sites/mirror.centos.org/6.3/isos/i386/CentOS-6.3-i386-minimal.iso"/>
+                  location="http://mirror.ox.ac.uk/sites/mirror.centos.org/6.3/isos/x86_64/CentOS-6.3-x86_64-minimal.iso"/>
     </DVDImages>
     <FloppyImages>
         <FloppyImage uuid="floppy0" location="floppy0"/>

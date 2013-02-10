@@ -2,8 +2,6 @@ package com.alexecollins.vbox.core.task;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
@@ -14,7 +12,6 @@ import java.net.URISyntaxException;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-@RunWith(Parameterized.class)
 public class CreateDefinitionTest extends AbstractTest {
 
 	public CreateDefinitionTest(final String name) throws JAXBException, IOException, SAXException, URISyntaxException {

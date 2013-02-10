@@ -3,6 +3,7 @@ package com.alexecollins.vbox.core.task;
 import com.alexecollins.util.ExecUtils;
 import com.alexecollins.util.FileUtils2;
 import com.alexecollins.util.ImageUtils;
+import com.alexecollins.util.SystemUtils2;
 import com.alexecollins.vbox.core.Snapshot;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
@@ -63,6 +64,10 @@ public class Create extends AbstractTask {
 		final VirtualBox.Machine machine = vb.getMachine();
 
 		assert machine != null;
+
+		if (box.is64Bit() != SystemUtils2.is64Bit()) {
+			LOGGER.warn("host is "+(SystemUtils2.is64Bit() ? "64" : "32") +"bit, guest " +(box.is64Bit() ? "64":"32")+"bit: mismatch, performance might be very slow (see http://alexec.github.com/maven-vbox-plugin/64-bit.html)");
+		}
 
 		final File t = getTarget();
 		if (t.exists()) {

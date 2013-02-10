@@ -36,9 +36,7 @@
                         </goals>
                         <configuration>
                             <patches>
-                                <predefinedPatch>
-                                    <name>UbuntuServer_12_10--64bit</name>
-                                </predefinedPatch>
+                                <archPatch/>
                             </patches>
                         </configuration>
                     </execution>

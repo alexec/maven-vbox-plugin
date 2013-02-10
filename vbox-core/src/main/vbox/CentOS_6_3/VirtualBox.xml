@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
     <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
-    <Machine OSType="RedHat">
+    <Machine OSType="RedHat_64">
         <MediaRegistry>
             <HardDisks>
                 <HardDisk uuid="hd0" location="hd0.vdi"/>
@@ -25,7 +25,7 @@
             <BIOS>
                 <ACPI enabled="true"/>
                 <!-- 32 bit AND 1 CPU -->
-                <IOACPI enabled="false"/>
+                <IOACPI enabled="true"/>
             </BIOS>
             <Network>
                 <Adapter slot="0">

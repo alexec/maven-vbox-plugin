@@ -224,6 +224,10 @@ public class VBox {
 		ExecUtils.exec("vboxmanage", "extpack", "install", file.getCanonicalPath());
 	}
 
+	public boolean is64Bit() {
+		return virtualBox.getMachine().getOSType().endsWith("64");
+	}
+
 	public static class Version {
 		final int major;
 		final int minor;

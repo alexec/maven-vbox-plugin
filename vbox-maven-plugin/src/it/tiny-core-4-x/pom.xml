@@ -30,6 +30,17 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>patch-definition</id>
+                        <goals>
+                            <goal>patch-definition</goal>
+                        </goals>
+                        <configuration>
+                            <patches>
+                                <archPatch/>
+                            </patches>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>default</id>
                         <goals>
                             <goal>clean</goal>
