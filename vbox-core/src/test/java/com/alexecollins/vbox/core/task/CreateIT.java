@@ -31,7 +31,7 @@ public class CreateIT extends AbstractTest {
 
 	@After
 	public void tearDown() throws Exception {
-		// TODO new Clean().execute(A);
+		new Clean(work,box).call();
 	}
 
 	@Test

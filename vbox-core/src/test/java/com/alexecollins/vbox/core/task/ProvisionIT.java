@@ -32,8 +32,6 @@ public class ProvisionIT extends AbstractTest {
 	@After
 	public void tearDown() throws Exception {
 		sut.stopServer();
-
-		// TODO new CleanMojo().execute(A);
 	}
 
 	@Test

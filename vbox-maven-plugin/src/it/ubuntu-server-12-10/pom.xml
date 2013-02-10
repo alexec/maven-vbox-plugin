@@ -25,8 +25,8 @@
                             <goal>create-definition</goal>
                         </goals>
                         <configuration>
-                            <templateName>CentOS_6_3</templateName>
-                            <name>app1.domain3</name>
+                            <templateName>UbuntuServer_12_10</templateName>
+                            <name>app1.domain4</name>
                         </configuration>
                     </execution>
                     <execution>
@@ -37,10 +37,7 @@
                         <configuration>
                             <patches>
                                 <predefinedPatch>
-                                    <name>CentOS_6_3--tomcat6</name>
-                                </predefinedPatch>
-                                <predefinedPatch>
-                                    <name>CentOS_6_3--64bit</name>
+                                    <name>UbuntuServer_12_10--64bit</name>
                                 </predefinedPatch>
                             </patches>
                         </configuration>

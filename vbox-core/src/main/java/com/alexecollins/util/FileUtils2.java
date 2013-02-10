@@ -36,7 +36,7 @@ public class FileUtils2 {
 
 	private static void getHttpUrl(File file, HttpURLConnection connection) throws IOException {
 		final long downloaded = file.exists() ? file.length() : 0;
-		// LOGGER.info("requesting " + url + " range >= " + downloaded);
+		// System.out.println("requesting " + connection + " range >= " + downloaded);
 		connection.setRequestProperty("Range", "bytes=" + downloaded + "-");
 		connection.setDoInput(true);
 		connection.setDoOutput(true);

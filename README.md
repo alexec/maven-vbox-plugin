@@ -157,16 +157,14 @@ Supported Guest OS Types/Supplied Definitions
 * WindowsServer2008
 
 Unlisted OSs may work.
-
 32 Bit vs 64 Bit
----
+===
 Currently the definitions are all 32 bit. I _think_ you'll want to use the same bits on the guest as the host. It'll be faster.
 
 If you want use 64 bit you typically need to:
 
 - Append "_64" to the OS type, e.g. "RedHat_64".
 - Enable IO ACPI (as a side-effect, it'll be much faster, if your host OS is 64 bit).
-
 Patches
 ===
 A patch is a way of modifying a definition. Typically a patch will take a base definition and add support for new features. An example would be installing Tomcat onto a server. Patches are applied after a definition in created, but before the machine is created (in fact, applying a patch after a machine is created will change its (signature)[signatures.md] and result in its rebuild.

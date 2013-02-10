@@ -28,6 +28,9 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Create a new virtual box.
+ */
 public class Create extends AbstractTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Create.class);
 
@@ -62,6 +65,10 @@ public class Create extends AbstractTask {
 		assert machine != null;
 
 		final File t = getTarget();
+		if (t.exists()) {
+			LOGGER.info("deleting " + t);
+			FileUtils.deleteDirectory(t);
+		}
 		if (!t.mkdirs()) throw new IllegalStateException("failed to create " + t);
 
 		FileUtils.writeByteArrayToFile(getSignatureFile(), getSignature());
