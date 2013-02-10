@@ -224,8 +224,8 @@ public class Provision extends AbstractTask {
 
 	@Override
 	public String subst(String line) throws IOException, InterruptedException, ExecutionException {
-		line = line.replaceAll("$\\{server\\.ip\\}", InetAddress.getLocalHost().getHostAddress());
-		line = line.replaceAll("$\\{server\\.port\\}", String.valueOf(getServerPort()));
+		line = line.replaceAll("\\$\\{server\\.ip\\}", InetAddress.getLocalHost().getHostAddress());
+		line = line.replaceAll("\\$\\{server\\.port\\}", String.valueOf(getServerPort()));
 		return super.subst(line);
 	}
 

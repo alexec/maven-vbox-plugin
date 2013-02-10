@@ -60,8 +60,8 @@ public abstract class AbstractTask implements Callable<Void> {
 	 *  Complete the variables.
 	 */
 	public String subst(String line) throws IOException, InterruptedException, ExecutionException {
-		line = line.replaceAll("$\\{vbox\\.additions\\}", VBox.findGuestAdditions().getPath().replaceAll("\\\\", "/"));
-		line = line.replaceAll("$\\{vbox\\.name\\}", box.getName());
+		line = line.replaceAll("\\$\\{vbox\\.additions\\}", VBox.findGuestAdditions().getPath().replaceAll("\\\\", "/"));
+		line = line.replaceAll("\\$\\{vbox\\.name\\}", box.getName());
 		return line;
 	}
 }
