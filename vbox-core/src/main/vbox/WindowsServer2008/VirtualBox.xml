@@ -7,7 +7,7 @@
             </HardDisks>
             <DVDImages>
                 <DVDImage uuid="dvd0" location="dvd0.iso"/>
-                <DVDImage uuid="dvd1" location="%VBOX_ADDITIONS%"/>
+                <DVDImage uuid="dvd1" location="${vbox.additions}"/>
             </DVDImages>
             <FloppyImages>
                 <FloppyImage uuid="floppy0" location="floppy0.img"/>

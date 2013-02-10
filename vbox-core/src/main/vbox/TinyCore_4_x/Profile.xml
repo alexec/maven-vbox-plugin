@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
-<Profile xmlns="http://www.alexecollins.com/vbox/profile">
+<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="TinyCore_4_x">
     <ping url="socket://localhost:10022/"/>
 </Profile>

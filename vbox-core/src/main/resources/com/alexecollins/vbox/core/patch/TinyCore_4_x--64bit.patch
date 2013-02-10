@@ -1,0 +1,12 @@
+diff -ruN tc1/VirtualBox.xml tc2/VirtualBox.xml
+--- tc1/VirtualBox.xml	2013-02-10 10:38:27.000000000 +0000
++++ tc2/VirtualBox.xml	2013-02-10 10:40:31.000000000 +0000
+@@ -23,7 +23,7 @@
+             <BIOS>
+                 <ACPI enabled="true"/>
+                 <!-- 32 bit AND 1 CPU -->
+-                <IOACPI enabled="false"/>
++                <IOACPI enabled="true"/>
+             </BIOS>
+             <Network>
+                 <Adapter slot="0">

@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
-<Profile xmlns="http://www.alexecollins.com/vbox/profile">
+<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="UbuntuServer_12_10">
     <ping url="socket://localhost:10022/"/>
 </Profile>

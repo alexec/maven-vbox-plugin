@@ -17,6 +17,7 @@
             </xs:sequence>
             <!-- if we should start it with a head -->
             <xs:attribute name="type" type="Type" default="gui"/>
+            <xs:attribute name="template" type="xs:string"/>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="Type">

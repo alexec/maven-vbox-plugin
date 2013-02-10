@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
-<Profile xmlns="http://www.alexecollins.com/vbox/profile">
+<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="CentOS_6_3">
     <ping url="socket://localhost:10022/"/>
 </Profile>

@@ -12,7 +12,7 @@ diff -ruN app0/Provisioning.xml app1/Provisioning.xml
 +++ app1/Provisioning.xml	2013-02-03 15:27:22.000000000 +0000
 @@ -23,5 +23,6 @@
      <Target name="cleanup">
-         <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
+         <Exec>vboxmanage storageattach ${vbox.name} --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
          <PortForward hostport="10022" guestport="22"/>
 +        <PortForward hostport="18080" guestport="8080"/>
      </Target>

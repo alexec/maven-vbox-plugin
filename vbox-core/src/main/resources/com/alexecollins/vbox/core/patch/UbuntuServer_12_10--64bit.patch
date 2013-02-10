@@ -1,0 +1,23 @@
+diff -ruN ub1/VirtualBox.xml ub2/VirtualBox.xml
+--- ub1/VirtualBox.xml	2013-02-10 10:42:40.000000000 +0000
++++ ub2/VirtualBox.xml	2013-02-10 10:43:27.000000000 +0000
+@@ -1,7 +1,7 @@
+ <?xml version="1.0"?>
+ <VirtualBox xmlns="http://www.innotek.de/VirtualBox-settings">
+     <!-- xmlns="https://raw.github.com/alexec/maven-vbox-plugin/master/src/main/xsd/VirtualBox.xsd" -->
+-    <Machine OSType="Ubuntu">
++    <Machine OSType="Ubuntu_64">
+         <MediaRegistry>
+             <HardDisks>
+                 <HardDisk uuid="hd0" location="hd0.vdi"/>
+@@ -24,8 +24,8 @@
+             </Boot>
+             <BIOS>
+                 <ACPI enabled="true"/>
+-                <!-- 32 bit AND 1 CPU -->
+-                <IOACPI enabled="false"/>
++                <!-- 64 bit AND 1 CPU -->
++                <IOACPI enabled="true"/>
+             </BIOS>
+             <Network>
+                 <Adapter slot="0">

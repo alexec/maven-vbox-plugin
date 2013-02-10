@@ -123,7 +123,7 @@ The Ubuntu example downloads (by setting the DVDImage location to the URL) and a
 You'll want to include an additional files, either a preseed.cfg for an Ubuntu VM, or an AutoUnattend.xml for a Windows. These files tell the installer how to set-up the OS.  To expose them to the VM you can either:
 
 * Mount a floppy (esp. for Windows).
-* Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on http://%IP%:%PORT%/.
+* Access the files by HTTP. When provisioning starts up, all the files in your definition dir are available on http://${server.ip}:${server.port}/.
 
 Typically you'll want to make sure you VMs has:
 
@@ -134,10 +134,10 @@ Tokens
 ---
 The following tokens are recognised in some XML documents:
 
-* %NAME% - Then name of the guest OS.
-* %IP% - The IP of the host.
-* %PORT% - The port the web server is running on.
-* %VBOX_ADDITIONS% - The path the VirtualBox Guest Additions on the host OS.
+* ${vbox.name} - Then name of the guest OS.
+* ${server.ip} - The IP of the host.
+* ${server.port} - The port the web server is running on.
+* ${vbox.additions} - The path the VirtualBox Guest Additions on the host OS.
 
 Authentication
 ---
@@ -215,7 +215,7 @@ As pre-defined patches might not cover all cases you can also use user defined o
     @@ -22,6 +22,5 @@
          </Target>
          <Target name="cleanup">
-             <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
+             <Exec>vboxmanage storageattach ${vbox.name} --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
     -        <PortForward hostport="10022" guestport="22"/>
          </Target>
      </Provisioning>

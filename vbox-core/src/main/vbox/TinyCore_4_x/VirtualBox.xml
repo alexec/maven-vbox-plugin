@@ -23,7 +23,7 @@
             <BIOS>
                 <ACPI enabled="true"/>
                 <!-- 32 bit AND 1 CPU -->
-                <IOACPI enabled="true"/>
+                <IOACPI enabled="false"/>
             </BIOS>
             <Network>
                 <Adapter slot="0">

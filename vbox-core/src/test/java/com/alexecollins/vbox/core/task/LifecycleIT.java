@@ -33,7 +33,7 @@ public class LifecycleIT extends AbstractTest {
 		clean.call(); // idempotent
 		assertFalse("vbox exists", target.exists());
 
-		new ArchPatch(name).apply(box);
+		new ArchPatch().apply(box);
 
 		Create create = new Create(work, newVBox());
 		create.call();

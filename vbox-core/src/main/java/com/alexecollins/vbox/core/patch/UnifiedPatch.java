@@ -41,6 +41,4 @@ public class UnifiedPatch implements Patch {
 	public String getName() {
 		return "UnifiedPatch";
 	}
-
-
 }

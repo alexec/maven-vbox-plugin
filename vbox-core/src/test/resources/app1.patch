@@ -31,7 +31,7 @@ diff -ruN Provisioning.xml Provisioning.xml
 +        <AwaitState state="poweroff" timeout="30 minutes"/>
      </Target>
      <Target name="run-post-install">
-         <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
+         <Exec>vboxmanage storageattach ${vbox.name} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "${vbox.additions}"</Exec>
 @@ -18,10 +18,9 @@
  mount /dev/fd0 /media/floppy
  /media/floppy/post-install.sh
@@ -40,7 +40,7 @@ diff -ruN Provisioning.xml Provisioning.xml
 +        <AwaitState state="poweroff" timeout="30 minutes"/>
      </Target>
      <Target name="cleanup">
-         <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
+         <Exec>vboxmanage storageattach ${vbox.name} --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
 -        <PortForward hostport="10022" guestport="22"/>
      </Target>
  </Provisioning>

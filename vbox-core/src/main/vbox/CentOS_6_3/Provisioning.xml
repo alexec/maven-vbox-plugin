@@ -8,8 +8,8 @@
         <AwaitState state="poweroff" timeout="30 minutes"/>
     </Target>
     <Target name="run-post-install">
-        <Exec>vboxmanage storageattach %NAME% --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "%VBOX_ADDITIONS%"</Exec>
-        <Exec failonerror="false">vboxmanage startvm %NAME%</Exec>
+        <Exec>vboxmanage storageattach ${vbox.name} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "${vbox.additions}"</Exec>
+        <Exec failonerror="false">vboxmanage startvm ${vbox.name}</Exec>
         <Sleep minutes="1"/>
         <KeyboardPutScanCodes>root
 keenbrick
@@ -21,7 +21,7 @@ mount /dev/fd0 /media/floppy
         <AwaitState state="poweroff" timeout="30 minutes"/>
     </Target>
     <Target name="cleanup">
-        <Exec>vboxmanage storageattach %NAME% --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
+        <Exec>vboxmanage storageattach ${vbox.name} --storagectl "Floppy Controller" --port 0 --device 0 --medium none</Exec>
         <PortForward hostport="10022" guestport="22"/>
     </Target>
 </Provisioning>

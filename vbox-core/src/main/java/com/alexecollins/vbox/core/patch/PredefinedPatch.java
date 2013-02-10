@@ -31,10 +31,27 @@ public class PredefinedPatch implements Patch {
 		}
 	}
 
-	private final UnifiedPatch unifiedPatch;
-	private final String name;
+	/**
+	 * The full patch name.
+	 *
+	 * E.g.
+	 * CentOS_6_3--tomcat6
+	 */
+	private String name;
 
-	public PredefinedPatch(String name, Map<String, String> properties) throws IOException {
+	/**
+	 * Thing that need to be mapped.
+	 */
+	private Map<String,String> properties = Collections.emptyMap();
+
+	public PredefinedPatch() {}
+
+	public PredefinedPatch(String name, Map<String, String> properties) {
+		this.name = name;
+		this.properties = properties;
+	}
+
+	public void apply(VBox box) throws Exception {
 		if (name == null) {throw new IllegalArgumentException("name is null");}
 		if (!nameToArgs.containsKey(name)) {throw new IllegalArgumentException(name +" not in " + nameToArgs);}
 		if (properties == null) {throw new IllegalArgumentException(properties + " is null");}
@@ -44,23 +61,14 @@ public class PredefinedPatch implements Patch {
 			}
 		}
 
-		this.name = name;
-		try {
-			byte[] patch = Resources.toByteArray(getClass().getResource(name + ".patch"));
+		byte[] patch = Resources.toByteArray(getClass().getResource(name + ".patch"));
 
-			for (Map.Entry<String, String> e : properties.entrySet()) {
-				LoggerFactory.getLogger(PredefinedPatch.class).info("substituting " + e);
-				patch = Bytes2.searchAndReplace(patch, ("${" +e.getKey() +"}").getBytes("UTF-8"), e.getValue().getBytes("UTF-8"));
-			}
-
-			unifiedPatch = new UnifiedPatch(patch, 1);
-		} catch (IOException e) {
-			throw new AssertionError(e);
+		for (Map.Entry<String, String> e : properties.entrySet()) {
+			LoggerFactory.getLogger(PredefinedPatch.class).info("substituting " + e);
+			patch = Bytes2.searchAndReplace(patch, ("${" +e.getKey() +"}").getBytes("UTF-8"), e.getValue().getBytes("UTF-8"));
 		}
-	}
 
-	public void apply(VBox box) throws Exception {
-		unifiedPatch.apply(box);
+		new UnifiedPatch(patch, 1).apply(box);
 	}
 
 	public String getName() {
@@ -70,5 +78,17 @@ public class PredefinedPatch implements Patch {
 
 	public static Map<String, List<String>> list() {
 		return nameToArgs;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
 	}
 }
