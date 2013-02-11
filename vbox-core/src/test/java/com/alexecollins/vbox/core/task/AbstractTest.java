@@ -4,8 +4,12 @@ import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.xml.sax.SAXException;
 
+import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -18,14 +22,15 @@ public abstract class AbstractTest {
 	@Parameterized.Parameters(name = "{0}")
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][]{
-				{"TinyCore_4_x"},{"UbuntuServer_12_10" },{"CentOS_6_3"}
+				{"UbuntuServer_12_10" },
+				{"TinyCore_4_x"},
+				{"CentOS_6_3"}
 				// ,{"WindowsServer2008" }
 		});
 	}
 
 	private final String name;
 	private final File src;
-	private final VBox box;
 	private final File target;
 	private final Work work = new Work(new File("target"), new File(System.getProperty("user.home"), ".vbox"));
 
@@ -36,15 +41,14 @@ public abstract class AbstractTest {
 		src = new File(System.getProperty("java.io.tmpdir"), getName());
 		final CreateDefinition definition = new CreateDefinition(getName(), src);
 		definition.call();
-		box = new VBox(src.toURI());
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public VBox getBox() {
-		return box;
+	public VBox getBox() throws IOException, JAXBException, SAXException, URISyntaxException {
+		return new VBox(src.toURI());
 	}
 
 	public File getTarget() {
