@@ -136,6 +136,7 @@
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <releaseProfiles>site,run-its</releaseProfiles>
                 </configuration>
             </plugin>
         </plugins>
