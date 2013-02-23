@@ -211,7 +211,7 @@ User Defined Patches
 ---
 As pre-defined patches might not cover all cases you can also use user defined ones. The format is unified diff, so you can use diff to create the patch, e.g:
 
-    $ diff -ruN app1 app2 patches/user-defined.patch
+    $ diff -ruN app1 app2 > patches/user-defined.patch
     diff -ruN app1/Provisioning.xml app2/Provisioning.xml
     --- app1/Provisioning.xml	2013-02-03 14:54:29.000000000 +0000
     +++ app2/Provisioning.xml	2013-02-03 14:33:34.000000000 +0000
