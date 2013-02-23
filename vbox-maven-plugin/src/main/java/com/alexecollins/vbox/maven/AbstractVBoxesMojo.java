@@ -3,10 +3,13 @@ package com.alexecollins.vbox.maven;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A mojo that looks for multiple definition and executes on all of them.
@@ -22,6 +25,12 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 	private String names = "*";
 
 	/**
+	 * @parameter expression="${project}"
+	 * @readonly
+	 */
+	private MavenProject project;
+
+	/**
 	 * Where to cache large files
 	 * @parameter property="vbox.cacheDir"
 	 */
@@ -29,7 +38,7 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 	public void execute() throws MojoExecutionException {
 
-        final File src = new File("src/main/vbox");
+        final File src = new File(project.getBasedir(), "src/main/vbox");
         final List<String> names = new ArrayList<String>();
         if (this.names.equals("*")) {
 	        final File[] boxes = src.listFiles(new FileFilter() {
