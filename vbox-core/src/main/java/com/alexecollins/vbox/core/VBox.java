@@ -109,10 +109,15 @@ public class VBox {
 	}
 
 	public void awaitState(final long millis, final String state) throws InterruptedException, IOException, TimeoutException, ExecutionException {
-		long s = System.currentTimeMillis();
+		final long s = System.currentTimeMillis();
+		String lastMessage = "";
 		do {
-            long remaining = s + millis - System.currentTimeMillis();
-            LOGGER.info("awaiting " + state + " for " + DurationUtils.prettyPrint(remaining) );
+            final long remaining = s + millis - System.currentTimeMillis();
+			final String message = "awaiting " + state + " for " + DurationUtils.prettyPrint(remaining);
+			// only display changed message
+			if (!message.equals(lastMessage)) {
+				LOGGER.info(message);
+			}
 			if (remaining < 0) {
 				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");
 			}
