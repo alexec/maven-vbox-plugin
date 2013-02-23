@@ -1,6 +1,6 @@
 VirtualBox Java API
 ===
-[![Build Status](https://api.travis-ci.org/alexec/vbox-maven-plugin.png)](https://api.travis-ci.org/alexec/vbox-maven-plugin)
+[![Build Status](https://api.travis-ci.org/alexec/maven-vbox-plugin.png)](https://travis-ci.org/alexec/maven-vbox-plugin)
 
 Overview
 ===
