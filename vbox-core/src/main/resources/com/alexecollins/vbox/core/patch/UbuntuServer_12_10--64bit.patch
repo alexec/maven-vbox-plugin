@@ -1,3 +1,27 @@
+diff -ruN a/MediaRegistry.xml b/MediaRegistry.xml
+--- a/MediaRegistry.xml	2012-11-13 07:44:50.000000000 +0000
++++ b/MediaRegistry.xml	2013-02-23 15:55:49.000000000 +0000
+@@ -5,7 +5,7 @@
+     </HardDisks>
+     <DVDImages>
+         <DVDImage uuid="dvd0"
+-                  location="http://releases.ubuntu.com/12.10/ubuntu-12.10-server-i386.iso"/>
++                  location="http://releases.ubuntu.com/12.10/ubuntu-12.10-server-amd64.iso"/>
+     </DVDImages>
+     <FloppyImages>
+         <FloppyImage uuid="floppy0" location="floppy0"/>
+diff -ruN a/Provisioning.xml b/Provisioning.xml
+--- a/Provisioning.xml	2013-02-23 15:26:29.000000000 +0000
++++ b/Provisioning.xml	2013-02-23 15:52:24.000000000 +0000
+@@ -6,7 +6,7 @@
+         <Sleep seconds="1"/>
+         <KeyboardPutScanCodes
+                 line="/install/vmlinuz noapic preseed/file=/floppy/preseed.cfg debian-installer=en_US auto locale=en_US kbd-chooser/method=us fb=false debconf/frontend=noninteractive keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=us keyboard-configuration/variant=us console-setup/ask_detect=false initrd=/install/initrd.gz --"/>
+-        <AwaitState state="poweroff" timeout="30 minutes"/>
++        <AwaitState state="poweroff" timeout="20 minutes"/>
+     </Target>
+     <Target name="run-post-install">
+         <Exec>vboxmanage storageattach ${vbox.name} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "${vbox.additions}"</Exec>
 diff -ruN ub1/VirtualBox.xml ub2/VirtualBox.xml
 --- ub1/VirtualBox.xml	2013-02-10 11:45:58.000000000 +0000
 +++ ub2/VirtualBox.xml	2013-02-10 11:47:14.000000000 +0000

@@ -1,6 +1,6 @@
 VirtualBox Java API
 ===
-[![Build Status](https://api.travis-ci.org/alexec/maven-vbox-plugin.png)](https://travis-ci.org/alexec/maven-vbox-plugin)
+[![Build Status](https://api.travis-ci.org/alexec/vbox-maven-plugin.png)](https://api.travis-ci.org/alexec/vbox-maven-plugin)
 
 Overview
 ===
@@ -167,6 +167,8 @@ If you want use 64 bit you typically need to:
 - Ensure hardware virtualizaiton is enabled on the host (see (http://www.parallels.com/uk/products/novt))
 - Append "_64" to the OS type, e.g. "RedHat_64".
 - Enable IO ACPI (as a side-effect, it'll be much faster, if your host OS is 64 bit).
+
+
 Patches
 ===
 A patch is a way of modifying a definition. Typically a patch will take a base definition and add support for new features. An example would be installing Tomcat onto a server. Patches are applied after a definition in created, but before the machine is created (in fact, applying a patch after a machine is created will change its (signature)[signatures.md] and result in its rebuild.
