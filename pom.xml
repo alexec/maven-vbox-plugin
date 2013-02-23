@@ -3,7 +3,7 @@
 
     <groupId>com.alexecollins.vbox</groupId>
     <artifactId>vbox-parent</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
     <modules>
         <module>vbox-core</module>
         <module>vbox-maven-plugin</module>
@@ -36,7 +36,7 @@
         <url>https://github.com/alexec/maven-vbox-plugin.git</url>
         <connection>scm:git:git@github.com/alexec/maven-vbox-plugin.git</connection>
         <developerConnection>scm:git:git@github.com/alexec/maven-vbox-plugin.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>2.0.0</tag>
   </scm>
 
     <issueManagement>
@@ -74,8 +74,7 @@
                         <configuration>
                             <target>
                                 <concat destfile="README.md">
-                                    <filelist dir="src/site/markdown"
-                                              files="header.md,overview.md,goals.md,usage.md,examples.md,maven.md,ant.md,definitions.md,64-bit.md,patches.md,known-issues.md,troubleshooting.md,references.md"/>
+                                    <filelist dir="src/site/markdown" files="header.md,overview.md,goals.md,usage.md,examples.md,maven.md,ant.md,definitions.md,64-bit.md,patches.md,known-issues.md,troubleshooting.md,references.md" />
                                 </concat>
                             </target>
                         </configuration>
