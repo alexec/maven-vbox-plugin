@@ -34,8 +34,8 @@
 
     <scm>
         <url>https://github.com/alexec/maven-vbox-plugin.git</url>
-        <connection>scm:git:git@github.com/alexec/maven-vbox-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com/alexec/maven-vbox-plugin.git</developerConnection>
+        <connection>scm:git:git@github.com:alexec/maven-vbox-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:alexec/maven-vbox-plugin.git</developerConnection>
       <tag>HEAD</tag>
   </scm>
 
