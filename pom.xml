@@ -33,8 +33,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/alexec/maven-vbox-plugin.git</connection>
-        <developerConnection>scm:git:https://github.com/alexec/maven-vbox-plugin.git</developerConnection>
+        <url>https://github.com/alexec/maven-vbox-plugin.git</url>
+        <connection>scm:git:git@github.com/alexec/maven-vbox-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com/alexec/maven-vbox-plugin.git</developerConnection>
       <tag>HEAD</tag>
   </scm>
 
@@ -118,11 +119,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>2.0</version>
+                <version>1.4</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
-                        <phase>verify</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
@@ -136,13 +137,31 @@
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <arguments>-Psonatype-oss-release</arguments>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <profiles>
+        <profile>
+            <id>run-its</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.12.1</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>site</id>
             <build>
