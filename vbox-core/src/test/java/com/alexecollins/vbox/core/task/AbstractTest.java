@@ -22,8 +22,8 @@ public abstract class AbstractTest {
 	@Parameterized.Parameters(name = "{0}")
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][]{
-				{"UbuntuServer_12_10" },
 				{"TinyCore_4_x"},
+				{"UbuntuServer_12_10" },
 				{"CentOS_6_3"}
 				// ,{"WindowsServer2008" }
 		});
