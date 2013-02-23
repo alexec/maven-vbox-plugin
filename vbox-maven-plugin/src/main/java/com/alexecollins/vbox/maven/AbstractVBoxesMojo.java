@@ -25,7 +25,7 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 	private String names = "*";
 
 	/**
-	 * @parameter expression="${project}"
+	 * @parameter default-value="${project}"
 	 * @readonly
 	 */
 	private MavenProject project;

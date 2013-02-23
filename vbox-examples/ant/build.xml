@@ -2,9 +2,10 @@
     <target name="build">
         <property name="vbox.definitions" location="vbox"/>
         <vbox:list-definitions/>
-        <vbox:create-definition name="CentOS_6_3" dir="${vbox.definitions}/app1.domain1"/>
+        <vbox:create-definition name="CentOS_6_3" dir="${vbox.definitions}/app1.test"/>
         <vbox:patch-definition dir="${vbox.definitions}/app1.domain1">
-            <predefinedPatch name="CentOS_6_3--tomcat6" properties="hostname=localhost"/>
+            <archPatch/>
+            <predefinedPatch name="CentOS_6_3--tomcat6"/>
         </vbox:patch-definition>
         <vbox:clean dir="${vbox.definitions}/app1.domain1" work="build"/>
         <vbox:create dir="${vbox.definitions}/app1.domain1" work="build" cacheDir="${user.home}/.vbox"/>
