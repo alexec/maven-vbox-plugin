@@ -44,6 +44,11 @@
         <url>https://github.com/alexec/maven-vbox-plugin/issues/</url>
     </issueManagement>
 
+    <ciManagement>
+        <system>travis</system>
+        <url>https://travis-ci.org/alexec/maven-vbox-plugin</url>
+    </ciManagement>
+
     <distributionManagement>
         <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
