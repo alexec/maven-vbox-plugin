@@ -6,6 +6,7 @@ import com.google.common.io.Resources;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -61,7 +62,11 @@ public class PredefinedPatch implements Patch {
 			}
 		}
 
-		byte[] patch = Resources.toByteArray(getClass().getResource(name + ".patch"));
+		final URL resource = getClass().getResource("/com/alexecollins/vbox/core/patch/" + name + ".patch");
+		if (resource == null) {
+			throw new IllegalStateException("unable to find patch name " + name);
+		}
+		byte[] patch = Resources.toByteArray(resource);
 
 		for (Map.Entry<String, String> e : properties.entrySet()) {
 			LoggerFactory.getLogger(PredefinedPatch.class).info("substituting " + e);

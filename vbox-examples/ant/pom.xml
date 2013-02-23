@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ant</artifactId>
+    <artifactId>ant-examle</artifactId>
 
     <name>Ant Example</name>
 
@@ -20,7 +20,7 @@
 
     <profiles>
         <profile>
-            <id>it</id>
+            <id>run-its</id>
             <build>
                 <plugins>
                     <plugin>

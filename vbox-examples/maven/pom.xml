@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>maven</artifactId>
+    <artifactId>maven-example</artifactId>
     <name>Maven Example</name>
 
     <build>
@@ -22,7 +22,20 @@
                 <executions>
                     <execution>
                         <id>generate-resources</id>
-                        <goals><goal>create-definition</goal></goals>
+                        <goals>
+                            <goal>create-definition</goal>
+                            <goal>patch-definition</goal>
+                        </goals>
+                        <configuration>
+                            <name>app1.test</name>
+                            <templateName>CentOS_6_3</templateName>
+                            <patches>
+                                <archPatch/>
+                                <predefinedPatch>
+                                    <name>CentOS_6_3--tomcat6</name>
+                                </predefinedPatch>
+                            </patches>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
