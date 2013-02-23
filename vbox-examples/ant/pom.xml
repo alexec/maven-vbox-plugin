@@ -6,11 +6,11 @@
         <artifactId>vbox-parent</artifactId>
         <groupId>com.alexecollins.vbox</groupId>
         <version>2.0.0-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ant-examle</artifactId>
+    <artifactId>ant-example</artifactId>
 
     <name>Ant Example</name>
 
