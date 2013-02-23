@@ -1,7 +1,7 @@
 language: java
-script: mvn verify -Prun-its
-before_install:
- - sudo apt-get update -qq
- # i hope this isn't a problem, running a VM in a VM?
- - sudo apt-get install -qq apt-get install build-essential linux-headers-`uname -r`
- - sudo apt-get install -qq virtualbox
+#script: mvn verify -Prun-its
+#before_install:
+# - sudo apt-get update -qq
+# # i hope this isn't a problem, running a VM in a VM?
+# - sudo apt-get install -qq apt-get install build-essential linux-headers-`uname -r`
+# - sudo apt-get install -qq virtualbox
