@@ -117,6 +117,7 @@ public class VBox {
 			// only display changed message
 			if (!message.equals(lastMessage)) {
 				LOGGER.info(message);
+				lastMessage = message;
 			}
 			if (remaining < 0) {
 				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");

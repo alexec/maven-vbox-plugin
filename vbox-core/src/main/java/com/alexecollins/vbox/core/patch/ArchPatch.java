@@ -11,7 +11,7 @@ import java.util.Collections;
  * Makes sure the architecture matches the host.
  *
  * @author alexec (alex.e.c@gmail.com)
- * @ince 2.0.0
+ * @since 2.0.0
  */
 public class ArchPatch implements  Patch {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArchPatch.class);

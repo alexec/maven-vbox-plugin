@@ -6,6 +6,9 @@
             <action dev="alex.collins" type="add" issue="9">
                 Documentation update.
             </action>
+            <action dev="alex.collins" type="add" issue="13">
+                Reduce verbosity of wait messages.
+            </action>
         </release>
         <release version="2.0.0" description="Patches" date="2012-20-23">
             <action dev="alex.collins" type="add" issue="2">
