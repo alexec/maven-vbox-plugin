@@ -17,6 +17,7 @@
     <description>A set of modules for controlling VirtualBoxes.</description>
 
     <url>https://github.com/alexec/maven-vbox-plugin</url>
+    <!-- http://alexec.github.com/maven-vbox-plugin/ -->
 
     <licenses>
         <license>
