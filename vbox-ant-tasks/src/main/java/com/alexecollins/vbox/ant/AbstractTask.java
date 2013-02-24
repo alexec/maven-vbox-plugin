@@ -1,5 +1,6 @@
 package com.alexecollins.vbox.ant;
 
+import com.alexecollins.vbox.core.Context;
 import com.alexecollins.vbox.core.Work;
 import org.apache.tools.ant.Task;
 
@@ -10,22 +11,17 @@ import java.io.File;
  */
 public abstract class AbstractTask extends Task {
 	protected File dir;
-	protected File work;
-	protected File cacheDir;
+	protected String context = "global";
 
 	public void setDir(File dir) {
 		this.dir = dir  ;
 	}
 
-	public void setWork(File work) {
-		this.work = work;
-	}
-
-	public void setCacheDir(File cacheDir) {
-		this.cacheDir = cacheDir;
+	public void setContext(String context) {
+		this.context = context;
 	}
 
 	protected Work work() {
-		return new Work(work,cacheDir);
+		return new Work(new Context(context));
 	}
 }

@@ -14,7 +14,6 @@ public class CleanTask extends AbstractTask {
 		if (dir == null) {
 			throw new BuildException("dir is null");
 		}
-		if (work == null) {throw new BuildException("work is null");}
 		try {
 			new Clean(work(), new VBox(dir.toURI())).call();
 		} catch (Exception e) {

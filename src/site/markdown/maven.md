@@ -7,7 +7,7 @@ Add this to your pom.xml:
     <plugin>
         <groupId>com.alexecollins.vbox</groupId>
         <artifactId>vbox-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>2.0.0</version>
         <executions>
             <execution>
                 <goals>
@@ -30,3 +30,4 @@ Execute:
 
 Maven searches for VM definitions under src/main/vbox.
 
+Example can be [found here](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/maven).

@@ -46,7 +46,6 @@ public class VBox {
 	private final Profile profile;
 
 	public VBox(final URI src) throws URISyntaxException, IOException, JAXBException, SAXException {
-
 		if (src == null) {
 			throw new IllegalArgumentException("src is null");
 		}

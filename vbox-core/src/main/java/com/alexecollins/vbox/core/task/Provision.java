@@ -15,7 +15,6 @@ import org.mortbay.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.*;
@@ -60,7 +59,7 @@ public class Provision extends AbstractTask {
 
 		LOGGER.info("provisioning '" + box.getName() + "'");
 
-		startServer();
+		// TODO startServer(box);
 		try {
 			final List<Provisioning.Target> targets = box.getProvisioning().getTarget();
 			for (Provisioning.Target target : targets) {
@@ -83,7 +82,7 @@ public class Provision extends AbstractTask {
 				}
 			}
 		} finally {
-			stopServer();
+			// TODO uncomment - stopServer();
 		}
 		return null;
 	}
@@ -156,22 +155,20 @@ public class Provision extends AbstractTask {
 		}
 	}
 
-	void startServer() throws Exception {
+	void startServer(final VBox box) throws Exception {
 		LOGGER.info("starting local web server on port " + getServerPort());
 
 		final ResourceHandler rh = new ResourceHandler();
-		final File resource = new File(work.getBaseDir(), "vbox/boxes/" + box.getName());
-		LOGGER.debug("resource " + resource);
-		assert resource.exists();
-		rh.setBaseResource(Resource.newResource(resource.toURI().toURL()));
+		rh.setBaseResource(Resource.newResource(box.getSrc().toURL()));
+		LOGGER.info("serving " + rh.getResourceBase());
 		server.setHandler(rh);
 		server.start();
 
-		final URL u = new URL("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + getServerPort());
+		final URL u = new URL("http://" + InetAddress.getLocalHost().getHostAddress() + ":" + getServerPort() + "/VirtualBox.xml");
 		LOGGER.info("testing server by getting " + u);
 		final HttpURLConnection c = (HttpURLConnection) u.openConnection();
 		c.connect();
-		if (403 != c.getResponseCode()) throw new IllegalStateException(c.getResponseMessage());
+		if (200 != c.getResponseCode()) throw new IllegalStateException(c.getResponseCode() + " " +c.getResponseMessage());
 		c.disconnect();
 
 	}

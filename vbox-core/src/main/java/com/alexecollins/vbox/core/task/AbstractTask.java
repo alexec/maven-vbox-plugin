@@ -32,7 +32,7 @@ public abstract class AbstractTask implements Callable<Void> {
 	 * @return The target (aka work) directory for the box.
 	 */
 	File getTarget() {
-		return new File(work.getBaseDir(), "vbox/boxes/" + box.getName());
+		return work.targetOf(box);
 	}
 
 	void verifySignature() throws Exception {
