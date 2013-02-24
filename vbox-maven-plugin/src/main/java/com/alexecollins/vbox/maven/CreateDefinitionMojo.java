@@ -34,7 +34,7 @@ public class CreateDefinitionMojo extends AbstractVBoxMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		try {
-			new CreateDefinition(getContext(), templateName, new File("src/main/vbox/" + name)).call();
+			new CreateDefinition(getContext(), templateName, new File(project.getBasedir(), "src/main/vbox/" + name)).call();
 		} catch (Exception e) {
 			throw new MojoExecutionException("failed to create definition", e);
 		}

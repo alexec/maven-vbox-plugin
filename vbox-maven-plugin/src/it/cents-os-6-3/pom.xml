@@ -17,6 +17,12 @@
                 <version>@project.version@</version>
                 <executions>
                     <execution>
+                        <id>clean</id>
+                        <goals>
+                            <goal>delete-definition</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>create-definition</id>
                         <goals>
                             <goal>create-definition</goal>

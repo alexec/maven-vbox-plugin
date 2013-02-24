@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author alexec (alex.e.c@gmail.com)
  */
-public class CreateDefinition implements Callable<Void> {
+public class CreateDefinition implements Callable<VBox> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreateDefinition.class);
 	/** The template to use. */
 	private final String templateName;
@@ -40,7 +40,7 @@ public class CreateDefinition implements Callable<Void> {
 		}
 	}
 
-	public Void call() throws Exception {
+	public VBox call() throws Exception {
 
 		if (!target.exists() && !target.mkdirs())
 			throw new IllegalStateException(target + " does not exit and cannot create");
@@ -54,6 +54,6 @@ public class CreateDefinition implements Callable<Void> {
 		}
 
 		LOGGER.info("created " + target);
-		return null;
+		return new VBox(context, target.toURI());
 	}
 }
