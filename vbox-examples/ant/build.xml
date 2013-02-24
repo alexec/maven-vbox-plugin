@@ -4,6 +4,7 @@
         <property name="app" location="src/vbox/app1"/>
         <vbox:purge-local-repository/>
         <vbox:list-definitions/>
+        <vbox:delete-definition dir="${app}"/>
         <vbox:create-definition name="CentOS_6_3" dir="${app}"/>
         <vbox:patch-definition dir="${app}">
             <archPatch/>
