@@ -23,6 +23,8 @@ public class Work {
 	}
 
 	public File targetOf(VBox box) {
-		return repo.pathOf(context, box);
+		// this allows us to have other data for the box in here in the future,
+		// e.g. storing the source for boxes
+		return new File(repo.pathOf(context, box), "target");
 	}
 }

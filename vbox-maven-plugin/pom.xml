@@ -66,7 +66,8 @@
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
-                                    <debug>true</debug>
+                                    <debug>false</debug>
+                                    <streamLogs>true</streamLogs>
                                     <projectsDirectory>src/it</projectsDirectory>
                                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                                     <pomIncludes>
@@ -80,6 +81,9 @@
                                         <goal>post-integration-test</goal>
                                         <goal>clean</goal>
                                     </goals>
+                                    <pomIncludes>
+                                        <include>ubuntu-server-12-10/pom.xml</include>
+                                    </pomIncludes>
                                 </configuration>
                             </execution>
                         </executions>

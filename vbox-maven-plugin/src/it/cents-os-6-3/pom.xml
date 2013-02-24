@@ -23,7 +23,7 @@
                         </goals>
                         <configuration>
                             <templateName>CentOS_6_3</templateName>
-                            <name>app1.domain3</name>
+                            <name>cent-os-6-3.test</name>
                         </configuration>
                     </execution>
                     <execution>

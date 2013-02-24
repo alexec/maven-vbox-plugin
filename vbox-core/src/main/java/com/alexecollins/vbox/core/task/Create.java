@@ -69,7 +69,7 @@ public class Create extends AbstractTask {
 			LOGGER.warn("host is "+(SystemUtils2.is64Bit() ? "64" : "32") +"bit, guest " +(box.is64Bit() ? "64":"32")+"bit: mismatch, performance might be very slow (see http://alexec.github.com/maven-vbox-plugin/64-bit.html)");
 		}
 
-		final File t = getTarget();
+		final File t = work.targetOf(box);
 		if (t.exists()) {
 			LOGGER.info("deleting " + t);
 			FileUtils.deleteDirectory(t);
@@ -259,7 +259,7 @@ public class Create extends AbstractTask {
                 FileUtils2.copyURLToFile(new URL(location), cache);
             }
             // 2. copy the cached version to the dest, if the dest might need freshening
-            final File dest = new File(getTarget(), image.getUuid() + ".iso");
+			final File dest = new File(work.targetOf(this.box), image.getUuid() + ".iso");
             if (!dest.exists() || dest.lastModified() != cache.lastModified()) {
                 LOGGER.info("copying " + cache + " to " + dest);
                 FileUtils.copyFile(cache, dest);
@@ -276,7 +276,7 @@ public class Create extends AbstractTask {
 
 		if (src.isDirectory())
             if (image instanceof FloppyImage) {
-                final File dest = new File(getTarget(), image.getUuid() + ".img");
+	            final File dest = new File(work.targetOf(this.box), image.getUuid() + ".img");
 
                 LOGGER.info("creating floppy image for " + src + " as " + dest);
 
@@ -284,7 +284,7 @@ public class Create extends AbstractTask {
 
 			    location = dest.toString();
             } else if (image instanceof DVDImage) {
-                final File dest = new File(getTarget(), image.getUuid() + ".iso");
+	            final File dest = new File(work.targetOf(this.box), image.getUuid() + ".iso");
 
                 LOGGER.info("creating ISO image for " + src + " as " + dest);
 

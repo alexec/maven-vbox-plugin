@@ -32,7 +32,7 @@ public class Clean extends AbstractTask {
 		final Matcher m = Pattern.compile("Location:[ \t]*(.*)\n").matcher(ExecUtils.exec("vboxmanage", "list", "hdds"));
 		final List<String> disks = new ArrayList<String>();
 		while (m.find()) {
-			if (m.group().contains(getTarget().getPath())) {
+			if (m.group().contains(work.targetOf(box).getPath())) {
 				disks.add(m.group(1).trim());
 			}
 		}
@@ -45,8 +45,8 @@ public class Clean extends AbstractTask {
 		}
 
 
-		LOGGER.debug("deleting " + getTarget());
-		FileUtils.deleteDirectory(getTarget());
+		LOGGER.debug("deleting " + work.targetOf(box));
+		FileUtils.deleteDirectory(work.targetOf(box));
 		return null;
 	}
 }

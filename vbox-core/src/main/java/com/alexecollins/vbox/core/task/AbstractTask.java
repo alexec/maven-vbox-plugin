@@ -19,21 +19,14 @@ import java.util.concurrent.ExecutionException;
  */
 public abstract class AbstractTask implements Callable<Void> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTask.class);
-	final Work work;
-	final VBox box;
+	protected final Work work;
+	protected final VBox box;
 
 	protected AbstractTask(Work work, VBox box) {
 		this.work = work;
 		this.box = box;
 	}
 
-
-	/**
-	 * @return The target (aka work) directory for the box.
-	 */
-	File getTarget() {
-		return work.targetOf(box);
-	}
 
 	void verifySignature() throws Exception {
 		if (box.exists()) {
@@ -49,7 +42,7 @@ public abstract class AbstractTask implements Callable<Void> {
 	}
 
 	File getSignatureFile() {
-		return new File(getTarget(), "signature");
+		return new File(work.targetOf(box), "signature");
 	}
 
 	byte[] getSignature() throws NoSuchAlgorithmException, IOException {

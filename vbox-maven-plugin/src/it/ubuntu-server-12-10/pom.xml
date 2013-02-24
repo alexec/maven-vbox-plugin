@@ -23,7 +23,7 @@
                         </goals>
                         <configuration>
                             <templateName>UbuntuServer_12_10</templateName>
-                            <name>app1.domain4</name>
+                            <name>ubuntu-server-12-10.test</name>
                         </configuration>
                     </execution>
                     <execution>

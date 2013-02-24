@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <antlib>
+    <taskdef name="purge-local-repository" classname="com.alexecollins.vbox.ant.PurgeLocalRepositoryTask"/>
     <taskdef name="list-definitions" classname="com.alexecollins.vbox.ant.ListDefinitionsTask"/>
     <taskdef name="create-definition" classname="com.alexecollins.vbox.ant.CreateDefinitionTask"/>
     <taskdef name="patch-definition" classname="com.alexecollins.vbox.ant.patch.PatchDefinitionTask"/>
