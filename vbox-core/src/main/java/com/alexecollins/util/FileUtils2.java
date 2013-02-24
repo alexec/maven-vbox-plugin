@@ -23,15 +23,15 @@ public class FileUtils2 {
 		final File marker = new File(file + ".marker");
         final String markerMsg = "marker file that indicates " + url + " downloaded OK";
 
-		if (marker.exists() && FileUtils.readFileToString(marker).equals(markerMsg)) {return;}
-
-		URLConnection connection = url.openConnection();
-		if (connection instanceof HttpURLConnection) {
-			getHttpUrl(file, (HttpURLConnection)connection);
-		} else {
-			FileUtils.copyURLToFile(url, file);
+		if (!marker.exists() || !FileUtils.readFileToString(marker).equals(markerMsg)) {
+			final URLConnection connection = url.openConnection();
+			if (connection instanceof HttpURLConnection) {
+				getHttpUrl(file, (HttpURLConnection)connection);
+			} else {
+				FileUtils.copyURLToFile(url, file);
+			}
+			FileUtils.writeStringToFile(marker, markerMsg);
 		}
-        FileUtils.writeStringToFile(marker, markerMsg);
 	}
 
 	private static void getHttpUrl(File file, HttpURLConnection connection) throws IOException {
@@ -69,7 +69,7 @@ public class FileUtils2 {
 	private static void calcSignature(final File root, final File f, final MessageDigest d) throws IOException {
 		final String v = root.toURI().relativize(f.toURI()).toString();
 		d.update(v.getBytes());
-		final long l = f.length(); // not great, but not as variable, I hope...
+		final long l = f.length(); // TODO - not great, but not as variable, I hope...
 		// System.out.println(v + "  "  +l);
 		d.update(String.valueOf(l).getBytes());
 		if (f.isDirectory()) {

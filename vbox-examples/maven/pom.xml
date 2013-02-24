@@ -40,7 +40,6 @@
                                         </predefinedPatch>
                                     </patches>
                                     <names>app1.test</names>
-                                    <cacheDir>${user.home}/.vbox</cacheDir>
                                 </configuration>
                             </execution>
                         </executions>

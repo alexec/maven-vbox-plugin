@@ -15,7 +15,7 @@ public class StopTask extends AbstractTask {
 			throw new BuildException("dir is null");
 		}
 		try {
-			new Stop(new VBox(dir.toURI())).call();
+			new Stop(new VBox(context(), dir.toURI())).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

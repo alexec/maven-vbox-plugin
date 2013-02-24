@@ -2,6 +2,7 @@
     <target name="build">
         <property name="context" value="ant-project:1.0.0"/>
         <property name="app" location="src/vbox/app1"/>
+        <vbox:purge-local-repository/>
         <vbox:list-definitions/>
         <vbox:create-definition name="CentOS_6_3" dir="${app}"/>
         <vbox:patch-definition dir="${app}">

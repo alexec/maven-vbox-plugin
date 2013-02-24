@@ -24,4 +24,8 @@ public abstract class AbstractTask extends Task {
 	protected Work work() {
 		return new Work(new Context(context));
 	}
+
+	protected Context context() {
+		return new Context(context);
+	}
 }

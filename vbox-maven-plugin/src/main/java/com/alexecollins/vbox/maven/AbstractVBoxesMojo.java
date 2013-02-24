@@ -4,7 +4,6 @@ import com.alexecollins.vbox.core.Context;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -24,12 +23,6 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 	 * @parameter property="vbox.names", default="*"
 	 */
 	private String names = "*";
-
-	/**
-	 * @parameter default-value="${project}"
-	 * @readonly
-	 */
-	private MavenProject project;
 
 	public void execute() throws MojoExecutionException {
 
@@ -52,7 +45,7 @@ public abstract class AbstractVBoxesMojo extends AbstractVBoxMojo {
 
 		for (final String n : names) {
 			try {
-                execute(new VBox(new File(src, n).toURI()));
+                execute(new VBox(getContext(), new File(src, n).toURI()));
 			} catch (Exception e) {
 				throw new MojoExecutionException("failed to create " + n, e);
 			}

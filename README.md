@@ -32,10 +32,10 @@ The main mojos/tasks are:
 
 * list-definitions - list available template definitions
 * create-definition - creates a VM template definition
-* list-predefined-patches - list built in patches
+* list-predefined-patches - list built-in patches
 * patch-definition - patch a definition with one or more patches
 * clean - deletes VMs
-* create - creates VMs, generally not used as provision will create
+* create - creates VMs, generally not used as provision will create the VM if it doesn't exist
 * provision - provisions VMs, creating them if needs be
 * start - start VMs
 * stop - stops VMs
@@ -47,8 +47,8 @@ Examples
 <iframe width="640" height="360" src="http://www.youtube.com/embed/Y4ZXD7psIuM" frameborder="0" allowfullscreen="true"></iframe>
 
 * [Five minute demo](http://www.youtube.com/watch?v=Y4ZXD7psIuM)
+* [Ant and Maven examples](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/)
 * [Example Maven project](https://github.com/alexec/maven-vbox-plugin-example)
-
 Maven
 ===
 Quick Start
@@ -58,7 +58,7 @@ Add this to your pom.xml:
     <plugin>
         <groupId>com.alexecollins.vbox</groupId>
         <artifactId>vbox-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>2.0.0</version>
         <executions>
             <execution>
                 <goals>
@@ -81,7 +81,7 @@ Execute:
 
 Maven searches for VM definitions under src/main/vbox.
 
-Ant
+Example can be [found here](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/maven).Ant
 ===
 Quick Start
 ---
@@ -89,17 +89,19 @@ Add this to your build.xml:
 
     <project name="vbox-ant-tasks" default="build" xmlns:vbox="antlib:com.alexecollins.vbox.ant">
         <target name="build">
+            <property name="context" value="ant-project:1.0.0"/>
+            <property name="app" location="src/vbox/app1"/
             <vbox:list-definitions/>
-            <vbox:create-definition name="CentOS_6_3" dir="src/vbox/app1"/>
-            <vbox:patch-definition dir="${vbox.definitions}/app1">
-                <predefinedPatch name="CentOS_6_3--tomcat6" properties="hostname=localhost"/>
+            <vbox:create-definition name="CentOS_6_3" dir="${app}"/>
+            <vbox:patch-definition dir="${app}">
+                <predefinedPatch name="CentOS_6_3--tomcat6"/>
             </vbox:patch-definition>
-            <vbox:clean dir="src/vbox/app1" work="build"/>
-            <vbox:create dir="src/vbox/app1" work="build" cacheDir="${user.home}/.vbox"/>
-            <vbox:provision dir="src/vbox/app1" work="build"/>
-            <vbox:start dir="src/vbox/app1"/>
+            <vbox:clean dir="${app}" context="${context}"/>
+            <vbox:create dir="${app}" context="${context}"/>
+            <vbox:provision dir="${app}" context="${context}"/>
+            <vbox:start dir="${app}"/>
             <!-- ... -->
-            <vbox:stop dir="src/vbox/app1"/>
+            <vbox:stop dir="${app}"/>
         </target>
     </project>
 
@@ -107,7 +109,7 @@ Add the vbox-ant-tasks-*.jar to Ant's class path.
 
 Ant tasks do not currently allow you to do multiple VMs in a single command. You'll need to use multiple ones.
 
-Definitions
+An example can be [found here](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/ant).Definitions
 ===
 Definitions can be found in src/test/vbox. Typically you'd create a series of definitions in src/main/vbox, alongside supporting files, for example an Ubuntu server might be named "UbuntuServer":
 
@@ -167,7 +169,15 @@ If you want use 64 bit you typically need to:
 - Ensure hardware virtualizaiton is enabled on the host (see (http://www.parallels.com/uk/products/novt))
 - Append "_64" to the OS type, e.g. "RedHat_64".
 - Enable IO ACPI (as a side-effect, it'll be much faster, if your host OS is 64 bit).
+- Use a 64 ISO (note that Windows will install the appropriate kernel for you, but you cannot change it once it's installed).
 
+To save time, a patch is provided that will detect the host arch and apply a patch to the guest, e.g.:
+
+    <patches>
+        <archPatch/>
+    </patches>
+
+The patch will make the appropriate changes and choose an ISO for you.
 
 Patches
 ===

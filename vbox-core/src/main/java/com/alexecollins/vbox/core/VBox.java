@@ -32,6 +32,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author alex.e.c@gmail.com
  */
@@ -45,7 +47,8 @@ public class VBox {
 	private final String name;
 	private final Profile profile;
 
-	public VBox(final URI src) throws URISyntaxException, IOException, JAXBException, SAXException {
+	public VBox(Context context, final URI src) throws URISyntaxException, IOException, JAXBException, SAXException {
+		checkNotNull(context, "context");
 		if (src == null) {
 			throw new IllegalArgumentException("src is null");
 		}
@@ -59,7 +62,7 @@ public class VBox {
 		}
 
 		final String q = p.endsWith("/") ? p.substring(0, p.length() - 1) : p;
-		name = q.substring(q.lastIndexOf('/') + 1);
+		name = context.getName() + "--" + q.substring(q.lastIndexOf('/') + 1);
 
 		virtualBox =  unmarshal(new URI(src.toString() + "/VirtualBox.xml").toURL().openStream(), VirtualBox.class);
 		mediaRegistry = unmarshal(new URI(src.toString() + "/MediaRegistry.xml").toURL().openStream(), MediaRegistry.class);

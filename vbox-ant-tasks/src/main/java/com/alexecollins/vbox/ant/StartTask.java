@@ -15,7 +15,7 @@ public class StartTask extends AbstractTask {
 			throw new BuildException("dir is null");
 		}
 		try {
-			new Start(new VBox(dir.toURI())).call();
+			new Start(new VBox(context(), dir.toURI())).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

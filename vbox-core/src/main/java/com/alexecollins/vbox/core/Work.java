@@ -19,7 +19,7 @@ public class Work {
 	}
 
 	public File getCacheDir() {
-		return repo.getCacheDir();
+		return repo.getDownloadsDir();
 	}
 
 	public File targetOf(VBox box) {

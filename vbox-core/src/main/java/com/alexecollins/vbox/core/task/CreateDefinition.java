@@ -1,5 +1,6 @@
 package com.alexecollins.vbox.core.task;
 
+import com.alexecollins.vbox.core.Context;
 import com.alexecollins.vbox.core.VBox;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.FileUtils;
@@ -25,8 +26,10 @@ public class CreateDefinition implements Callable<Void> {
 	/** Where to create the definition. */
 	private final File target;
 	private final URL resource;
+	private final Context context;
 
-	public CreateDefinition(String templateName, File target) {
+	public CreateDefinition(Context context, String templateName, File target) {
+		this.context = context;
 		checkNotNull(templateName, "templateName");
 		checkNotNull(target, "target");
 		this.templateName = templateName;
@@ -42,7 +45,7 @@ public class CreateDefinition implements Callable<Void> {
 		if (!target.exists() && !target.mkdirs())
 			throw new IllegalStateException(target + " does not exit and cannot create");
 
-		final VBox box = new VBox(resource.toURI());
+		final VBox box = new VBox(context, resource.toURI());
 
 		for (String f : ImmutableSet.<String>builder()
 				.addAll(Arrays.asList("MediaRegistry.xml", "VirtualBox.xml", "Manifest.xml", "Provisioning.xml", "Profile.xml"))

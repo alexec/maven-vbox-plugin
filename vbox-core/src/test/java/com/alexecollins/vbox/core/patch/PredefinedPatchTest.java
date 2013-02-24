@@ -1,5 +1,7 @@
 package com.alexecollins.vbox.core.patch;
 
+import com.alexecollins.vbox.core.Context;
+import com.alexecollins.vbox.core.TestContext;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.task.CreateDefinition;
 import com.google.common.collect.ImmutableMap;
@@ -26,8 +28,9 @@ public class PredefinedPatchTest {
 	@Test
 	public void testApply() throws Exception {
 		final File tmp = Files.createTempDir();
-		new CreateDefinition("CentOS_6_3", tmp).call();
-		new PredefinedPatch("CentOS_6_3--tomcat6", ImmutableMap.of("hostname", "localhost")).apply(new VBox(tmp.toURI()));
+		final Context context = new TestContext();
+		new CreateDefinition(context, "CentOS_6_3", tmp).call();
+		new PredefinedPatch("CentOS_6_3--tomcat6", ImmutableMap.of("hostname", "localhost")).apply(new VBox(context, tmp.toURI()));
 		assertTrue(FileUtils.readFileToString(new File(tmp, "floppy0/post-install.sh")).contains("tomcat6"));
 	}
 

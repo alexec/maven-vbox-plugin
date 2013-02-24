@@ -15,7 +15,7 @@ public class CreateTask extends AbstractTask {
 		}
 
 		try {
-			new Create(work(), new VBox(dir.toURI())).call();
+			new Create(work(), new VBox(context(), dir.toURI())).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

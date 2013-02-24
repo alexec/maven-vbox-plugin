@@ -1,6 +1,7 @@
 package com.alexecollins.vbox.core.task;
 
 import com.alexecollins.vbox.core.Context;
+import com.alexecollins.vbox.core.TestContext;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
 import org.junit.runner.RunWith;
@@ -33,14 +34,15 @@ public abstract class AbstractTest {
 	private final String name;
 	private final File src;
 	private final File target;
-	private final Work work = new Work(new Context("test"));
+	private final Context context = new TestContext();
+	private final Work work = new Work(context);
 
 	public AbstractTest(final String name) throws Exception {
 		this.name = name;
 		System.out.println("name=" + name);
 		src = new File(System.getProperty("java.io.tmpdir"), getName());
 		target = work.targetOf(getBox());
-		final CreateDefinition definition = new CreateDefinition(getName(), src);
+		final CreateDefinition definition = new CreateDefinition(context, getName(), src);
 		definition.call();
 	}
 
@@ -49,7 +51,7 @@ public abstract class AbstractTest {
 	}
 
 	public VBox getBox() throws IOException, JAXBException, SAXException, URISyntaxException {
-		return new VBox(src.toURI());
+		return new VBox(context, src.toURI());
 	}
 
 	public File getTarget() {

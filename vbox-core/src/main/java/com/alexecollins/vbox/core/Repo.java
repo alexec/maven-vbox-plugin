@@ -22,8 +22,8 @@ public class Repo {
 		checkNotNull(path, "path");
 		this.path = path;
 		if (!path.exists() && !path.mkdirs()) {throw new IllegalStateException("failed to create " + path);}
-		if (!getCacheDir().exists()) {
-			FileUtils.forceMkdir(getCacheDir());
+		if (!getDownloadsDir().exists()) {
+			FileUtils.forceMkdir(getDownloadsDir());
 		}
 		if (!getContextsDir().exists()) {
 			FileUtils.forceMkdir(getContextsDir());
@@ -46,14 +46,18 @@ public class Repo {
 	}
 
 	public File pathOf(Context context, VBox box) {
-		return new File(getContextsDir(), context.getName().replaceAll("[^a-zA-Z]", "_") + "/"+ box.getName().replaceAll("/", "_"));
+		return new File(pathOf(context), box.getName().replaceAll("/", "_"));
 	}
 
-	public File getCacheDir() {
-		return new File(getPath(), "cache");
+	public File getDownloadsDir() {
+		return new File(getPath(), "downloads");
 	}
 
-	private File getContextsDir() {
+	public File getContextsDir() {
 		return new File(path, "contexts");
+	}
+
+	public File pathOf(Context context) {
+		return new File(getContextsDir(), context.getName().replaceAll("[^a-zA-Z]", "_"));
 	}
 }

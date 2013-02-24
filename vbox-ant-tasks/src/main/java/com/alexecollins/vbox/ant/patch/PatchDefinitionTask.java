@@ -44,7 +44,7 @@ public class PatchDefinitionTask extends AbstractTask {
 		}
 
 		try {
-			new PatchDefinition(work(), new VBox(dir.toURI()), patches).call();
+			new PatchDefinition(work(), new VBox(context(), dir.toURI()), patches).call();
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

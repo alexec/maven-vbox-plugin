@@ -15,9 +15,6 @@
                 <groupId>com.alexecollins.vbox</groupId>
                 <artifactId>vbox-maven-plugin</artifactId>
                 <version>@project.version@</version>
-                <configuration>
-                    <cacheDir>${user.home}/.vbox</cacheDir>
-                </configuration>
                 <executions>
                     <execution>
                         <id>create-definition</id>
