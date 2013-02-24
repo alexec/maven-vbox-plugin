@@ -31,11 +31,13 @@ public class DeleteDefinition implements Callable<Void> {
 
     public Void call() throws Exception {
 
-	    // make sure the machine is gone
-	    new Clean(work,box).call();
-
-	    FileUtils.forceDelete(new File(box.getSrc().toURL().getFile()));
-	    LOGGER.info("deleted definition '" + box.getName() + "'");
+	    // make sure the machine is gone, but attempt to be idempotent
+	    final File file = new File(box.getSrc().toURL().getFile());
+	    if (file.exists()) {
+		    new Clean(work,box).call();
+		    FileUtils.forceDelete(file);
+		    LOGGER.info("deleted definition '" + box.getName() + "'");
+	    }
 
 		return null;
 	}

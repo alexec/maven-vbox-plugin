@@ -26,7 +26,10 @@ public class DeleteDefinitionMojo extends AbstractVBoxMojo {
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
-			new DeleteDefinition(new Work(getContext()), new VBox(getContext(), new File(project.getBasedir(), "src/main/vbox/" + name).toURI())).call();
+			final File file = new File(project.getBasedir(), "src/main/vbox/" + name);
+			if (file.exists()) {
+				new DeleteDefinition(new Work(getContext()), new VBox(getContext(), file.toURI())).call();
+			}
 		} catch (Exception e) {
 			throw new MojoExecutionException("failed to create definition", e);
 		}

@@ -7,10 +7,13 @@ Add this to your build.xml:
     <project name="vbox-ant-tasks" default="build" xmlns:vbox="antlib:com.alexecollins.vbox.ant">
         <target name="build">
             <property name="context" value="ant-project:1.0.0"/>
-            <property name="app" location="src/vbox/app1"/
+            <property name="app" location="src/vbox/app1"/>
+            <vbox:purge-local-repository/>
             <vbox:list-definitions/>
+            <vbox:delete-definition dir="${app}"/>
             <vbox:create-definition name="CentOS_6_3" dir="${app}"/>
             <vbox:patch-definition dir="${app}">
+                <archPatch/>
                 <predefinedPatch name="CentOS_6_3--tomcat6"/>
             </vbox:patch-definition>
             <vbox:clean dir="${app}" context="${context}"/>

@@ -18,7 +18,9 @@ public class DeleteDefinitionTask extends AbstractTask {
 			throw new BuildException("dir is null");
 		}
 		try {
-			new DeleteDefinition(work(), new VBox(context(), dir.toURI())).call();
+			if (dir.exists()) {
+				new DeleteDefinition(work(), new VBox(context(), dir.toURI())).call();
+			}
 		} catch (Exception e) {
 			throw new BuildException(e);
 		}

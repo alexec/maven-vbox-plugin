@@ -7,6 +7,7 @@
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
 
     <artifactId>maven-example</artifactId>
     <name>Maven Example</name>
