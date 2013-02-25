@@ -14,7 +14,7 @@ import static junit.framework.TestCase.assertTrue;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class DeleteDefinitionTest {
+public class DeleteDefinitionIT {
 	@Test
 	public void testCall() throws Exception {
 		final File tmp = Files.createTempDir();
