@@ -4,6 +4,7 @@ import com.alexecollins.vbox.core.Context;
 import com.alexecollins.vbox.core.TestContext;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
+import com.google.common.io.Files;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.xml.sax.SAXException;
@@ -40,10 +41,10 @@ public abstract class AbstractTest {
 	public AbstractTest(final String name) throws Exception {
 		this.name = name;
 		System.out.println("name=" + name);
-		src = new File(System.getProperty("java.io.tmpdir"), getName());
-		target = work.targetOf(getBox());
+		src = Files.createTempDir();
 		final CreateDefinition definition = new CreateDefinition(context, getName(), src);
 		definition.call();
+		target = work.targetOf(getBox());
 	}
 
 	public String getName() {
