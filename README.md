@@ -1,6 +1,6 @@
 VirtualBox Java API
 ===
-[![Build Status](https://api.travis-ci.org/alexec/vbox-maven-plugin.png)](https://api.travis-ci.org/alexec/vbox-maven-plugin)
+[![Build Status](https://api.travis-ci.org/alexec/maven-vbox-plugin.png)](https://travis-ci.org/alexec/maven-vbox-plugin
 
 Overview
 ===
@@ -35,7 +35,7 @@ Managing Definitions
 Task that work on a single definition:
 
 * list-definitions - list available template definitions
-* create-definition - creates a VM template definition
+* create-definition - creates a box from template definition
 * delete-definition - delete the definition
 * list-predefined-patches - list built-in patches
 * patch-definition - patch a definition with one or more patches
@@ -44,16 +44,18 @@ Provisioning Tasks
 ---
 Task related to setting up one or more boxes:
 
-* clean - deletes VMs
-* create - creates VMs, generally not used as provision will create the VM if it doesn't exist
-* provision - provisions VMs, creating them if needs be
+* clean - deletes boxes
+* create - creates boxes, generally not used as provision will create the box if it doesn't exist
+* provision - provisions boxes, creating them if needs be
 
 Runtime Tasks
 ---
 Tasks related to the usage of boxes:
 
-* start - start VMs
-* stop - stops VMs
+* start - start boxes
+* stop - stops boxes
+* suspend - suspend the boxes
+* resume - resume boxes
 
 
 Examples
@@ -64,6 +66,7 @@ Examples
 * [Five minute demo](http://www.youtube.com/watch?v=Y4ZXD7psIuM)
 * [Ant and Maven examples](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/)
 * [Example Maven project](https://github.com/alexec/maven-vbox-plugin-example)
+
 Maven
 ===
 Quick Start
@@ -96,7 +99,8 @@ Execute:
 
 Maven searches for VM definitions under src/main/vbox.
 
-Example can be [found here](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/maven).Ant
+Example can be [found here](https://github.com/alexec/maven-vbox-plugin/tree/master/vbox-examples/maven).
+Ant
 ===
 Quick Start
 ---
