@@ -3,21 +3,44 @@
            xmlns="http://www.alexecollins.com/vbox/profile"
            targetNamespace="http://www.alexecollins.com/vbox/profile"
            elementFormDefault="qualified">
-    <!-- profile of the box, such as what constitutes "running" and if it has a GUI -->
     <xs:element name="Profile">
+        <xs:annotation><xs:documentation>Profile of the box, such as what constitutes "running" and if it has a GUI</xs:documentation></xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <!-- a list of URLs to ping to make sure that the server is working -->
-                <xs:element name="ping" minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="SSH">
+                    <xs:annotation><xs:documentation>How to connect to the machine via SSH.</xs:documentation></xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Auth">
+                                <xs:annotation><xs:documentation>Authenticate using username and password.</xs:documentation></xs:annotation>
+                                <xs:complexType>
+                                    <xs:attribute name="username" type="xs:string" use="required"/>
+                                    <xs:attribute name="password" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="hostname" type="xs:string" default="localhost">
+                            <xs:annotation><xs:documentation>SSH hostname.</xs:documentation></xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="port" type="xs:int" default="10022">
+                            <xs:annotation><xs:documentation>SSH port.</xs:documentation></xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Ping" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation><xs:documentation>A list of URLs to ping to make sure that the server is working.</xs:documentation></xs:annotation>
                     <xs:complexType>
                         <xs:attribute name="url" type="xs:string" use="required"/>
                         <xs:attribute name="timeout" type="xs:string" default="1 minute"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <!-- if we should start it with a head -->
-            <xs:attribute name="type" type="Type" default="gui"/>
-            <xs:attribute name="template" type="xs:string"/>
+            <xs:attribute name="type" type="Type" default="gui">
+                <xs:annotation><xs:documentation>If we should start it with a head.</xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="template" type="xs:string">
+                <xs:annotation><xs:documentation>The template we created this box from.</xs:documentation></xs:annotation>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="Type">

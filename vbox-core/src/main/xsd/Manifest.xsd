@@ -2,8 +2,8 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0.0"
            targetNamespace="http://www.alexecollins.com/vbox/manifest"
            elementFormDefault="qualified">
-    <!-- an optional list of files that make up a machine, only used for creating definitions, and therefore only aimed at plugin devs -->
     <xs:element name="Manifest">
+        <xs:annotation><xs:documentation>An optional list of files that make up a machine, only used for creating definitions, and therefore only aimed at plugin devs.</xs:documentation></xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="File" minOccurs="0" maxOccurs="unbounded">

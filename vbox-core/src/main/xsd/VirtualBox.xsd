@@ -3,14 +3,13 @@
            xmlns="http://www.innotek.de/VirtualBox-settings"
            targetNamespace="http://www.innotek.de/VirtualBox-settings"
            elementFormDefault="qualified">
-    <!--
-        The actual machine's hardwaroe,
-
-        This meant to be as similar as possible to the .vbox format used by VirtualBox.
-        This has a whole bunch of benefits.
-    -->
     <xs:element name="VirtualBox">
         <xs:complexType>
+            <xs:annotation><xs:documentation>
+                The actual machine's hardware.
+                This meant to be as similar as possible to the .vbox format used by VirtualBox.
+                This has a whole bunch of benefits.
+            </xs:documentation></xs:annotation>
             <xs:sequence>
                 <xs:element name="Machine">
                     <xs:complexType>
@@ -116,7 +115,6 @@
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
-                                        <!-- TODO -->
                                         <xs:element name="SharedFolders" minOccurs="0">
                                             <xs:complexType>
                                                 <xs:sequence>
@@ -209,8 +207,6 @@
             <xs:enumeration value="None"/>
         </xs:restriction>
     </xs:simpleType>
-
-    <!-- TODO remove duplication -->
     <xs:complexType name="Image" abstract="true">
         <xs:attribute name="uuid" type="xs:ID" use="required"/>
         <xs:attribute name="size" type="xs:int"/>

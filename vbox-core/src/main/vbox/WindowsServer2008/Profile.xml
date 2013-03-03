@@ -1,2 +1,7 @@
 <?xml version="1.0"?>
-<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="WindowsServer2008"/>
+<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="WindowsServer2008">
+    <SSH>
+        <!-- TODO - no cygwin yet -->
+        <Auth username="root" password="keenbrick"/>
+    </SSH>
+</Profile>

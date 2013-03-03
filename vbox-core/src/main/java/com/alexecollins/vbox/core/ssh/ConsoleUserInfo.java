@@ -1,6 +1,4 @@
-package com.alexecollins.vbox.core.task;
-
-import com.jcraft.jsch.UserInfo;
+package com.alexecollins.vbox.core.ssh;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,18 +7,9 @@ import java.io.InputStreamReader;
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-public class ConsoleUserInfo implements UserInfo {
+public class ConsoleUserInfo extends AbstractUserInfo {
 	private final BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-	private String passphrase;
-	private String password;
 
-	public String getPassphrase() {
-		return passphrase;
-	}
-
-	public String getPassword() {
-		return password;
-	}
 
 	public boolean promptPassword(String s) {
 		System.out.println(s);

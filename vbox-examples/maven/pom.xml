@@ -24,7 +24,6 @@
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>clean</goal>
                                     <goal>delete-definition</goal>
                                     <goal>create-definition</goal>
                                     <goal>patch-definition</goal>

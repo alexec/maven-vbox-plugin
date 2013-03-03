@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <Profile xmlns="http://www.alexecollins.com/vbox/profile" template="TinyCore_4_x">
-    <ping url="socket://localhost:10022/"/>
+    <SSH>
+        <Auth username="root" password="keenbrick"/>
+    </SSH>
+    <Ping url="socket://localhost:10022/"/>
 </Profile>

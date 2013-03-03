@@ -3,10 +3,10 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <body>
         <release version="3.0.0">
-            <action dev="alex.collins" type="add" issue="9">
+            <action dev="alex.collins" type="update" issue="9">
                 Documentation update.
             </action>
-            <action dev="alex.collins" type="add" issue="10">
+            <action dev="alex.collins" type="update" issue="10">
                 Use a single global working directory.
             </action>
             <action dev="alex.collins" type="add" issue="13">
@@ -14,6 +14,9 @@
             </action>
             <action dev="alex.collins" type="add" issue="15">
                 Created new "status", "suspend" and "resume" tasks.
+            </action>
+            <action dev="alex.collins" type="add">
+                Created new "ssh", task and appropriate config.
             </action>
         </release>
         <release version="2.0.0" description="Patches" date="2012-20-23">
