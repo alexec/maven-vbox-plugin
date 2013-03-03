@@ -292,7 +292,7 @@ public class VBox {
 	/**
 	 * Start the box, but do not wait for it to complete start-up.
 	 */
-	public void start() throws IOException, InterruptedException, ExecutionException, TimeoutException, URISyntaxException {
+	public void start() throws IOException, InterruptedException, ExecutionException {
 		ExecUtils.exec("vboxmanage", "startvm", getName(), "--type", String.valueOf(getProfile().getType()));
 	}
 
@@ -349,9 +349,8 @@ public class VBox {
 
 			OSType osType = (OSType) o;
 
-			if (name != null ? !name.equals(osType.name) : osType.name != null) return false;
+			return !(name != null ? !name.equals(osType.name) : osType.name != null);
 
-			return true;
 		}
 
 		@Override

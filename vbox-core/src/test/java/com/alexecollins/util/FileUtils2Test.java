@@ -32,7 +32,7 @@ public class FileUtils2Test {
 					try {
 						FileUtils2.copyURLToFile(u, f);
 					} catch (IOException e) {
-						e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+						e.printStackTrace();
 					}
 				}
 			});

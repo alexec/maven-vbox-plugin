@@ -1,10 +1,16 @@
 package com.alexecollins.vbox.core.ssh;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
 public class PresetUserInfo extends AbstractUserInfo {
+	private static final Logger LOGGER = LoggerFactory.getLogger(PresetUserInfo.class);
 	public PresetUserInfo(String password, String passphrase) {
+		this.password = password;
+		this.passphrase = passphrase;
 	}
 
 	public boolean promptPassword(String message) {
@@ -20,6 +26,6 @@ public class PresetUserInfo extends AbstractUserInfo {
 	}
 
 	public void showMessage(String message) {
-		//To change body of implemented methods use File | Settings | File Templates.
+		LOGGER.info(message);
 	}
 }

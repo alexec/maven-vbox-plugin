@@ -66,7 +66,7 @@ public class FileUtils2 {
 		return digest.digest();
 	}
 
-	private static void calcSignature(final File root, final File f, final MessageDigest d) throws IOException {
+	private static void calcSignature(final File root, final File f, final MessageDigest d) {
 		final String v = root.toURI().relativize(f.toURI()).toString();
 		d.update(v.getBytes());
 		final long l = f.length(); // TODO - not great, but not as variable, I hope...

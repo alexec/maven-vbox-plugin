@@ -25,9 +25,8 @@ public class Snapshot {
 
 		Snapshot snapshot = (Snapshot) o;
 
-		if (!name.equals(snapshot.name)) return false;
+		return name.equals(snapshot.name);
 
-		return true;
 	}
 
 	@Override

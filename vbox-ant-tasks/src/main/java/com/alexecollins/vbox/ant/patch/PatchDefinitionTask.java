@@ -9,7 +9,6 @@ import com.alexecollins.vbox.core.patch.UserDefinedPatch;
 import com.alexecollins.vbox.core.task.PatchDefinition;
 import org.apache.tools.ant.BuildException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class PatchDefinitionTask extends AbstractTask {
 
 	private List<Patch> patches = new ArrayList<Patch>();
 
-	public ArchPatch createArchPatch() throws IOException {
+	public ArchPatch createArchPatch() {
 		ArchPatch patch = new ArchPatch();
 		patches.add(patch);
 		return patch;
@@ -31,7 +30,7 @@ public class PatchDefinitionTask extends AbstractTask {
 		patches.add(patch);
 		return patch;
 	}
-	public UserDefinedPatch createUserDefinedPatch() throws IOException {
+	public UserDefinedPatch createUserDefinedPatch() {
 		UserDefinedPatch patch = new UserDefinedPatch();
 		patches.add(patch);
 		return patch;
