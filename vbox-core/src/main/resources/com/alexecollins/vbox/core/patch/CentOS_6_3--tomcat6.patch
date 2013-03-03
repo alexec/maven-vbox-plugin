@@ -23,7 +23,7 @@ diff -ruN app0/floppy0/ks.cfg app1/floppy0/ks.cfg
 @@ -4,7 +4,7 @@
  keyboard us
  network --onboot yes --bootproto dhcp --noipv6
- rootpw  123456
+ rootpw 123456
 -firewall --service=ssh
 +firewall --disabled
  authconfig --enableshadow --passalgo=sha512
