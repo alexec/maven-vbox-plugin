@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="UbuntuServer_12_10">
+<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="UbuntuServer_12_10" type="headless">
     <SSH>
         <Auth username="root" password="keenbrick"/>
     </SSH>
