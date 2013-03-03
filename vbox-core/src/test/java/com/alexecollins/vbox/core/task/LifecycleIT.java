@@ -42,6 +42,9 @@ public class LifecycleIT extends AbstractTest {
 		new Provision(getWork(), getBox(), Collections.<String>singleton("*")).call();
 
 		new Start(getBox()).call();
+		new Suspend(getBox()).call();
+		new Status(getBox()).call();
+		new Resume(getBox()).call();
 		new Stop(getBox()).call();
 	}
 
