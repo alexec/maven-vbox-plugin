@@ -10,4 +10,8 @@
     <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
     <taskdef name="start" classname="com.alexecollins.vbox.ant.StartTask"/>
     <taskdef name="stop" classname="com.alexecollins.vbox.ant.StopTask"/>
+    <taskdef name="provision" classname="com.alexecollins.vbox.ant.ProvisionTask"/>
+    <taskdef name="suspend" classname="com.alexecollins.vbox.ant.SuspendTask"/>
+    <taskdef name="resume" classname="com.alexecollins.vbox.ant.ResumeTask"/>
+    <taskdef name="status" classname="com.alexecollins.vbox.ant.StatusTask"/>
 </antlib>

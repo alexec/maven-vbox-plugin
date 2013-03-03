@@ -14,6 +14,9 @@
         <vbox:create dir="${app}" context="${context}"/>
         <vbox:provision dir="${app}" context="${context}"/>
         <vbox:start dir="${app}"/>
+        <vbox:status dir="${app}"/>
+        <vbox:suspend dir="${app}"/>
+        <vbox:resume dir="${app}"/>
         <!-- ... -->
         <vbox:stop dir="${app}"/>
     </target>
