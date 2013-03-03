@@ -124,7 +124,8 @@ public class VBox {
 			if (remaining < 0) {
 				throw new TimeoutException("failed to see " + state + " in " + millis + "ms");
 			}
-			Thread.sleep(Math.min(10000l, remaining));
+			// if the expected time is short, we check every 1s, otherwise every 10s
+			Thread.sleep(Math.min(millis < 30 * 1000 ? 1000l : 10000l, remaining));
 		} while (!getProperties().get("VMState").equals(state));
 
 		LOGGER.info("in state " + state);
@@ -293,6 +294,22 @@ public class VBox {
 	 */
 	public void start() throws IOException, InterruptedException, ExecutionException, TimeoutException, URISyntaxException {
 		ExecUtils.exec("vboxmanage", "startvm", getName(), "--type", String.valueOf(getProfile().getType()));
+	}
+
+	/**
+	 * Suspend the box, but do not wait for the suspension to complete.
+	 */
+	public void suspend() throws InterruptedException, ExecutionException, IOException {
+		ExecUtils.exec("vboxmanage", "controlvm", getName(), "savestate");
+	}
+
+	/**
+	 * Resume the box.
+	 *
+	 * An alias for start.
+	 */
+	public void resume() throws InterruptedException, ExecutionException, IOException, TimeoutException, URISyntaxException {
+		start();
 	}
 
 	public void takeSnapshot(final Snapshot snapshot) throws IOException, InterruptedException, ExecutionException {

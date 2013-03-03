@@ -11,6 +11,8 @@ import java.io.File;
 /**
  * Deletes a definition, also deleting any VMs.
  *
+ * @goal delete-definition
+ * @phase clean
  * @author alexec (alex.e.c@gmail.com)
  * @since 3.0.0
  */
