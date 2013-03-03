@@ -2,6 +2,6 @@
 <Profile xmlns="http://www.alexecollins.com/vbox/profile" template="WindowsServer2008">
     <SSH>
         <!-- TODO - no cygwin yet -->
-        <Auth username="root" password="keenbrick"/>
+        <Auth username="Administrator" password="123456"/>
     </SSH>
 </Profile>

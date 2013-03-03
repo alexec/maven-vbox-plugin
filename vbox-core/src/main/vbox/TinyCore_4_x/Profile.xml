@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Profile xmlns="http://www.alexecollins.com/vbox/profile" template="TinyCore_4_x">
     <SSH>
-        <Auth username="root" password="keenbrick"/>
+        <Auth username="root" password="123456"/>
     </SSH>
     <Ping url="socket://localhost:10022/"/>
 </Profile>

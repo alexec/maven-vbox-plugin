@@ -2,7 +2,7 @@ diff -ruN app0/Profile.xml app1/Profile.xml
 --- app0/Profile.xml	2013-02-03 15:24:58.000000000 +0000
 +++ app1/Profile.xml	2013-02-03 15:27:22.000000000 +0000
 @@ -4,4 +4,5 @@
-         <Auth username="root" password="keenbrick"/>
+         <Auth username="root" password="123456"/>
      </SSH>
      <Ping url="socket://localhost:10022/"/>
 +    <Ping url="socket://localhost:18080/"/>

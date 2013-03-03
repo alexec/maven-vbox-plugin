@@ -12,10 +12,10 @@
         <Exec>vboxmanage storageattach ${vbox.name} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "${vbox.additions}"</Exec>
         <Exec failonerror="false">vboxmanage startvm ${vbox.name}</Exec>
         <Sleep minutes="1"/>
-        <KeyboardPutScanCodes>tallquark
-keenbrick
+        <KeyboardPutScanCodes>vbox
+123456
 sudo su -
-keenbrick
+123456
 mount /dev/fd0 /media/floppy
 /media/floppy/post-install.sh
         </KeyboardPutScanCodes>

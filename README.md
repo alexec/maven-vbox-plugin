@@ -167,7 +167,7 @@ The following tokens are recognised in some XML documents:
 
 Authentication
 ---
-By default the username is "tallquark" and the default password "keenbrick".
+By default the username is "vbox" and the default password "123456".
 
 Supported Host OS Types
 ---

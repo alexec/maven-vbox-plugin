@@ -12,7 +12,7 @@
         <Exec failonerror="false">vboxmanage startvm ${vbox.name}</Exec>
         <Sleep minutes="1"/>
         <KeyboardPutScanCodes>root
-keenbrick
+123456
 modprobe floppy
 mkdir /media/floppy
 mount /dev/fd0 /media/floppy
