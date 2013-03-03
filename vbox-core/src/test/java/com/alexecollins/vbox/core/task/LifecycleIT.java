@@ -21,6 +21,7 @@ public class LifecycleIT extends AbstractTest {
 	@After
 	public void tearDown() throws Exception {
 		new Clean(getWork(), getBox()).call();
+		super.tearDown();
 	}
 
 	@Test

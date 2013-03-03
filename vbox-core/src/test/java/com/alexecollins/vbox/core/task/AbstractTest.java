@@ -1,10 +1,10 @@
 package com.alexecollins.vbox.core.task;
 
-import com.alexecollins.vbox.core.Context;
 import com.alexecollins.vbox.core.TestContext;
 import com.alexecollins.vbox.core.VBox;
 import com.alexecollins.vbox.core.Work;
 import com.google.common.io.Files;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.xml.sax.SAXException;
@@ -35,7 +35,7 @@ public abstract class AbstractTest {
 	private final String name;
 	private final File src;
 	private final File target;
-	private final Context context = new TestContext();
+	private final TestContext context = new TestContext();
 	private final Work work = new Work(context);
 
 	public AbstractTest(final String name) throws Exception {
@@ -46,6 +46,11 @@ public abstract class AbstractTest {
 		definition.call();
 		target = work.targetOf(getBox());
 	}
+
+    @After
+    public void tearDown() throws Exception {
+		context.destroy();
+    }
 
 	public String getName() {
 		return name;
