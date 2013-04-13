@@ -32,6 +32,13 @@ public class Ssh implements Callable<Void> {
 		channel.setInputStream(System.in);
 		channel.setOutputStream(System.out);
 		channel.connect(3000);
+		try {
+			while (channel.isConnected()) {
+				Thread.sleep(250); // bit rubbish way of doing this
+			}
+		} finally {
+			channel.disconnect();
+		}
 		return null;
 	}
 }
