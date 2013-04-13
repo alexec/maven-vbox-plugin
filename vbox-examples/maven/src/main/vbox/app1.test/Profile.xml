@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Profile xmlns="http://www.alexecollins.com/vbox/profile" template="CentOS_6_3" type="headless">
+    <SSH>
+        <Auth username="root" password="123456"/>
+    </SSH>
+    <Ping url="socket://localhost:10022/"/>
+    <Ping url="socket://localhost:18080/"/>
+</Profile>
