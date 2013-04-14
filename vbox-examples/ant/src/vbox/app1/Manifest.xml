@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<Manifest xmlns="http://www.alexecollins.com/vbox/manifest">
+    <File>floppy0/ks.cfg</File>
+    <File>floppy0/post-install.sh</File>
+</Manifest>

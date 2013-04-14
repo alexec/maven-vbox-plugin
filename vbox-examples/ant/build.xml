@@ -13,11 +13,11 @@
         <vbox:clean dir="${app}" context="${context}"/>
         <vbox:create dir="${app}" context="${context}"/>
         <vbox:provision dir="${app}" context="${context}"/>
-        <vbox:start dir="${app}"/>
-        <vbox:status dir="${app}"/>
-        <vbox:suspend dir="${app}"/>
-        <vbox:resume dir="${app}"/>
+        <vbox:start dir="${app}" context="${context}"/>
+        <vbox:status dir="${app}" context="${context}"/>
+        <vbox:suspend dir="${app}" context="${context}"/>
+        <vbox:resume dir="${app}" context="${context}"/>
         <!-- ... -->
-        <vbox:stop dir="${app}"/>
+        <vbox:stop dir="${app}" context="${context}"/>
     </target>
 </project>

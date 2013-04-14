@@ -3,7 +3,7 @@
     <parent>
         <artifactId>vbox-parent</artifactId>
         <groupId>com.alexecollins.vbox</groupId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
     <packaging>maven-plugin</packaging>
@@ -72,7 +72,7 @@
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>integration-test</goal>
                                 </goals>
                                 <configuration>
                                     <debug>false</debug>
