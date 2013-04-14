@@ -3,7 +3,7 @@
     <parent>
         <artifactId>vbox-parent</artifactId>
         <groupId>com.alexecollins.vbox</groupId>
-        <version>3.0.0</version>
+        <version>3.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
