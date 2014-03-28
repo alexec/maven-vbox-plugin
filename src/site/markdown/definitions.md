@@ -44,7 +44,7 @@ Unlisted OSs should all work.
 
 Supported Guest OS Types/Supplied Definitions
 ---
-* CentOS_6_3
+* CentOS_6_5
 * UbuntuServer_12_10
 * WindowsServer2008
 

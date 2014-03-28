@@ -91,7 +91,7 @@ Add this to your pom.xml:
 
 Execute this:
 
-    mvn vbox:create-definition -Dvbox.name=CentOS_6_3
+    mvn vbox:create-definition -Dvbox.name=CentOS_6_5
 
 Execute:
 
@@ -113,10 +113,10 @@ Add this to your build.xml:
             <vbox:purge-local-repository/>
             <vbox:list-definitions/>
             <vbox:delete-definition dir="${app}"/>
-            <vbox:create-definition name="CentOS_6_3" dir="${app}"/>
+            <vbox:create-definition name="CentOS_6_5" dir="${app}"/>
             <vbox:patch-definition dir="${app}">
                 <archPatch/>
-                <predefinedPatch name="CentOS_6_3--tomcat6"/>
+                <predefinedPatch name="CentOS_6_5--tomcat6"/>
             </vbox:patch-definition>
             <vbox:clean dir="${app}" context="${context}"/>
             <vbox:create dir="${app}" context="${context}"/>
@@ -178,7 +178,7 @@ Unlisted OSs should all work.
 
 Supported Guest OS Types/Supplied Definitions
 ---
-* CentOS_6_3
+* CentOS_6_5
 * UbuntuServer_12_10
 * WindowsServer2008
 
@@ -216,7 +216,7 @@ Predefined patches can be listed with the Maven plugin:
 
 Typically a predefined patch has a name which is the concatenation of the template used to create it, two dashes, and a short description. E.g.:
 
-    CentOS_6_3--tomcat6
+    CentOS_6_5--tomcat6
 
 To apply a patch you need to add it to your XML. For example, you can get it to create patches as follows:
 
@@ -224,7 +224,7 @@ To apply a patch you need to add it to your XML. For example, you can get it to 
         <id>create-definition</id>
         <goals><goal>create-definition</goal></goals>
         <configuration>
-            <templateName>CentOS_6_3</templateName>
+            <templateName>CentOS_6_5</templateName>
             <name>app1</name>
         </configuration>
     </execution>
@@ -234,7 +234,7 @@ To apply a patch you need to add it to your XML. For example, you can get it to 
         <configuration>
             <patches>
                 <predefinedPatch>
-                    <name>CentOS_6_3--tomcat6</name>
+                    <name>CentOS_6_5--tomcat6</name>
                 </predefinedPatch>
             </patches>
         </configuration>

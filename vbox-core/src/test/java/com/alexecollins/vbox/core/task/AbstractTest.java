@@ -27,7 +27,7 @@ public abstract class AbstractTest {
 		return Arrays.asList(new Object[][]{
 				{"TinyCore_4_x"},
 				{"UbuntuServer_12_10" },
-				{"CentOS_6_3"}
+				{"CentOS_6_5"}
 				// ,{"WindowsServer2008" }
 		});
 	}
