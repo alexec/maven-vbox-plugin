@@ -36,7 +36,7 @@ public class PredefinedPatch implements Patch {
 	 * The full patch name.
 	 *
 	 * E.g.
-	 * CentOS_6_3--tomcat6
+	 * CentOS_6_5--tomcat6
 	 */
 	private String name;
 

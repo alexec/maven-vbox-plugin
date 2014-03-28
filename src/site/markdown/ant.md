@@ -11,10 +11,10 @@ Add this to your build.xml:
             <vbox:purge-local-repository/>
             <vbox:list-definitions/>
             <vbox:delete-definition dir="${app}"/>
-            <vbox:create-definition name="CentOS_6_3" dir="${app}"/>
+            <vbox:create-definition name="CentOS_6_5" dir="${app}"/>
             <vbox:patch-definition dir="${app}">
                 <archPatch/>
-                <predefinedPatch name="CentOS_6_3--tomcat6"/>
+                <predefinedPatch name="CentOS_6_5--tomcat6"/>
             </vbox:patch-definition>
             <vbox:clean dir="${app}" context="${context}"/>
             <vbox:create dir="${app}" context="${context}"/>

@@ -33,11 +33,11 @@
                                 </goals>
                                 <configuration>
                                     <name>app1.test</name>
-                                    <templateName>CentOS_6_3</templateName>
+                                    <templateName>CentOS_6_5</templateName>
                                     <patches>
                                         <archPatch />
                                         <predefinedPatch>
-                                            <name>CentOS_6_3--tomcat6</name>
+                                            <name>CentOS_6_5--tomcat6</name>
                                         </predefinedPatch>
                                     </patches>
                                     <names>app1.test</names>

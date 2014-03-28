@@ -17,7 +17,7 @@ import java.io.File;
 public class CreateDefinitionMojo extends AbstractVBoxMojo {
 
 	/**
-	 * The name of the template to use, e.g. "CentOS_6_3". Defaults to the name for backwards compatibility.
+	 * The name of the template to use, e.g. "CentOS_6_5". Defaults to the name for backwards compatibility.
 	 *
 	 * @parameter property="vbox.template", default="${vbox.name}"
 	 */

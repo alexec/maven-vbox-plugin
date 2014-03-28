@@ -12,7 +12,7 @@ Predefined patches can be listed with the Maven plugin:
 
 Typically a predefined patch has a name which is the concatenation of the template used to create it, two dashes, and a short description. E.g.:
 
-    CentOS_6_3--tomcat6
+    CentOS_6_5--tomcat6
 
 To apply a patch you need to add it to your XML. For example, you can get it to create patches as follows:
 
@@ -20,7 +20,7 @@ To apply a patch you need to add it to your XML. For example, you can get it to 
         <id>create-definition</id>
         <goals><goal>create-definition</goal></goals>
         <configuration>
-            <templateName>CentOS_6_3</templateName>
+            <templateName>CentOS_6_5</templateName>
             <name>app1</name>
         </configuration>
     </execution>
@@ -30,7 +30,7 @@ To apply a patch you need to add it to your XML. For example, you can get it to 
         <configuration>
             <patches>
                 <predefinedPatch>
-                    <name>CentOS_6_3--tomcat6</name>
+                    <name>CentOS_6_5--tomcat6</name>
                 </predefinedPatch>
             </patches>
         </configuration>

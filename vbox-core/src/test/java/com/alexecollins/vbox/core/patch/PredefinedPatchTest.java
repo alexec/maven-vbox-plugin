@@ -22,15 +22,15 @@ public class PredefinedPatchTest {
 	@Ignore // TODO - meant to test properties, but this no longer needs them
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidPatch() throws Exception {
-		new PredefinedPatch("CentOS_6_3--tomcat6", Collections.<String, String>emptyMap());
+		new PredefinedPatch("CentOS_6_5--tomcat6", Collections.<String, String>emptyMap());
 	}
 
 	@Test
 	public void testApply() throws Exception {
 		final File tmp = Files.createTempDir();
 		final Context context = new TestContext();
-		new CreateDefinition(context, "CentOS_6_3", tmp).call();
-		new PredefinedPatch("CentOS_6_3--tomcat6", ImmutableMap.of("hostname", "localhost")).apply(new VBox(context, tmp.toURI()));
+		new CreateDefinition(context, "CentOS_6_5", tmp).call();
+		new PredefinedPatch("CentOS_6_5--tomcat6", ImmutableMap.of("hostname", "localhost")).apply(new VBox(context, tmp.toURI()));
 		assertTrue(FileUtils.readFileToString(new File(tmp, "floppy0/post-install.sh")).contains("tomcat6"));
 	}
 

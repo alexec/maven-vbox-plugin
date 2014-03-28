@@ -1,4 +1,4 @@
-CentOS_6_3--tomcat6()
-CentOS_6_3--64bit()
+CentOS_6_5--tomcat6()
+CentOS_6_5--64bit()
 TinyCore_4_x--64bit()
 UbuntuServer_12_10--64bit()

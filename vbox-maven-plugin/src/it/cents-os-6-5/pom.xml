@@ -28,8 +28,8 @@
                             <goal>create-definition</goal>
                         </goals>
                         <configuration>
-                            <templateName>CentOS_6_3</templateName>
-                            <name>cent-os-6-3.test</name>
+                            <templateName>CentOS_6_5</templateName>
+                            <name>cent-os-6-5.test</name>
                         </configuration>
                     </execution>
                     <execution>
@@ -41,7 +41,7 @@
                             <patches>
                                 <archPatch/>
                                 <predefinedPatch>
-                                    <name>CentOS_6_3--tomcat6</name>
+                                    <name>CentOS_6_5--tomcat6</name>
                                 </predefinedPatch>
                             </patches>
                         </configuration>

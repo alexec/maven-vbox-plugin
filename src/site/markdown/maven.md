@@ -22,7 +22,7 @@ Add this to your pom.xml:
 
 Execute this:
 
-    mvn vbox:create-definition -Dvbox.name=CentOS_6_3
+    mvn vbox:create-definition -Dvbox.name=CentOS_6_5
 
 Execute:
 

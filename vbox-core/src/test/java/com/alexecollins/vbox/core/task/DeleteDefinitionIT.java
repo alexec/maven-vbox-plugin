@@ -19,7 +19,7 @@ public class DeleteDefinitionIT {
 	public void testCall() throws Exception {
 		final File tmp = Files.createTempDir();
 		final File target = new File(tmp, "test");
-		final VBox box = new CreateDefinition(new TestContext(), "CentOS_6_3", target).call();
+		final VBox box = new CreateDefinition(new TestContext(), "CentOS_6_5", target).call();
 
 		System.out.println("src="+box.getSrc());
 
